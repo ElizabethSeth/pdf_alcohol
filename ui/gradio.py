@@ -7,9 +7,10 @@ import os, re , mimetypes, tempfile, urllib.parse
 
 
 
-API_URL = "http://localhost:8000/pdf_reports"
+API_URL = "http://localhost:8000/generate_report"
 
 def upload_files(pdf_file):
         r = requests.post(API_URL, json={"data": pdf_file}, timeout=20)
+        
         
 
