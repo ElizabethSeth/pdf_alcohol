@@ -1,0 +1,61 @@
+steps:
+  # build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "ui",
+        "-t",
+        "$_PATH_ARTIFACTS_UI:$_VERSION_UI"
+        
+      ]
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "api",
+        "-t",
+        "$_PATH_ARTIFACTS_API:$_VERSION_API",
+      ]
+
+  # push the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "$_PATH_ARTIFACTS_UI:$_VERSION_UI",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "$_PATH_ARTIFACTS_API:$_VERSION_API",
+      ]
+
+  # deploy to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "run", "deploy", "$_SERVICE_NAME_UI",
+        "--image", "$_PATH_ARTIFACTS_UI:$_VERSION_UI",
+        "--region", "$_SERVICE_REGION",
+        "--platform", "managed",
+        "--allow-unauthenticated",
+        "--port", "8003"           
+      ]
+
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "run", "deploy", "$_SERVICE_NAME_API",
+        "--image", "$_PATH_ARTIFACTS_API:$_VERSION_API",
+        "--region", "$_SERVICE_REGION",
+        "--platform", "managed",
+        "--allow-unauthenticated",
+        "--port", "8002"           
+      ]
+
+options:
+  logging: CLOUD_LOGGING_ONLY 
+  
