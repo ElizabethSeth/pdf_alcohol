@@ -1,0 +1,14 @@
+fastapi
+langchain-ollama
+langchain-core
+qdrant_client
+pypdf
+langchain
+langchain_openai
+dotenv
+docx2txt
+langchain_qdrant
+fitz
+docx
+langchain_community
+gradio

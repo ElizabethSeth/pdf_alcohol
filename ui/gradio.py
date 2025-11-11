@@ -14,3 +14,8 @@ def upload_files(pdf_file):
         
         
 
+with gr.Blocks(title="PDF → Excel extractor") as demo:
+    f = gr.Files(file_count="multiple", file_types=[".pdf"])
+    btn = gr.Button("Click to upload PDFs")
+    out = gr.File(label="Load Excel")
+    btn.click(fn=upload_files, inputs=f, outputs=out)
