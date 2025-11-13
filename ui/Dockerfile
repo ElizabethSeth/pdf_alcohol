@@ -8,4 +8,4 @@ COPY gradio_ui.py .
 
 EXPOSE 8003
 
-ENTRYPOINT ["python", "gradio_ui.py"]
+ENTRYPOINT ["python", "ui.py"]
