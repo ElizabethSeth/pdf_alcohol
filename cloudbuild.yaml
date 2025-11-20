@@ -42,7 +42,7 @@ steps:
         "--region", "$_SERVICE_REGION",
         "--platform", "managed",
         "--allow-unauthenticated",
-        "--port", "8003"           
+        "--port", "8001"           
       ]
 
   - name: "gcr.io/cloud-builders/gcloud"

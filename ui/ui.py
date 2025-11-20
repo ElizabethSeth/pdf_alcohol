@@ -10,7 +10,6 @@ from typing import List
 API_URL = "http://api:8002"
 
 def upload_pdfs_client(files, collection_name):
-    """Только загружает PDF в API и индексирует в Qdrant"""
     if not files:
         return "⚠️ Please upload at least one PDF file"
     if not collection_name:
@@ -49,17 +48,14 @@ def upload_pdfs_client(files, collection_name):
     
 
 def fetch_collections_client():
-    """Запрашивает список коллекций из API для дропдауна"""
     try:
         resp = requests.get(f"{API_URL}/all_collections", timeout=10)
 
         if resp.status_code == 200:
             data = resp.json()
-            # ожидаем [{"collection_name": "..."} ...]
             names = [item["collection_name"] for item in data]
             if not names:
                 return gr.update(choices=[], value=None), "📭 No collections found"
-            # по умолчанию выбираем первую
             return gr.update(choices=names, value=names[0]), "✅ Collections loaded"
         else:
             return gr.update(choices=[], value=None), f"❌ Error: {resp.text}"
@@ -70,10 +66,7 @@ def fetch_collections_client():
 
 
 def generate_excel_client(selected_collections):
-    """
-    Вызывает /return_excel, получает Excel.
-    selected_collections — либо строка (одна), либо список строк (если multiselect)
-    """
+   
     if not selected_collections:
         return None, "⚠️ Please select at least one collection"
 
@@ -90,7 +83,6 @@ def generate_excel_client(selected_collections):
         )
 
         if resp.status_code == 200:
-            # --- имя файла по коллекциям ---
             if len(collection_names) == 1:
                 file_name = f"{collection_names[0]}.xlsx"
             else:
@@ -246,13 +238,9 @@ with gr.Blocks(
 
 1. Enter a collection name and upload one or more PDF reports, then click **Upload & Index PDFs**.  
 2. Click **Refresh collections** and choose one or several collections from the dropdown.  
-3. Click **Generate Excel report** and download the generated `report.xlsx`.  
+3. Click **Generate Excel report** and download the generated report.xlsx.  
             """
         )
-
-    gr.Markdown(
-        '<div id="footer-text">Built with ❤️ using Gradio · PDF Report Generator</div>'
-    )
 
     # callbacks
     upload_btn.click(
@@ -273,213 +261,7 @@ with gr.Blocks(
         outputs=[excel_output, report_status],
     )
 
-
-
-
-
-
-
-
-
-
-    # gr.Markdown("""
-    # # PDF Report Generator
-    # """) 
-    # with gr.Tabs():
-    #     with gr.Tab("📄 PDF Processing"):
-    #         gr.Markdown("### Upload one or more PDF files for analysis")
-
-    #         with gr.Row():
-    #             with gr.Column():
-    #                 collection_name_input = gr.Textbox(
-    #                     label="Collection Name",
-    #                     placeholder="Enter Qdrant collection name...",
-    #                     max_lines=1,
-    #                 )
-
-    #                 pdf_input = gr.File(
-    #                     label="Upload PDF files",
-    #                     file_count="multiple",
-    #                     file_types=[".pdf"],
-    #                     type="filepath",
-    #                 )
-
-    #                 process_btn = gr.Button("🚀 Process PDF", variant="primary", size="lg")
-
-    #             with gr.Column():
-    #                 status_output = gr.Textbox(
-    #                     label="Processing Status",
-    #                     placeholder="Processing status will appear here...",
-    #                     lines=3,
-    #                 )
-
-    #                 excel_output = gr.File(
-    #                     label="📥 Download Excel Report",
-    #                 )
-
-    #         gr.Markdown(
-    #             """
-    #             **Instructions:**
-    #             1. Enter a collection name (will be used in Qdrant)
-    #             2. Click on the upload area or drag and drop PDF files
-    #             3. Click the "Process PDF" button
-    #             4. Wait for the processing to complete
-    #             5. Download the generated Excel report
-    #             """
-    #         )
-
-    #         process_btn.click(
-    #             fn=process_pdfs,
-    #             inputs=[pdf_input, collection_name_input],
-    #             outputs=[excel_output, status_output],
-    #         )
-        
-    #     with gr.Tab("➕ Add Collection"):
-    #         gr.Markdown("### Add a new collection with text data")
-            
-    #         with gr.Row():
-    #             with gr.Column():
-    #                 collection_name_input = gr.Textbox(
-    #                     label="Collection Name",
-    #                     placeholder="Enter collection name...",
-    #                     max_lines=1
-    #                 )
-                    
-    #                 pdf_collection = gr.File(
-    #                     label="Upload PDF for Collection",
-    #                     file_types=[".pdf"],
-    #                     file_count="single",
-    #                     type="filepath"
-    #                 )
-                    
-    #                 add_btn = gr.Button("➕ Add Collection", variant="primary")
-                
-    #             with gr.Column():
-    #                 add_status = gr.Textbox(
-    #                     label="Status",
-    #                     placeholder="The status will appear here...",
-    #                     lines=1
-    #                 )
-            
-    #         add_btn.click(
-    #             fn=add_new_collection,
-    #             inputs=[collection_name_input, pdf_collection],
-    #             outputs=[add_status]
-    #         )
-        
-    #     with gr.Tab("📚 Collections"):
-    #         gr.Markdown("### View existing collections")
-            
-    #         with gr.Row():
-    #             refresh_btn = gr.Button("🔄 Refresh List", variant="secondary")
-            
-    #         collections_output = gr.Dropdown(
-    #             label="Collections List",
-    #             choices=[]
-    #             )
-            
-    #         refresh_btn.click(
-    #             fn=get_collections,
-    #             inputs=[],
-    #             outputs=[collections_output]
-    #         )
-
-
 if __name__ == "__main__":
     app.launch(server_name="0.0.0.0", server_port=8001)
-
-
-
-# def add_new_collection(collection_name, pdf_file):
-#     """Adds a new collection via API"""
-#     if not collection_name or not pdf_file:
-#         return "⚠️ Please fill in both fields"
-    
-#     try:
-#         if isinstance(pdf_file, str):
-#             fille_path = pdf_file
-#         else:
-#             fille_path = pdf_file.name
-
-#         files = {
-#             "file" : (
-#                 os.path.basename(fille_path),
-#                 open(fille_path, "rb"),
-#                 "application/pdf"
-#             )
-#         }
-
-#         data = {"collection_name": collection_name}
-
-#         response = requests.post(
-#             f"{API_URL}/add_collection",
-#             data=data,
-#             files=files,
-#             timeout=300
-#         )
-
-#         files["file"][1].close()
-        
-#         if response.status_code == 200:
-#             result = response.json()
-#             if result.get("status") == "success":
-#                 return f"✅ {result.get('message')}\nCollection Name: {result.get('collection_name')}"
-#             else:
-#                 return f"❌ {result.get('message')}"
-#         else:
-#             return f"❌ Error from server: {response.text}"
-    
-#     except Exception as e:
-#         return f"❌ Error: {str(e)}"
-
-# def get_collections():
-#     """Gets a list of all collections"""
-#     try:
-#         response = requests.get(f"{API_URL}/all_collections", timeout=10)
-        
-#         if response.status_code == 200:
-#             collections = response.json().get("collections", [])
-#             if collections:
-#                 return "📚 Existing Collections:\n" + "\n".join(f"• {c}" for c in collections)
-#             else:
-#                 return "📭 No collections created"
-#         else:
-#             return f"❌ Error: {response.text}"
-        
-
-
-    
-#     except Exception as e:
-#         return f"❌ Error: {str(e)}"
-
-
-
-# #API_URL = "http://api:8000/generate_report"
-
-# def collections():
-#         r = requests.get("http://api:8002/all_collections")
-#         return r.json().get("collections", [])
-
-
-# # def collections():
-# #     r = requests.get("http://localhost:8000/all_collections")
-# #     data = r.json() if r.headers.get("Content-Type", "").startswith("application/json") else {}
-# #     return data.get("collections", [])
-
-# def upload_files(pdf_file):
-#       pass
-#          #r = requests.post(API_URL, json={"data": pdf_file})
-        
-
-
-# with gr.Blocks(title="PDF → Excel extractor") as demo:
-#      col = gr.Dropdown(choices=collections(), label="Select existing collection", interactive=True)
-#      load = gr.File(label="Load one of existing collections")
-#      f = gr.Files(file_count="multiple", file_types=[".pdf"])
-#      btn = gr.Button("Click to upload PDFs")
-#      out = gr.File(label="Load Excel")
-#      btn.click(fn=upload_files, inputs=f, outputs=out)
-
-
 
 
