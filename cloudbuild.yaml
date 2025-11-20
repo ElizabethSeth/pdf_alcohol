@@ -53,7 +53,8 @@ steps:
         "--region", "$_SERVICE_REGION",
         "--platform", "managed",
         "--allow-unauthenticated",
-        "--port", "8003"           
+        "--port", "8003",
+        "--timeout", "600"           
       ]
 
 options:
