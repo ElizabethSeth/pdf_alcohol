@@ -54,7 +54,7 @@ steps:
         "--platform", "managed",
         "--allow-unauthenticated",
         "--port", "8003",
-        "--timeout", "60000"           
+        "--timeout", "3600"           
       ]
 
 options:
