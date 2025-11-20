@@ -11,7 +11,7 @@ services:
       context: api
       dockerfile: Dockerfile
     ports:
-      - "8002:8002"
+      - "8000:8002"
     env_file:
       - .env
 
@@ -21,7 +21,7 @@ services:
       context: ui
       dockerfile: Dockerfile
     ports:
-      - "8003:8003"
+      - "8001:8001"
     depends_on:
       - api
 

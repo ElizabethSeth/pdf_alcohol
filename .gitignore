@@ -5,3 +5,4 @@ diageo
 pernod
 qdrant_data
 api/.env
+api/qdrant_data

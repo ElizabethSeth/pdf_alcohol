@@ -6,9 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
 ENV OPENAI_API_KEY=${OPENAI_API_KEY}
 
 WORKDIR /api
-COPY qdrant_data qdrant_data
+#COPY qdrant_data qdrant_data
 #COPY .env .env
-COPY collection collection
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY api.py ./api.py
