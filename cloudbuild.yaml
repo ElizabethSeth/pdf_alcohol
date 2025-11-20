@@ -1,37 +1,37 @@
 steps:
-  # build the container image
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "build",
-        "ui",
-        "-t",
-        "$_PATH_ARTIFACTS_UI:$_VERSION_UI"
+  # # build the container image
+  # - name: "gcr.io/cloud-builders/docker"
+  #   args:
+  #     [
+  #       "build",
+  #       "ui",
+  #       "-t",
+  #       "$_PATH_ARTIFACTS_UI:$_VERSION_UI"
         
-      ]
+  #     ]
 
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "build",
-        "api",
-        "-t",
-        "$_PATH_ARTIFACTS_API:$_VERSION_API",
-      ]
+  # - name: "gcr.io/cloud-builders/docker"
+  #   args:
+  #     [
+  #       "build",
+  #       "api",
+  #       "-t",
+  #       "$_PATH_ARTIFACTS_API:$_VERSION_API",
+  #     ]
 
-  # push the container image
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "push",
-        "$_PATH_ARTIFACTS_UI:$_VERSION_UI",
-      ]
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "push",
-        "$_PATH_ARTIFACTS_API:$_VERSION_API",
-      ]
+  # # push the container image
+  # - name: "gcr.io/cloud-builders/docker"
+  #   args:
+  #     [
+  #       "push",
+  #       "$_PATH_ARTIFACTS_UI:$_VERSION_UI",
+  #     ]
+  # - name: "gcr.io/cloud-builders/docker"
+  #   args:
+  #     [
+  #       "push",
+  #       "$_PATH_ARTIFACTS_API:$_VERSION_API",
+  #     ]
 
   # deploy to Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
@@ -54,7 +54,7 @@ steps:
         "--platform", "managed",
         "--allow-unauthenticated",
         "--port", "8003",
-        "--timeout", "600"           
+        "--timeout", "60000"           
       ]
 
 options:

@@ -1753,7 +1753,12 @@ async def return_excel(collection_names: List[str] = Body(...)):
         tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
         all_results = await asyncio.gather(*tasks)
         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
+        datetime_cols = ["FiscalYear", "Period_start", "Period_end", "Agm_date"]
+        for col in datetime_cols:
+            df[col] = df[col].astype(str)
+
         all_frames[sheet_name] = df
+
 
     buf = io.BytesIO()
     with pd.ExcelWriter(buf, engine="openpyxl") as w:
