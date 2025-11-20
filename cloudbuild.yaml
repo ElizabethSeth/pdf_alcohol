@@ -53,7 +53,7 @@ steps:
         "--region", "$_SERVICE_REGION",
         "--platform", "managed",
         "--allow-unauthenticated",
-        "--port", "8002"           
+        "--port", "8003"           
       ]
 
 options:

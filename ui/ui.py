@@ -79,7 +79,7 @@ def generate_excel_client(selected_collections):
         resp = requests.post(
             f"{API_URL}/return_excel",
             json=collection_names,
-            timeout=1800,
+            timeout=2800,
         )
 
         if resp.status_code == 200:
