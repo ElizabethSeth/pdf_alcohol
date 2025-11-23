@@ -446,15 +446,15 @@ class Dividend_per_share_proposed(BaseModel):
     )
 
 
-class Agm_date(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "AGM (Annual General Meeting) date where the dividend is submitted for approval. "
-            "Return the date text exactly as written (e.g., '25 April 2025'). "
-            "If not found, output 'Unknown'."
-        ),
-    )
+# class Agm_date(BaseModel):
+#     question: datetime = Field(
+#         "Unknown",
+#         description=(
+#             "AGM (Annual General Meeting) date where the dividend is submitted for approval. "
+#             "Return the date text exactly as written (e.g., '25 April 2025'). "
+#             "If not found, output 'Unknown'."
+#         ),
+#     )
 
 
 class Name(BaseModel):
@@ -1575,7 +1575,7 @@ group_fields = {
     "FiscalYear": [Year , Period_start , Period_end],
     "Region": [Name , Net_sales_region , Revenue_region , Revenue_growth_region , Yoy_pct , Currency_region , Amount_unit , Revenue_absolute , Revenue_absolute_unit , Revenue_org_change_pct , Revenue_pub_change_pct , Volume_growth_pct ],
     "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps , Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Revenue_unit , Net_sales_unit , Operating_income , Operating_income_unit , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
-    "FreeCashFlow_Debt": [Free_cash_flow_amount,Free_cash_flow_unit,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed,Agm_date],
+    "FreeCashFlow_Debt": [Free_cash_flow_amount,Free_cash_flow_unit,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed],
     "Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_international_brands, Quantity_strategic_international_brands, Prestige_brands, Quantity_prestige_brands, Specialty_brands, Quantity_specialty_brands, Strategic_local_brands, Quantity_strategic_local_brands, Non_alcoholic_brands, Quantity_non_alcoholic_brands, Ready_to_drink_brands, Quantity_ready_to_drink_brands],
     "Sales_Drinks": [Total_net_sales,Organic_decline_pct,Reported_decline_pct,Net_sales_analysis_by_period,Fx_impact,Perimeter_impact,Americas_growth,Usa_growth,Asia_row_growth,China_growth,India_growth,Spirits_market_trend_value,Spirits_market_trend,Inventory_adjustments],
     "Results_Drinks": [Pro_amount,Pro_organic_growth_pct,Pro_reported_change_pct,Gross_margin_expansion_bps,Ap_amount,Ap_pct_of_net_sales,Operating_margin_org_bps,Operating_margin_org_pct,Operating_margin_reported_pct,Fx_impact_amount,Perimeter_effect_amount,Group_share_net_pro_amount,Group_share_net_pro_amount_unit,Group_share_net_pro_change_pct,Avg_cost_of_debt_pct,Group_share_net_profit_amount,Group_share_net_profit_change_pct, Eps_amount],
@@ -1752,9 +1752,10 @@ async def return_excel(collection_names: List[str] = Body(...)):
         tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
         all_results = await asyncio.gather(*tasks)
         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-        datetime_cols = ["FiscalYear", "Period_start", "Period_end", "Agm_date"]
+        datetime_cols = ["Year", "Period_start", "Period_end"]
         for col in datetime_cols:
-            df[col] = df[col].astype(str)
+            if col in df.columns:         
+                df[col] = df[col].astype(str)
 
         all_frames[sheet_name] = df
 
