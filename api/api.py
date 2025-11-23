@@ -79,12 +79,11 @@ class Important_info(BaseModel):
 class Quantity_important_rows(BaseModel):
     question:int = Field(description="Quantity of important rows")
 class Year(BaseModel):
-    question: datetime = Field(description="Fiscal year")
+    question: str = Field("Unknown",description="Fiscal year please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown'")
 class Period_start(BaseModel):  
-    question: datetime = Field(description="Period start date")
+    question: str = Field("Unknown",description="Period start date please retun me date in format DD/MM/YYYY ortherwise retun me 'Unknown'")
 class Period_end(BaseModel):
-    question: datetime = Field(description="Period end date")
-
+    question: str = Field("Unknown",description="Period end date please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown'")
 class Revenue_growth(BaseModel):
     question: float = Field(
         -1,
@@ -1752,13 +1751,8 @@ async def return_excel(collection_names: List[str] = Body(...)):
         tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
         all_results = await asyncio.gather(*tasks)
         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-        datetime_cols = ["Year", "Period_start", "Period_end"]
-        for col in datetime_cols:
-            if col in df.columns:         
-                df[col] = df[col].astype(str)
 
         all_frames[sheet_name] = df
-
 
     buf = io.BytesIO()
     with pd.ExcelWriter(buf, engine="openpyxl") as w:
