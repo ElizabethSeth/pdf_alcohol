@@ -261,7 +261,9 @@ with gr.Blocks(
         outputs=[excel_output, report_status],
     )
 
+# if __name__ == "__main__":
+#     app.launch(server_name="0.0.0.0", server_port=8002)
+
 if __name__ == "__main__":
-    app.launch(server_name="0.0.0.0", server_port=8002)
-
-
+    port = int(os.getenv("PORT", 8001))  # 8001 — запасной вариант для локального запуска
+    app.launch(server_name="0.0.0.0", server_port=port)
