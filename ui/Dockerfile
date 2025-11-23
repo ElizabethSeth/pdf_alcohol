@@ -6,6 +6,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ui.py .
 
-EXPOSE 8001
+EXPOSE 8002
 
 ENTRYPOINT ["sh", "-c", "sleep 10 && python ui.py"]
