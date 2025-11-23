@@ -7,7 +7,7 @@ import os, re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 
-API_URL = "http://api:8003"
+API_URL = "http://localhost:8003"
 
 def upload_pdfs_client(files, collection_name):
     if not files:
@@ -264,6 +264,18 @@ with gr.Blocks(
 # if __name__ == "__main__":
 #     app.launch(server_name="0.0.0.0", server_port=8002)
 
+# if __name__ == "__main__":
+#     port = int(os.getenv("PORT", 8001))  # 8001 — запасной вариант для локального запуска
+#     app.launch(server_name="0.0.0.0", server_port=port)
+
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8001))  # 8001 — запасной вариант для локального запуска
-    app.launch(server_name="0.0.0.0", server_port=port)
+    port = int(os.getenv("PORT", 8080))
+    print(f"Starting Gradio app on port {port}...")
+    print(f"API URL configured as: {API_URL}")
+    
+    app.launch(
+        server_name="0.0.0.0",
+        server_port=port,
+        show_error=True,
+        quiet=False
+    )
