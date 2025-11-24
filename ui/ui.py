@@ -153,10 +153,9 @@ with gr.Blocks(
     theme=gr.themes.Soft(),
 ) as app:
 
-    # Заголовок
     gr.Markdown(
         """
-<div id="app-title">📊 PDF Report Generator</div>
+<div id="app-title">📊 Strategic Report Knowledge Extraction System (SR-KES) </div>
 <div id="app-subtitle">
     Upload ESG / financial PDFs, index them in Qdrant and generate a structured Excel report.
 </div>
