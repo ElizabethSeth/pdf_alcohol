@@ -7,6 +7,7 @@ from langchain_ollama import OllamaEmbeddings
 from qdrant_client import QdrantClient
 import os
 from dotenv import load_dotenv
+import uvicorn
 load_dotenv()
 #QDRANT_URL = os.getenv("QDRANT_URL")
 #client_qd = QdrantClient(url=QDRANT_URL)
@@ -1585,7 +1586,10 @@ group_fields = {
     "Subtitle":  [Sub_name, Important_info, Quantity_important_rows],
 }
 
-
+def main():
+    # Cloud Run will set PORT (you use 8003 in gcloud run deploy)
+    port = int(os.environ.get("PORT", 8003))
+    uvicorn.run("api:app", host="0.0.0.0", port=port, log_level="info")
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     try:
@@ -1779,7 +1783,8 @@ async def return_excel(collection_names: List[str] = Body(...)):
 
 
 
-
+if __name__ == "__main__":
+    main()
 
 
 
