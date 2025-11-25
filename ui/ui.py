@@ -11,7 +11,8 @@ from typing import List
 
 #API_URL = os.environ.get("API_URL", "http://api:8003")
 
-API_URL = "https://reports-service-api-487752395936.us-central1.run.app/"
+#API_URL = "https://reports-service-api-487752395936.us-central1.run.app/"
+API_URL = "https://reports-service-api-t5nmsc3a7a-uc.a.run.app"
 
 def upload_pdfs_client(files, collection_name):
     if not files:
