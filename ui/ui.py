@@ -147,11 +147,17 @@ custom_css = """
 }
 """
 
+# with gr.Blocks(
+#     title="PDF Report Generator",
+#     css=custom_css,
+#     theme=gr.themes.Soft(),
+# ) as app:
+
 with gr.Blocks(
-    title="PDF Report Generator",
-    css=custom_css,
-    theme=gr.themes.Soft(),
+    title="PDF Report Generator"
 ) as app:
+    gr.HTML(f"<style>{custom_css}</style>")
+
 
     gr.Markdown(
         """
