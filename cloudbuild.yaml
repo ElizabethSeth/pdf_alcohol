@@ -54,8 +54,7 @@ steps:
         "--platform", "managed",
         "--allow-unauthenticated",
         "--port", "8003",
-        "--timeout", "3600",
-        "--set-env-vars", "OPENAI_API_KEY=$_OPENAI_API_KEY"           
+        "--timeout", "3600"
       ]
 
 options:
