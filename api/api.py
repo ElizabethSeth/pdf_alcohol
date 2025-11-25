@@ -60,7 +60,9 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 embeddings = OpenAIEmbeddings()
 llm = init_chat_model("openai:gpt-5", temperature=1)
-dim = len(embeddings.embed_query("dim?"))
+#dim = len(embeddings.embed_query("dim?"))
+dim = 1536
+
 splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=1200, chunk_overlap=200)
 executor = ThreadPoolExecutor(max_workers=10)
 
