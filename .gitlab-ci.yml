@@ -7,8 +7,8 @@ variables:
   DOCKER_DRIVER: overlay2
   PATH_ARTIFACTS_UI: us-central1-docker.pkg.dev/vibrant-period-472510-g7/reports/ui
   PATH_ARTIFACTS_API: us-central1-docker.pkg.dev/vibrant-period-472510-g7/reports/api
-  VERSION_API: 0.3
-  VERSION_UI: 0.3
+  VERSION_API: 0.1
+  VERSION_UI: 0.1
   SERVICE_NAME_UI: reports-service-ui
   SERVICE_NAME_API: reports-service-api
   SERVICE_REGION: us-central1
