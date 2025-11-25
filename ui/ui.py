@@ -7,7 +7,10 @@ import os, re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 
-API_URL = "http://localhost:8003"
+#API_URL = "http://localhost:8003"
+
+API_URL = os.environ.get("API_URL", "http://api:8003")
+
 
 def upload_pdfs_client(files, collection_name):
     if not files:

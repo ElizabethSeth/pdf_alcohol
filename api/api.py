@@ -1586,10 +1586,7 @@ group_fields = {
     "Subtitle":  [Sub_name, Important_info, Quantity_important_rows],
 }
 
-def main():
-    # Cloud Run will set PORT (you use 8003 in gcloud run deploy)
-    port = int(os.environ.get("PORT", 8003))
-    uvicorn.run("api:app", host="0.0.0.0", port=port, log_level="info")
+
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     try:
@@ -1783,315 +1780,48 @@ async def return_excel(collection_names: List[str] = Body(...)):
 
 
 
-if __name__ == "__main__":
-    main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @app.post("/return_excel")
-# async def return_excel(collection_names: List[str] = Body(...)):
-#     all_frames: Dict[str, pd.DataFrame] = {}
-        
-#     for sheet_name, class_list in group_fields.items():
-#         cols = [cls.__name__ for cls in class_list]
-        
-#         tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-#         all_results = await asyncio.gather(*tasks)
-        
-#         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-#         all_frames[sheet_name] = df
-
-#     buf = io.BytesIO()
-#     with pd.ExcelWriter(buf, engine="openpyxl") as w:
-#         for sheet, df in all_frames.items():
-#             wsheet = sheet[:31]
-#             df.to_excel(w, sheet_name=wsheet)
-#     buf.seek(0)
-
-#     return StreamingResponse(
-#         io.BytesIO(buf.read()),
-#         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#         headers={"Content-Disposition": 'attachment; filename="report.xlsx"'},
-#     )
-
-
-
-# @app.post("/return_excel")
-# async def return_excel(collection_names: Dict[str, str]):
-
-#     all_frames: Dict[str, pd.DataFrame] = {}
-        
-#     for sheet_name, class_list in group_fields.items():
-#         cols = [cls.__name__ for cls in class_list]
-        
-#         # Обрабатываем все коллекции параллельно для этого листа
-#         tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-#         all_results = await asyncio.gather(*tasks)
-        
-#         # Создаем DataFrame
-#         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-#         all_frames[sheet_name] = df
-
-#     # Создаем Excel файл
-#     buf = io.BytesIO()
-#     with pd.ExcelWriter(buf, engine="openpyxl") as w:
-#         for sheet, df in all_frames.items():
-#             wsheet = sheet[:31]
-#             df.to_excel(w, sheet_name=wsheet)
-#     buf.seek(0)
-
-#     return StreamingResponse(
-#         io.BytesIO(buf.read()),
-#         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#         headers={"Content-Disposition": 'attachment; filename="report.xlsx"'},
-#     )
-
-        
-
-
-
-
-
-
-
-
-@app.post("/generate_report")
-async def generate_report(data: Dict[str, str]):
-    """Генерирует отчет из текстовых данных (старый эндпоинт)"""
-    try:
-        collection_names: List[str] = []
-        
-        # Создаем коллекции из текстовых данных
-        for raw_key, text in data.items():
-            name = re.sub(r'[^a-zA-Z0-9_]+', '_', raw_key)
-            await asyncio.get_event_loop().run_in_executor(executor, ensure_collection, name, dim)
-            await asyncio.get_event_loop().run_in_executor(executor, text_into_qdrant, name, text)
-            collection_names.append(name)
-        
-        # Обрабатываем все коллекции асинхронно
-        all_frames: Dict[str, pd.DataFrame] = {}
-        
-        for sheet_name, class_list in group_fields.items():
-            cols = [cls.__name__ for cls in class_list]
-            
-            # Обрабатываем все коллекции параллельно для этого листа
-            tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-            all_results = await asyncio.gather(*tasks)
-            
-            # Создаем DataFrame
-            df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-            all_frames[sheet_name] = df
-        
-        # Создаем Excel файл
-        buf = io.BytesIO()
-        with pd.ExcelWriter(buf, engine="openpyxl") as w:
-            for sheet, df in all_frames.items():
-                wsheet = sheet[:31]
-                df.to_excel(w, sheet_name=wsheet)
-        buf.seek(0)
-        
-        return StreamingResponse(
-            io.BytesIO(buf.read()),
-            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": 'attachment; filename="report.xlsx"'},
-        )
-    
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# llm = init_chat_model("openai:gpt-5", temperature=1)
-# dim = len(embeddings.embed_query("dim?"))
-# def ensure_collection(name: str, dim: int):
-#     existing = [c.name for c in client_qd.get_collections().collections]
-#     if name not in existing:
-#         client_qd.create_collection(
-#             collection_name=name,
-#             vectors_config=VectorParams(size=dim, distance=Distance.COSINE),
-#         )
-
-# splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=1200, chunk_overlap=200)
-# def text_into_qdrant(collection_name: str, text: str):
-#     docs = [Document(page_content=chunk) for chunk in splitter.split_text(text)]
-#     qvs = QdrantVectorStore(client=client_qd, collection_name=collection_name, embedding=embeddings)
-#     if docs:
-#         qvs.add_documents(docs)
-
-# def prompt_question(qvs, model_cls):
-#     question = model_cls.model_fields['question'].description
-#     hits = qvs.similarity_search(question, k=3)
-#     context = "\n".join(doc.page_content for doc in hits)
-#     parser = PydanticOutputParser(pydantic_object=model_cls)
-#     #parser = OutputFixingParser.from_llm(parser=parser, llm=llm)
-
-#     prompt = PromptTemplate.from_template(
-#         "i received a company file and i need to extract data : {abc} "
-#         "Use ONLY the context to answer. If a value is not found, use -1 or 'Unknown' per the schema.\n"
-#         "question: {question}\ncontext: {text}"
-#     )
-#     chain = prompt | llm | parser
-#     parsed = chain.invoke({
-#         "abc": parser.get_format_instructions(),
-#         "question": question,
-#         "text": context
-#     })
-#     return parsed["question"] if isinstance(parsed, dict) else getattr(parsed, "question", parsed)
-
-
-# @app.get("/all_collections")
-# async def all_collections():
-#     existing = [c.name for c in client_qd.get_collections().collections]
-#     return {"collections": existing}
-
-
-
-
 
 
 # @app.post("/generate_report")
 # async def generate_report(data: Dict[str, str]):
-#     collection_names: List[str] = []
-#     for raw_key, text in data.items():
-#         name = re.sub(r'[^a-zA-Z0-9_]+', '_', raw_key)
-#         ensure_collection(name, dim)
-#         text_into_qdrant(name, text)
-#         collection_names.append(name)
-
-#     all_frames: Dict[str, pd.DataFrame] = {}
-#     for sheet_name, class_list in group_fields.items():
-#         cols = [cls.__name__ for cls in class_list]
-#         rows = []
-#         for coll in collection_names:
-#             qvs = QdrantVectorStore(client=client_qd, collection_name=coll, embedding=embeddings)
-#             row = []
-#             for model_cls in class_list:
-#                 value = prompt_question(qvs, model_cls)
-#                 row.append(value)
-#             rows.append(row)
-#         df = pd.DataFrame(rows, columns=cols, index=collection_names)
-#         all_frames[sheet_name] = df
-
-#     buf = io.BytesIO()
-#     with pd.ExcelWriter(buf, engine="openpyxl") as w:
-#         for sheet, df in all_frames.items():
-#             wsheet = sheet[:31]
-#             df.to_excel(w, sheet_name=wsheet)
-#     buf.seek(0)
-#     return StreamingResponse(
-#         io.BytesIO(buf.read()),
-#         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#         headers={"Content-Disposition": 'attachment; filename="report.xlsx"'},
-#     )
-
-
-
-
-
-
-# app = FastAPI()
-
-# @app.post("/generate_report")
-# async def generate_report(data: dict):
-
-#     splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=1200, chunk_overlap=200)
-#     chunks = splitter.split_documents([Document(page_content=data[key])])
-
-
-#     existing = [c.name for c in client_qd.get_collections().collections]
-
-#     all_dfs = {}
-
-#     for key , cls in group_fields.items():
-#         llm = init_chat_model("openai:gpt-5", temperature=1)
-#         arr = []
-#         for c in cls:
-#             parser = PydanticOutputParser(pydantic_object=c)
-#             parser = OutputFixingParser.from_llm(parser=parser, llm=llm)
-#             question = c.model_fields['question'].description
-#             chunks = []
-#             col = []
-#             for name in existing: 
-#                 qvs = QdrantVectorStore(client=client_qd, collection_name=name, embedding=embeddings)
-#                 answ = qvs.similarity_search(question, k=5)
-#                 chunks += [doc.page_content for doc in answ]
-#                 context = "\n".join(chunks)
-
-
-#                 prompt = PromptTemplate.from_template("""
-#                 i recieved a company file and i need to extract data : {abc} Use ONLY the context to answer. If a value is not found, use -1 or 'Unknown' per the schema.
-#                     question : {question} , context : {text} """.strip())
-#                 chain = prompt | llm | parser 
-#                 result = chain.invoke({
-#                 "abc": parser.get_format_instructions(),
-#                 "question": question,
-#                 "text": context
-#                 }).model_dump()
-#                 col.append(result["question"])
+#     """Генерирует отчет из текстовых данных (старый эндпоинт)"""
+#     try:
+#         collection_names: List[str] = []
+        
+#         # Создаем коллекции из текстовых данных
+#         for raw_key, text in data.items():
+#             name = re.sub(r'[^a-zA-Z0-9_]+', '_', raw_key)
+#             await asyncio.get_event_loop().run_in_executor(executor, ensure_collection, name, dim)
+#             await asyncio.get_event_loop().run_in_executor(executor, text_into_qdrant, name, text)
+#             collection_names.append(name)
+        
+#         # Обрабатываем все коллекции асинхронно
+#         all_frames: Dict[str, pd.DataFrame] = {}
+        
+#         for sheet_name, class_list in group_fields.items():
+#             cols = [cls.__name__ for cls in class_list]
             
-#             arr.append(col)
-
-#     df = pd.DataFrame(np.array(arr).T, columns=[c.__name__ for c in cls])
-#     df.index = existing
-
-#     all_dfs[key] = df
-
-
+#             # Обрабатываем все коллекции параллельно для этого листа
+#             tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
+#             all_results = await asyncio.gather(*tasks)
+            
+#             # Создаем DataFrame
+#             df = pd.DataFrame(all_results, columns=cols, index=collection_names)
+#             all_frames[sheet_name] = df
+        
+#         # Создаем Excel файл
+#         buf = io.BytesIO()
+#         with pd.ExcelWriter(buf, engine="openpyxl") as w:
+#             for sheet, df in all_frames.items():
+#                 wsheet = sheet[:31]
+#                 df.to_excel(w, sheet_name=wsheet)
+#         buf.seek(0)
+        
+#         return StreamingResponse(
+#             io.BytesIO(buf.read()),
+#             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+#             headers={"Content-Disposition": 'attachment; filename="report.xlsx"'},
+#         )
+    
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
