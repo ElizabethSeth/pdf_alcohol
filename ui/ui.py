@@ -7,12 +7,20 @@ import os, re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 
-#API_URL = "http://localhost:8003"
+API_URL = "http://api:8003"
 
 #API_URL = os.environ.get("API_URL", "http://api:8003")
 
 #API_URL = "https://reports-service-api-487752395936.us-central1.run.app/"
-API_URL = "https://reports-service-api-t5nmsc3a7a-uc.a.run.app"
+#API_URL = "https://reports-service-api-t5nmsc3a7a-uc.a.run.app"
+
+
+def return_apikey():
+    resp = requests.post(f"{API_URL}/return_apikey", timeout=10)
+    data = resp.json()
+    return data.get("api_key", "")
+  
+
 
 def upload_pdfs_client(files, collection_name):
     if not files:
@@ -242,6 +250,11 @@ with gr.Blocks(
                             lines=3,
                         )
 
+                        api_button = gr.Button(
+                            "Show OpenAI API Key",
+                            variant="secondary",
+                        )
+
         gr.Markdown(
             """
 **How it works**
@@ -263,6 +276,10 @@ with gr.Blocks(
         fn=fetch_collections_client,
         inputs=[],
         outputs=[collections_dropdown, report_status],
+    )
+    api_button.click(
+        fn=return_apikey,
+        outputs=[],
     )
 
     generate_btn.click(

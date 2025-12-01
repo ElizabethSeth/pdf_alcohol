@@ -210,10 +210,14 @@ class Gross_margin(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Gross margin percentage. "
-            "Extract ONLY the numeric percentage value, without the % sign. "
-            "If not found, output -1."
-        )
+            "Gross margin percentage for the most recent full fiscal year, for the entire group/company.\n"
+            "Treat 'gross margin' as any of these phrases: 'gross margin', "
+            "'gross profit margin', 'gross profit as a percentage of revenue/sales/net sales'.\n"
+            "Use the consolidated company figure in %, not basis-points and not a segment-specific value.\n"
+            "If multiple gross margins are given, pick the one clearly labeled for the whole group.\n"
+            "Return ONLY the numeric value, without the % sign (e.g. 60.4 for 60.4%).\n"
+            "If you cannot find a gross margin percentage, output -1."
+        ),
     )
 
 class Revenue(BaseModel):
@@ -238,27 +242,6 @@ class Currency(BaseModel):
         )
     )
 
-class Revenue_unit(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Unit and currency used for revenue and other financial amounts, "
-            "as written near the income statement or main financial tables. "
-            "Example: 'in millions of euros', 'in € millions', 'in billions of USD'. "
-            "If not explicitly stated, output 'Unknown'."
-        )
-    )
-
-class Net_sales_unit(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Unit and currency used specifically for Net Sales (if stated). "
-            "Example: 'in millions of euros', 'in € millions', 'in billions of USD'. "
-            "If not explicitly stated, output 'Unknown'."
-        )
-    )
-
 class Operating_income(BaseModel):
     question: int = Field(
         -1,
@@ -267,16 +250,6 @@ class Operating_income(BaseModel):
             "Extract ONLY the numeric amount in the original currency, ignore currency symbols. "
             "Convert thousands/millions/billions to the full number. "
             "If not found, output -1."
-        )
-    )
-
-class Operating_income_unit(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Unit and currency used for Operating Income amount, as written in the report. "
-            "Example: 'in millions of euros', 'in € millions'. "
-            "If not explicitly stated, output 'Unknown'."
         )
     )
 
@@ -295,11 +268,21 @@ class Net_income_growth(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Net income growth percentage for the period. "
-            "Extract ONLY the numeric percentage value, without the % sign. "
-            "If both reported and organic growth exist, prefer the reported overall growth. "
-            "If not found, output -1."
-        )
+            "Year-over-year growth rate (percentage change) of NET INCOME for the most recent "
+            "full fiscal year, for the entire group/company.\n"
+            "Treat 'net income' as any of these equivalent phrases: "
+            "'profit attributable to equity shareholders', "
+            "'profit attributable to owners of the parent', "
+            "'profit for the year', or 'net profit'.\n"
+            "Look for wording such as 'increased by X%', 'decreased by X%', "
+            "'change of X%', 'growth of X%'. Use the OVERALL company figure, not per share, "
+            "not per segment.\n"
+            "If both reported and organic/underlying/constant-currency growth are given, "
+            "PREFER the reported (IFRS/GAAP) total growth. If only one type exists, use it.\n"
+            "Return ONLY the numeric value (including sign), without the % sign "
+            "(e.g. 12.3 for +12.3%, -5.4 for -5.4%).\n"
+            "If you cannot find any clear year-over-year growth percentage for net income, output -1."
+        ),
     )
 
 class Net_debt(BaseModel):
@@ -377,30 +360,6 @@ class Net_sales_absolute(BaseModel):
         ),
     )
 
-
-class Free_cash_flow_amount(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Free cash flow amount. "
-            'Extract ONLY the numeric amount in the original currency, ignore currency symbols (€, $, £, etc.). '
-            "Convert thousands/millions/billions to the full number. "
-            "If not found, output -1."
-        ),
-    )
-
-
-class Free_cash_flow_unit(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Unit and currency used for Free Cash Flow amount, as written in the report. "
-            "Example: 'in millions of euros', 'in € millions', 'in billions of USD'. "
-            "If not explicitly stated, output 'Unknown'."
-        ),
-    )
-
-
 class Net_debt_change_amount(BaseModel):
     question: float = Field(
         -1,
@@ -459,26 +418,40 @@ class Dividend_per_share_proposed(BaseModel):
 #     )
 
 
-class Name(BaseModel):
+class Region_name(BaseModel):
     question: str = Field(
         "Unknown",
         description=(
-            "Name of the region or group of affiliates (e.g., 'Europe', 'Asia', 'Rest of World'). "
-            "Return the region label exactly as written in the report. "
-            "If not found, output 'Unknown'."
+            "Exact name of the geographic region to which the following row of financial data refers.\n"
+            "This must be the geographic segmentation label used in the report.\n"
+            "Valid examples include but are not limited to:\n"
+            "'Asia Pacific', 'APAC', 'Europe', 'Europe & Turkey', 'EMEA', "
+            "'North America', 'USA & Canada', 'Latin America', 'LATAM', "
+            "'Greater China', 'Japan', 'Africa', 'Middle East'.\n"
+            "Return the region name EXACTLY as written in the report table or heading "
+            "(do not normalize or translate the name).\n"
+            "Do NOT return brand names, product categories, or business units.\n"
+            "If the row does not clearly refer to a geographic region, return 'Unknown'."
         ),
     )
-
 
 class Net_sales_region(BaseModel):
     question: int = Field(
         -1,
         description=(
-            "Segmental Net sales for this region. "
-            "Extract ONLY the numeric amount in the original currency, ignore currency symbols. "
-            "Convert thousands/millions/billions to the full number, unless the table explicitly uses a scale "
-            "that is captured in a separate unit field. "
-            "If not found, output -1."
+            "Net sales for the geographic region named <REGION_NAME> for the latest full fiscal year.\n"
+            "Look ONLY at geographic / regional segment information, not brand/category segments.\n"
+            "Treat 'net sales' broadly: it may be called 'net sales', 'sales', 'external revenue', "
+            "'segment revenue', or 'turnover'.\n"
+            "Use the figure where the row or heading best matches <REGION_NAME> or a close synonym "
+            "(e.g. 'APAC' for 'Asia Pacific', 'US & Canada' for 'North America', "
+            "'Europe and Turkey' for 'Europe', 'EMEA' for 'Europe, Middle East and Africa').\n"
+            "Use the main reported amount for the most recent year, not prior-year, not % change.\n"
+            "Return ONLY the numeric amount in the original currency, ignoring currency symbols.\n"
+            "If the table is scaled (e.g. '£ million', '€ thousand', 'USD bn') and there is NOT a separate "
+            "field capturing that scale, CONVERT to the full absolute number "
+            "(e.g. 2,270 in '£ million' → 2270000000).\n"
+            "If no suitable net sales / revenue value can be confidently matched to <REGION_NAME>, output -1."
         ),
     )
 
@@ -487,11 +460,15 @@ class Revenue_region(BaseModel):
     question: int = Field(
         -1,
         description=(
-            "Revenue (or Net sales if used synonymously) for this region. "
-            "Extract ONLY the numeric amount in the original currency, ignore currency symbols. "
-            "Convert thousands/millions/billions to the full number, unless the table explicitly uses a scale "
-            "that is captured in a separate unit field. "
-            "If not found, output -1."
+            "Revenue for the geographic region named <REGION_NAME> for the latest full fiscal year.\n"
+            "If the company only discloses 'net sales' by region and not a separate 'revenue' line, "
+            "use that net sales number.\n"
+            "Same matching logic as Net_sales_region: use geographic segments, match the row whose "
+            "label best corresponds to <REGION_NAME> or a close synonym, and use the most recent year.\n"
+            "Return ONLY the numeric amount in the original currency; ignore all symbols.\n"
+            "Scale handling is the same as for Net_sales_region: convert thousands/millions/billions "
+            "to the full absolute number unless a separate unit field is used to store the scale.\n"
+            "If you cannot find a revenue/net sales amount for <REGION_NAME>, output -1."
         ),
     )
 
@@ -500,10 +477,16 @@ class Revenue_growth_region(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Revenue growth for this region as a percentage (year-over-year or vs. prior period as reported). "
-            "Extract ONLY the numeric percentage value, without the % sign. "
-            "Example: '+5.2%' → 5.2. If multiple growth metrics exist, take the main reported growth for the region. "
-            "If not found, output -1."
+            "Revenue (or net sales) growth for the region <REGION_NAME> as a percentage change versus "
+            "the previous year.\n"
+            "Look in regional/segment tables or commentary for expressions like "
+            "'net sales growth', 'revenue growth', 'change vs prior year', 'Δ %', 'increase of X%' etc.\n"
+            "If multiple growth metrics are shown for the region, use this priority:\n"
+            "1) Organic/underlying/like-for-like/at constant currency revenue growth for <REGION_NAME>.\n"
+            "2) If organic is not available, use the published/reported revenue/net sales growth for <REGION_NAME>.\n"
+            "Extract ONLY the numeric percentage value, including sign, without the % sign "
+            "(e.g. '+5.2%' → 5.2, '-3.0%' → -3.0).\n"
+            "If no clear regional revenue/net sales growth percentage is given for <REGION_NAME>, output -1."
         ),
     )
 
@@ -512,9 +495,13 @@ class Yoy_pct(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Year-over-year percentage change for this region (YoY). "
-            "Extract ONLY the numeric percentage value, without the % sign (e.g., '-3.0%' → -3.0). "
-            "If not found, output -1."
+            "Year-over-year percentage change (YoY) for the region <REGION_NAME>.\n"
+            "Use the YoY percentage that refers to total revenue/net sales or operating performance for "
+            "<REGION_NAME>, not EPS, not company-wide figures.\n"
+            "This may appear as 'YoY %', 'change vs 20XX', 'Δ %', 'variation %', etc., in the column "
+            "for <REGION_NAME>.\n"
+            "Return ONLY the numeric value, including sign, without the % sign.\n"
+            "If no YoY percentage can be clearly matched to <REGION_NAME>, output -1."
         ),
     )
 
@@ -523,9 +510,14 @@ class Currency_region(BaseModel):
     question: str = Field(
         "Unknown",
         description=(
-            "Currency symbol/code used for this region’s figures (e.g., '€', 'EUR', 'USD'). "
-            "If a specific currency is not stated at region level, inherit the main report currency. "
-            "If the currency cannot be determined, return 'Unknown'."
+            "Currency used for the figures of the region <REGION_NAME>.\n"
+            "Look first for a currency symbol or code in the same table/footnote "
+            "as the amounts for <REGION_NAME> (e.g. '£', 'GBP', 'USD', 'EUR', '¥', 'CNY').\n"
+            "If there is a statement like 'Unless otherwise stated, figures are in £ million', "
+            "use that currency for all regions.\n"
+            "Prefer standard ISO codes (GBP, USD, EUR, CNY) if they are explicitly mentioned; "
+            "otherwise you may return the symbol (e.g. '£').\n"
+            "If the currency cannot be determined for the amounts of <REGION_NAME>, return 'Unknown'."
         ),
     )
 
@@ -534,34 +526,25 @@ class Amount_unit(BaseModel):
     question: str = Field(
         "Unknown",
         description=(
-            "Exact scale stated for amounts for this region, as written. "
-            "Example: 'en millions', 'en milliards', 'Md€', 'M€'. "
-            "Always keep the wording exactly as in the report. "
-            "If not stated, return 'Unknown'."
+            "Exact scale/measurement unit used for the numerical amounts in the table where "
+            "the region <REGION_NAME> appears.\n"
+            "Examples: 'en millions d’€', 'in £ million', '€ billion', 'thousands of USD', 'M€', 'bn JPY'.\n"
+            "Return the wording EXACTLY as written in the table heading, legend, or footnote.\n"
+            "If no explicit scale or unit is mentioned for that table, return 'Unknown'."
         ),
     )
-
 
 class Revenue_absolute(BaseModel):
     question: int = Field(
         -1,
         description=(
-            "Absolute revenue for the region in the currency/scale defined above. "
-            "Extract ONLY the digits as shown (no unit, no currency symbol). "
-            "Do NOT convert thousands/millions/billions here; keep the number consistent with the stated scale, "
-            "which is captured in Amount_unit/Revenue_absolute_unit. "
-            "If not given for the region, return -1."
-        ),
-    )
-
-
-class Revenue_absolute_unit(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Unit and currency for the absolute revenue for the region "
-            "(e.g., 'millions of euros', 'billions of USD'). "
-            "If not found, return 'Unknown'."
+            "Absolute revenue/net sales figure for <REGION_NAME> as it appears in the table that uses the "
+            "Amount_unit above.\n"
+            "Return ONLY the digits as shown in the cell (e.g. for '2,270' in a table headed '£ million', "
+            "return 2270). Do NOT scale this number to full currency units; the scale is stored separately "
+            "in Amount_unit.\n"
+            "Use the figure for the most recent year.\n"
+            "If no revenue/net sales is shown for <REGION_NAME> in that table, return -1."
         ),
     )
 
@@ -570,9 +553,12 @@ class Revenue_org_change_pct(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Organic revenue change for the region as a signed percentage. "
-            "Extract ONLY the numeric percentage value, without the % sign (e.g., '-3.0%' → -3.0). "
-            "If not found, return -1."
+            "Organic revenue change for <REGION_NAME> as a signed percentage.\n"
+            "Treat 'organic' broadly: it may be called 'organic net sales growth', 'underlying growth', "
+            "'like-for-like growth', 'at constant exchange rates', or similar.\n"
+            "Extract ONLY the numeric percentage value, including sign, without the % sign.\n"
+            "If only a Group-level organic figure is given and nothing specific for <REGION_NAME>, return -1.\n"
+            "If no organic/underlying revenue change is reported for <REGION_NAME>, return -1."
         ),
     )
 
@@ -581,10 +567,11 @@ class Revenue_pub_change_pct(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Published (reported) revenue change for the region as a signed percentage "
-            "(e.g., 'données publiées'). "
-            "Extract ONLY the numeric percentage value, without the % sign. "
-            "If not found, return -1."
+            "Published (reported) revenue/net sales change for <REGION_NAME> as a signed percentage.\n"
+            "This may be labelled 'reported', 'published', 'données publiées', 'as reported', "
+            "or similar, and usually includes currency and portfolio effects.\n"
+            "Extract ONLY the numeric percentage value, including sign, without the % sign.\n"
+            "If no such regional reported/published revenue change is given for <REGION_NAME>, return -1."
         ),
     )
 
@@ -593,12 +580,14 @@ class Volume_growth_pct(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Volume growth for the region as a signed percentage (e.g., '+2.0%' → 2.0). "
-            "If the only volume growth figure refers to the Group level and not a specific region, return -1. "
-            "If not found, return -1."
+            "Volume growth for <REGION_NAME> as a signed percentage.\n"
+            "Look for regional volume metrics such as 'volume growth', 'organic volume movement', "
+            "'cases growth', 'equivalent units growth' etc.\n"
+            "Use the percentage change (vs prior year) for <REGION_NAME>, not for the total Group.\n"
+            "Extract ONLY the numeric percentage value, including sign, without the % sign.\n"
+            "If only Group-level volume growth is provided or no volume data is given for <REGION_NAME>, return -1."
         ),
     )
-
 
 
 class Quantity_key_brands(BaseModel):
@@ -645,72 +634,6 @@ class Quantity_brand_companies(BaseModel):
     )
 
 
-class Strategic_international_brands(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "List of all Strategic International Brands for this company. "
-            "Return ONLY the brand names, separated by commas, in the same order as in the report. "
-            "If not found, output 'Unknown'."
-        ),
-    )
-
-
-class Quantity_strategic_international_brands(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total number of Strategic International Brands for this company. "
-            "Count each distinct brand listed in that category. "
-            "If not found, output -1."
-        ),
-    )
-
-
-class Prestige_brands(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "List of all Prestige (and/or Prestige-plus) Brands for this company, as labeled in the report. "
-            "Return ONLY the brand names, separated by commas, in the same order as in the report. "
-            "If not found, output 'Unknown'."
-        ),
-    )
-
-
-class Quantity_prestige_brands(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total number of Prestige Brands (and/or Prestige-plus if combined) for this company. "
-            "Count each distinct brand listed in that category. "
-            "If not found, output -1."
-        ),
-    )
-
-
-class Specialty_brands(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "List of all Specialty Brands for this company. "
-            "Return ONLY the brand names, separated by commas, in the same order as in the report. "
-            "If not found, output 'Unknown'."
-        ),
-    )
-
-
-class Quantity_specialty_brands(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total number of Specialty Brands for this company. "
-            "Count each distinct brand listed in that category. "
-            "If not found, output -1."
-        ),
-    )
-
-
 class Strategic_local_brands(BaseModel):
     question: str = Field(
         "Unknown",
@@ -720,18 +643,6 @@ class Strategic_local_brands(BaseModel):
             "If not found, output 'Unknown'."
         ),
     )
-
-
-class Quantity_strategic_local_brands(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total number of Strategic Local Brands for this company. "
-            "Count each distinct brand listed in that category. "
-            "If not found, output -1."
-        ),
-    )
-
 
 class Non_alcoholic_brands(BaseModel):
     question: str = Field(
@@ -743,18 +654,6 @@ class Non_alcoholic_brands(BaseModel):
         ),
     )
 
-
-class Quantity_non_alcoholic_brands(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total number of Non-Alcoholic brands for this company. "
-            "Count each distinct brand listed in that category. "
-            "If not found, output -1."
-        ),
-    )
-
-
 class Ready_to_drink_brands(BaseModel):
     question: str = Field(
         "Unknown",
@@ -762,17 +661,6 @@ class Ready_to_drink_brands(BaseModel):
             "List of all Ready-To-Drink (RTD) brands for this company. "
             "Return ONLY the brand names, separated by commas, in the same order as in the report. "
             "If not found, output 'Unknown'."
-        ),
-    )
-
-
-class Quantity_ready_to_drink_brands(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total number of Ready-To-Drink brands for this company. "
-            "Count each distinct brand listed in that category. "
-            "If not found, output -1."
         ),
     )
 
@@ -960,17 +848,6 @@ class Pro_organic_growth_pct(BaseModel):
     )
 
 
-class Pro_reported_change_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Reported change percentage of PRO. "
-            "Extract ONLY the numeric percentage value, without the % sign. "
-            "If not found, output -1."
-        ),
-    )
-
-
 class Gross_margin_expansion_bps(BaseModel):
     question: int = Field(
         -1,
@@ -1076,17 +953,6 @@ class Group_share_net_pro_amount(BaseModel):
     )
 
 
-class Group_share_net_pro_amount_unit(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Unit and currency used for Group share of Net PRO amount. "
-            "Example: 'in millions of euros', 'in € millions', 'in billions of USD'. "
-            "If not explicitly stated, output 'Unknown'."
-        ),
-    )
-
-
 class Group_share_net_pro_change_pct(BaseModel):
     question: float = Field(
         -1,
@@ -1125,9 +991,15 @@ class Group_share_net_profit_change_pct(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Year-over-year change percentage of Group Share of Net Profit. "
-            "Extract ONLY the numeric percentage value, without the % sign. "
-            "If not found, output -1."
+            "Year-over-year percentage change of GROUP SHARE OF NET PROFIT for the most recent "
+            "full fiscal year.\n"
+            "Treat 'group share of net profit' as any of these equivalent phrases: "
+            "'profit attributable to equity shareholders', 'profit attributable to owners of the parent', "
+            "'profit attributable to the Group', or similar.\n"
+            "Look for a change column or text like 'increased by X%' / 'decreased by X%' for this profit figure. "
+            "Use the overall company figure, not per-share or segment values.\n"
+            "Return ONLY the numeric value (including sign), without the % sign.\n"
+            "If you cannot find a clear percentage change for group share of net profit, output -1."
         ),
     )
 
@@ -1159,9 +1031,14 @@ class Executive_committee_examples(BaseModel):
     question: str = Field(
         "Unknown",
         description=(
-            "All Executive Committee members' names. "
-            "Return ONLY the names, separated by commas, in the same order as in the report. "
-            "If not found, output 'Unknown'."
+            "Names of ALL members of the company's Executive Committee or equivalent top management body.\n"
+            "This body may be called 'Executive Committee', 'Executive Leadership Team', "
+            "'Group Management Committee', 'Executive Board', 'Management Board', or similar.\n"
+            "Exclude members of the Board of Directors / Supervisory Board unless they are explicitly "
+            "part of the Executive Committee.\n"
+            "Return ONLY personal names, separated by commas, in the SAME ORDER as in the report "
+            "(e.g. 'Jane Doe, John Smith, Maria Garcia'). Do NOT include titles, roles, or bullets.\n"
+            "If you cannot find a clear list of such executive members, output 'Unknown'."
         ),
     )
 
@@ -1170,9 +1047,14 @@ class Executive_committee_quantity(BaseModel):
     question: int = Field(
         -1,
         description=(
-            "Total number of Executive Committee members. "
-            "Count each distinct member. "
-            "If not found, output -1."
+            "Total number of individuals on the company's Executive Committee or equivalent top "
+            "management body (Executive Leadership Team, Group Management Committee, Management Board, etc.).\n"
+            "Use one of the following approaches, in this order:\n"
+            "1) If the report explicitly states a number (e.g. 'the Executive Committee comprises 12 members'), "
+            "use that number.\n"
+            "2) Otherwise, count the distinct names in the Executive Committee list described above.\n"
+            "Count only people, not vacant positions.\n"
+            "If you cannot infer a reliable number, output -1."
         ),
     )
 
@@ -1575,12 +1457,12 @@ class Responsible_consumption(BaseModel):
 
 group_fields = {
     "FiscalYear": [Year , Period_start , Period_end],
-    "Region": [Name , Net_sales_region , Revenue_region , Revenue_growth_region , Yoy_pct , Currency_region , Amount_unit , Revenue_absolute , Revenue_absolute_unit , Revenue_org_change_pct , Revenue_pub_change_pct , Volume_growth_pct ],
-    "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps , Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Revenue_unit , Net_sales_unit , Operating_income , Operating_income_unit , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
-    "FreeCashFlow_Debt": [Free_cash_flow_amount,Free_cash_flow_unit,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed],
-    "Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_international_brands, Quantity_strategic_international_brands, Prestige_brands, Quantity_prestige_brands, Specialty_brands, Quantity_specialty_brands, Strategic_local_brands, Quantity_strategic_local_brands, Non_alcoholic_brands, Quantity_non_alcoholic_brands, Ready_to_drink_brands, Quantity_ready_to_drink_brands],
+    "Region": [Region_name , Net_sales_region , Revenue_region , Revenue_growth_region , Yoy_pct , Currency_region , Amount_unit , Revenue_absolute , Revenue_org_change_pct , Revenue_pub_change_pct , Volume_growth_pct ],
+    "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps , Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Operating_income , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
+    "FreeCashFlow_Debt": [Free_cash_flow_amount,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed],
+    "Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_local_brands, Non_alcoholic_brands],
     "Sales_Drinks": [Total_net_sales,Organic_decline_pct,Reported_decline_pct,Net_sales_analysis_by_period,Fx_impact,Perimeter_impact,Americas_growth,Usa_growth,Asia_row_growth,China_growth,India_growth,Spirits_market_trend_value,Spirits_market_trend,Inventory_adjustments],
-    "Results_Drinks": [Pro_amount,Pro_organic_growth_pct,Pro_reported_change_pct,Gross_margin_expansion_bps,Ap_amount,Ap_pct_of_net_sales,Operating_margin_org_bps,Operating_margin_org_pct,Operating_margin_reported_pct,Fx_impact_amount,Perimeter_effect_amount,Group_share_net_pro_amount,Group_share_net_pro_amount_unit,Group_share_net_pro_change_pct,Avg_cost_of_debt_pct,Group_share_net_profit_amount,Group_share_net_profit_change_pct, Eps_amount],
+    "Results_Drinks": [Pro_amount,Pro_organic_growth_pct,Gross_margin_expansion_bps,Ap_amount,Ap_pct_of_net_sales,Operating_margin_org_bps,Operating_margin_org_pct,Operating_margin_reported_pct,Fx_impact_amount,Perimeter_effect_amount,Group_share_net_pro_amount,Group_share_net_pro_change_pct,Avg_cost_of_debt_pct,Group_share_net_profit_amount,Group_share_net_profit_change_pct, Eps_amount],
     "Corporate_information": [Headquarters,Executive_committee_examples,Executive_committee_quantity,Board_of_directors_examples,Board_of_directors_quantity,Affiliate_name,Affiliates,Affiliate_quantity,Total_employees,Avg_age,Qty_nationalities],
     "Social_DEI": [Total_employees_social, Women_in_workforce_pct, Women_in_management_pct, Ethnically_diverse_leaders_pct, Employees_with_disabilities_pct_social, Lgbtq_inclusion_programs, Community_investment_amount],
     "Environmental": [Carbon_emissions_total, Carbon_emissions_scope3, Emission_intensity, Renewable_energy_pct, Energy_consumption_total, Water_withdrawal_total, Waste_recycled_pct, Biodiversity_initiatives],
@@ -1713,6 +1595,12 @@ async def add_collection(
                 "message": "Collection created and text added."}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+
+@app.post("/return_apikey")
+async def return_apikey():
+    return {"api_key": OPENAI_API_KEY}
+
 
 
 @app.post("/upload_pdfs")
