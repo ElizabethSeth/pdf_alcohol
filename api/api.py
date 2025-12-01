@@ -63,7 +63,7 @@ llm = init_chat_model("openai:gpt-5", temperature=1)
 #dim = len(embeddings.embed_query("dim?"))
 dim = 1536
 
-splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=1200, chunk_overlap=200)
+splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=2200, chunk_overlap=200)
 executor = ThreadPoolExecutor(max_workers=10)
 
 
@@ -81,6 +81,7 @@ class Period_start(BaseModel):
     question: str = Field("Unknown",description="Period start date please retun me date in format DD/MM/YYYY ortherwise retun me 'Unknown'")
 class Period_end(BaseModel):
     question: str = Field("Unknown",description="Period end date please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown'")
+
 class Revenue_growth(BaseModel):
     question: float = Field(
         -1,
@@ -429,157 +430,156 @@ class Region_name(BaseModel):
         ),
     )
 
-class Net_sales_region(BaseModel):
+class EMEA_Net_sales(BaseModel):
     question: int = Field(
         -1,
         description=(
-            "Net sales for the geographic region named <REGION_NAME> for the latest full fiscal year.\n"
-            "Look ONLY at geographic / regional segment information, not brand/category segments.\n"
-            "Treat 'net sales' broadly: it may be called 'net sales', 'sales', 'external revenue', "
-            "'segment revenue', or 'turnover'.\n"
-            "Use the figure where the row or heading best matches <REGION_NAME> or a close synonym "
-            "(e.g. 'APAC' for 'Asia Pacific', 'US & Canada' for 'North America', "
-            "'Europe and Turkey' for 'Europe', 'EMEA' for 'Europe, Middle East and Africa').\n"
-            "Use the main reported amount for the most recent year, not prior-year, not % change.\n"
-            "Return ONLY the numeric amount in the original currency, ignoring currency symbols.\n"
-            "If the table is scaled (e.g. '£ million', '€ thousand', 'USD bn') and there is NOT a separate "
-            "field capturing that scale, CONVERT to the full absolute number "
-            "(e.g. 2,270 in '£ million' → 2270000000).\n"
-            "If no suitable net sales / revenue value can be confidently matched to <REGION_NAME>, output -1."
+            "Net sales for the EMEA region (Europe, Middle East and Africa).\n"
+            "Match any of these labels: 'EMEA', 'Europe, Middle East and Africa', "
+            "'Europe & Africa', 'Europe Middle East Africa'.\n"
+            "Use ONLY geographic segment tables, not brand/category tables.\n"
+            "Use the most recent full fiscal year.\n"
+            "Extract ONLY the numeric amount, ignore currency symbols.\n"
+            "Convert thousands/millions/billions to a full number unless the scale is captured "
+            "in a separate unit field.\n"
+            "If EMEA is not explicitly disclosed, return -1."
+        ),
+    )
+class EMEA_Revenue_growth_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Revenue or net sales growth percentage for the EMEA region.\n"
+            "Prefer, in this order:\n"
+            "1) Organic / like-for-like / constant currency growth for EMEA\n"
+            "2) Published / reported growth for EMEA\n"
+            "Extract ONLY the numeric percentage (signed), without the % symbol.\n"
+            "If EMEA growth is not explicitly reported, return -1."
         ),
     )
 
-
-class Revenue_region(BaseModel):
+class APAC_Net_sales(BaseModel):
     question: int = Field(
         -1,
         description=(
-            "Revenue for the geographic region named <REGION_NAME> for the latest full fiscal year.\n"
-            "If the company only discloses 'net sales' by region and not a separate 'revenue' line, "
-            "use that net sales number.\n"
-            "Same matching logic as Net_sales_region: use geographic segments, match the row whose "
-            "label best corresponds to <REGION_NAME> or a close synonym, and use the most recent year.\n"
-            "Return ONLY the numeric amount in the original currency; ignore all symbols.\n"
-            "Scale handling is the same as for Net_sales_region: convert thousands/millions/billions "
-            "to the full absolute number unless a separate unit field is used to store the scale.\n"
-            "If you cannot find a revenue/net sales amount for <REGION_NAME>, output -1."
+            "Net sales for the APAC region.\n"
+            "Accept labels: 'APAC', 'Asia Pacific', 'Asia-Pacific', "
+            "'Greater China & Asia', 'Asia ex-Japan', 'APJ'.\n"
+            "Use only geographic segmentation.\n"
+            "Latest fiscal year only.\n"
+            "Return numeric amount only.\n"
+            "Convert scaled units unless stored elsewhere.\n"
+            "If not disclosed, return -1."
         ),
     )
 
-
-class Revenue_growth_region(BaseModel):
+class APAC_Revenue_growth_pct(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Revenue (or net sales) growth for the region <REGION_NAME> as a percentage change versus "
-            "the previous year.\n"
-            "Look in regional/segment tables or commentary for expressions like "
-            "'net sales growth', 'revenue growth', 'change vs prior year', 'Δ %', 'increase of X%' etc.\n"
-            "If multiple growth metrics are shown for the region, use this priority:\n"
-            "1) Organic/underlying/like-for-like/at constant currency revenue growth for <REGION_NAME>.\n"
-            "2) If organic is not available, use the published/reported revenue/net sales growth for <REGION_NAME>.\n"
-            "Extract ONLY the numeric percentage value, including sign, without the % sign "
-            "(e.g. '+5.2%' → 5.2, '-3.0%' → -3.0).\n"
-            "If no clear regional revenue/net sales growth percentage is given for <REGION_NAME>, output -1."
+            "Revenue or net sales growth for the APAC region.\n"
+            "Prefer organic growth if available, otherwise reported.\n"
+            "Return signed numeric percentage only.\n"
+            "If not disclosed, return -1."
         ),
     )
 
-
-class Yoy_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Year-over-year percentage change (YoY) for the region <REGION_NAME>.\n"
-            "Use the YoY percentage that refers to total revenue/net sales or operating performance for "
-            "<REGION_NAME>, not EPS, not company-wide figures.\n"
-            "This may appear as 'YoY %', 'change vs 20XX', 'Δ %', 'variation %', etc., in the column "
-            "for <REGION_NAME>.\n"
-            "Return ONLY the numeric value, including sign, without the % sign.\n"
-            "If no YoY percentage can be clearly matched to <REGION_NAME>, output -1."
-        ),
-    )
-
-
-class Currency_region(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Currency used for the figures of the region <REGION_NAME>.\n"
-            "Look first for a currency symbol or code in the same table/footnote "
-            "as the amounts for <REGION_NAME> (e.g. '£', 'GBP', 'USD', 'EUR', '¥', 'CNY').\n"
-            "If there is a statement like 'Unless otherwise stated, figures are in £ million', "
-            "use that currency for all regions.\n"
-            "Prefer standard ISO codes (GBP, USD, EUR, CNY) if they are explicitly mentioned; "
-            "otherwise you may return the symbol (e.g. '£').\n"
-            "If the currency cannot be determined for the amounts of <REGION_NAME>, return 'Unknown'."
-        ),
-    )
-
-
-class Amount_unit(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Exact scale/measurement unit used for the numerical amounts in the table where "
-            "the region <REGION_NAME> appears.\n"
-            "Examples: 'en millions d’€', 'in £ million', '€ billion', 'thousands of USD', 'M€', 'bn JPY'.\n"
-            "Return the wording EXACTLY as written in the table heading, legend, or footnote.\n"
-            "If no explicit scale or unit is mentioned for that table, return 'Unknown'."
-        ),
-    )
-
-class Revenue_absolute(BaseModel):
+class North_America_Net_sales(BaseModel):
     question: int = Field(
         -1,
         description=(
-            "Absolute revenue/net sales figure for <REGION_NAME> as it appears in the table that uses the "
-            "Amount_unit above.\n"
-            "Return ONLY the digits as shown in the cell (e.g. for '2,270' in a table headed '£ million', "
-            "return 2270). Do NOT scale this number to full currency units; the scale is stored separately "
-            "in Amount_unit.\n"
-            "Use the figure for the most recent year.\n"
-            "If no revenue/net sales is shown for <REGION_NAME> in that table, return -1."
+            "Net sales for North America.\n"
+            "Match: 'North America', 'US & Canada', 'United States and Canada', "
+            "'USA & Canada'.\n"
+            "Geographic segmentation only.\n"
+            "Latest fiscal year only.\n"
+            "Return numeric amount only.\n"
+            "If not reported, return -1."
+        ),
+    )
+
+class North_America_Revenue_growth_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Revenue/net sales growth for North America.\n"
+            "Prefer organic first, otherwise reported.\n"
+            "Return signed numeric percentage only.\n"
+            "If missing, return -1."
+        ),
+    )
+class Europe_Net_sales(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for the Europe region only (excluding Middle East and Africa).\n"
+            "Match labels: 'Europe', 'Western Europe', 'Central & Eastern Europe'.\n"
+            "Do NOT use EMEA values here.\n"
+            "Latest fiscal year only.\n"
+            "Return numeric amount only.\n"
+            "If not reported separately, return -1."
+        ),
+    )
+
+class Latin_America_Net_sales(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for Latin America.\n"
+            "Match: 'Latin America', 'South America', 'LATAM'.\n"
+            "Geographic segmentation only.\n"
+            "Latest fiscal year only.\n"
+            "Return numeric amount only.\n"
+            "If not disclosed, return -1."
+        ),
+    )
+
+class Middle_East_Net_sales(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for the Middle East when disclosed separately.\n"
+            "Match: 'Middle East', 'Gulf', 'MENAC'.\n"
+            "Do NOT use EMEA totals here.\n"
+            "Return numeric amount only.\n"
+            "If not separate, return -1."
+        ),
+    )
+
+class Africa_Net_sales(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for Africa when disclosed separately.\n"
+            "Match: 'Africa', 'Sub-Saharan Africa'.\n"
+            "Do NOT use EMEA totals here.\n"
+            "Return numeric amount only.\n"
+            "If not separate, return -1."
         ),
     )
 
 
-class Revenue_org_change_pct(BaseModel):
-    question: float = Field(
+class Global_Net_sales(BaseModel):
+    question: int = Field(
         -1,
         description=(
-            "Organic revenue change for <REGION_NAME> as a signed percentage.\n"
-            "Treat 'organic' broadly: it may be called 'organic net sales growth', 'underlying growth', "
-            "'like-for-like growth', 'at constant exchange rates', or similar.\n"
-            "Extract ONLY the numeric percentage value, including sign, without the % sign.\n"
-            "If only a Group-level organic figure is given and nothing specific for <REGION_NAME>, return -1.\n"
-            "If no organic/underlying revenue change is reported for <REGION_NAME>, return -1."
+            "Total global/group net sales.\n"
+            "Match: 'Group', 'Global', 'Worldwide'.\n"
+            "Consolidated total only.\n"
+            "Return numeric amount only.\n"
+            "If not found, return -1."
         ),
     )
 
-
-class Revenue_pub_change_pct(BaseModel):
-    question: float = Field(
+class Rest_of_World_Net_sales(BaseModel):
+    question: int = Field(
         -1,
         description=(
-            "Published (reported) revenue/net sales change for <REGION_NAME> as a signed percentage.\n"
-            "This may be labelled 'reported', 'published', 'données publiées', 'as reported', "
-            "or similar, and usually includes currency and portfolio effects.\n"
-            "Extract ONLY the numeric percentage value, including sign, without the % sign.\n"
-            "If no such regional reported/published revenue change is given for <REGION_NAME>, return -1."
-        ),
-    )
-
-
-class Volume_growth_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Volume growth for <REGION_NAME> as a signed percentage.\n"
-            "Look for regional volume metrics such as 'volume growth', 'organic volume movement', "
-            "'cases growth', 'equivalent units growth' etc.\n"
-            "Use the percentage change (vs prior year) for <REGION_NAME>, not for the total Group.\n"
-            "Extract ONLY the numeric percentage value, including sign, without the % sign.\n"
-            "If only Group-level volume growth is provided or no volume data is given for <REGION_NAME>, return -1."
+            "Net sales for the 'Rest of World' region.\n"
+            "Match: 'Rest of World', 'ROW', 'International'.\n"
+            "Do NOT use Global totals.\n"
+            "Return numeric amount only.\n"
+            "If not disclosed, return -1."
         ),
     )
 
@@ -1451,7 +1451,7 @@ class Responsible_consumption(BaseModel):
 
 group_fields = {
     "FiscalYear": [Year , Period_start , Period_end],
-    "Region": [Region_name , Net_sales_region , Revenue_region , Revenue_growth_region , Yoy_pct , Currency_region , Amount_unit , Revenue_absolute , Revenue_org_change_pct , Revenue_pub_change_pct , Volume_growth_pct ],
+    "Region": [ Region_name, EMEA_Net_sales ,EMEA_Revenue_growth_pct, APAC_Net_sales ,APAC_Revenue_growth_pct, North_America_Net_sales, North_America_Revenue_growth_pct, Europe_Net_sales ,Latin_America_Net_sales, Africa_Net_sales, Global_Net_sales, Rest_of_World_Net_sales],
     "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps , Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Operating_income , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
     "FreeCashFlow_Debt": [Free_cash_flow_amount,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed],
     "Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_local_brands, Non_alcoholic_brands],
