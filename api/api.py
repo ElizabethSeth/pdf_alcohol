@@ -75,12 +75,6 @@ def get_vectorstore() -> QdrantVectorStore:
     )
 
 
-class Sub_name(BaseModel):
-    sub_name: str = Field(description="Subtitle's name")
-class Important_info(BaseModel):
-    question: str = Field(description="Important information")
-class Quantity_important_rows(BaseModel):
-    question:int = Field(description="Quantity of important rows")
 class Year(BaseModel):
     question: str = Field("Unknown",description="Fiscal year please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown'")
 class Period_start(BaseModel):  
@@ -1467,7 +1461,6 @@ group_fields = {
     "Social_DEI": [Total_employees_social, Women_in_workforce_pct, Women_in_management_pct, Ethnically_diverse_leaders_pct, Employees_with_disabilities_pct_social, Lgbtq_inclusion_programs, Community_investment_amount],
     "Environmental": [Carbon_emissions_total, Carbon_emissions_scope3, Emission_intensity, Renewable_energy_pct, Energy_consumption_total, Water_withdrawal_total, Waste_recycled_pct, Biodiversity_initiatives],
     "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
-    "Subtitle":  [Sub_name, Important_info, Quantity_important_rows],
 }
 
 
