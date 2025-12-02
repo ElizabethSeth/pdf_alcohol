@@ -10,7 +10,7 @@ from typing import List
 #API_URL = "http://api:8003"
 
 
-API_URL = "https://reports-service-api-t5nmsc3a7a-uc.a.run.app"
+API_URL = "https://generate-reports.api.elsth.com"
 
 
 def return_apikey():
