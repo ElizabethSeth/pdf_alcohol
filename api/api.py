@@ -1743,10 +1743,6 @@ async def process_collection_for_sheet(coll: str, class_list: List):
     return results
 
 
-# @app.get("/")
-# async def root():
-#     return {"message": "PDF Report Generator API", "version": "2.0"}
-
 @app.get("/all_collections")
 async def all_collections():
     existing = [c.name for c in client_qd.get_collections().collections]
@@ -1845,54 +1841,3 @@ async def return_excel(collection_names: List[str] = Body(...)):
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
     )
-
-
-
-
-
-
-
-
-# @app.post("/generate_report")
-# async def generate_report(data: Dict[str, str]):
-#     """Генерирует отчет из текстовых данных (старый эндпоинт)"""
-#     try:
-#         collection_names: List[str] = []
-        
-#         # Создаем коллекции из текстовых данных
-#         for raw_key, text in data.items():
-#             name = re.sub(r'[^a-zA-Z0-9_]+', '_', raw_key)
-#             await asyncio.get_event_loop().run_in_executor(executor, ensure_collection, name, dim)
-#             await asyncio.get_event_loop().run_in_executor(executor, text_into_qdrant, name, text)
-#             collection_names.append(name)
-        
-#         # Обрабатываем все коллекции асинхронно
-#         all_frames: Dict[str, pd.DataFrame] = {}
-        
-#         for sheet_name, class_list in group_fields.items():
-#             cols = [cls.__name__ for cls in class_list]
-            
-#             # Обрабатываем все коллекции параллельно для этого листа
-#             tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-#             all_results = await asyncio.gather(*tasks)
-            
-#             # Создаем DataFrame
-#             df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-#             all_frames[sheet_name] = df
-        
-#         # Создаем Excel файл
-#         buf = io.BytesIO()
-#         with pd.ExcelWriter(buf, engine="openpyxl") as w:
-#             for sheet, df in all_frames.items():
-#                 wsheet = sheet[:31]
-#                 df.to_excel(w, sheet_name=wsheet)
-#         buf.seek(0)
-        
-#         return StreamingResponse(
-#             io.BytesIO(buf.read()),
-#             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#             headers={"Content-Disposition": 'attachment; filename="report.xlsx"'},
-#         )
-    
-#     except Exception as e:
-#         return {"status": "error", "message": str(e)}

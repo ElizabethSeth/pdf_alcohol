@@ -216,7 +216,6 @@ with gr.Blocks(
                             lines=3,
                         )
 
-            # Правая карточка: generate Excel
             with gr.Column(scale=2):
                 with gr.Group(elem_classes=["app-card"]):
                     with gr.Column(elem_classes=["wrap"]):
