@@ -413,175 +413,175 @@ class Dividend_per_share_proposed(BaseModel):
 #     )
 
 
-class Region_name(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Exact name of the geographic region to which the following row of financial data refers.\n"
-            "This must be the geographic segmentation label used in the report.\n"
-            "Valid examples include but are not limited to:\n"
-            "'Asia Pacific', 'APAC', 'Europe', 'Europe & Turkey', 'EMEA', "
-            "'North America', 'USA & Canada', 'Latin America', 'LATAM', "
-            "'Greater China', 'Japan', 'Africa', 'Middle East'.\n"
-            "Return the region name EXACTLY as written in the report table or heading "
-            "(do not normalize or translate the name).\n"
-            "Do NOT return brand names, product categories, or business units.\n"
-            "If the row does not clearly refer to a geographic region, return 'Unknown'."
-        ),
-    )
+# class Region_name(BaseModel):
+#     question: str = Field(
+#         "Unknown",
+#         description=(
+#             "Exact name of the geographic region to which the following row of financial data refers.\n"
+#             "This must be the geographic segmentation label used in the report.\n"
+#             "Valid examples include but are not limited to:\n"
+#             "'Asia Pacific', 'APAC', 'Europe', 'Europe & Turkey', 'EMEA', "
+#             "'North America', 'USA & Canada', 'Latin America', 'LATAM', "
+#             "'Greater China', 'Japan', 'Africa', 'Middle East'.\n"
+#             "Return the region name EXACTLY as written in the report table or heading "
+#             "(do not normalize or translate the name).\n"
+#             "Do NOT return brand names, product categories, or business units.\n"
+#             "If the row does not clearly refer to a geographic region, return 'Unknown'."
+#         ),
+#     )
 
-class EMEA_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for the EMEA region (Europe, Middle East and Africa).\n"
-            "Match any of these labels: 'EMEA', 'Europe, Middle East and Africa', "
-            "'Europe & Africa', 'Europe Middle East Africa'.\n"
-            "Use ONLY geographic segment tables, not brand/category tables.\n"
-            "Use the most recent full fiscal year.\n"
-            "Extract ONLY the numeric amount, ignore currency symbols.\n"
-            "Convert thousands/millions/billions to a full number unless the scale is captured "
-            "in a separate unit field.\n"
-            "If EMEA is not explicitly disclosed, return -1."
-        ),
-    )
-class EMEA_Revenue_growth_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Revenue or net sales growth percentage for the EMEA region.\n"
-            "Prefer, in this order:\n"
-            "1) Organic / like-for-like / constant currency growth for EMEA\n"
-            "2) Published / reported growth for EMEA\n"
-            "Extract ONLY the numeric percentage (signed), without the % symbol.\n"
-            "If EMEA growth is not explicitly reported, return -1."
-        ),
-    )
+# class EMEA_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for the EMEA region (Europe, Middle East and Africa).\n"
+#             "Match any of these labels: 'EMEA', 'Europe, Middle East and Africa', "
+#             "'Europe & Africa', 'Europe Middle East Africa'.\n"
+#             "Use ONLY geographic segment tables, not brand/category tables.\n"
+#             "Use the most recent full fiscal year.\n"
+#             "Extract ONLY the numeric amount, ignore currency symbols.\n"
+#             "Convert thousands/millions/billions to a full number unless the scale is captured "
+#             "in a separate unit field.\n"
+#             "If EMEA is not explicitly disclosed, return -1."
+#         ),
+#     )
+# class EMEA_Revenue_growth_pct(BaseModel):
+#     question: float = Field(
+#         -1,
+#         description=(
+#             "Revenue or net sales growth percentage for the EMEA region.\n"
+#             "Prefer, in this order:\n"
+#             "1) Organic / like-for-like / constant currency growth for EMEA\n"
+#             "2) Published / reported growth for EMEA\n"
+#             "Extract ONLY the numeric percentage (signed), without the % symbol.\n"
+#             "If EMEA growth is not explicitly reported, return -1."
+#         ),
+#     )
 
-class APAC_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for the APAC region.\n"
-            "Accept labels: 'APAC', 'Asia Pacific', 'Asia-Pacific', "
-            "'Greater China & Asia', 'Asia ex-Japan', 'APJ'.\n"
-            "Use only geographic segmentation.\n"
-            "Latest fiscal year only.\n"
-            "Return numeric amount only.\n"
-            "Convert scaled units unless stored elsewhere.\n"
-            "If not disclosed, return -1."
-        ),
-    )
+# class APAC_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for the APAC region.\n"
+#             "Accept labels: 'APAC', 'Asia Pacific', 'Asia-Pacific', "
+#             "'Greater China & Asia', 'Asia ex-Japan', 'APJ'.\n"
+#             "Use only geographic segmentation.\n"
+#             "Latest fiscal year only.\n"
+#             "Return numeric amount only.\n"
+#             "Convert scaled units unless stored elsewhere.\n"
+#             "If not disclosed, return -1."
+#         ),
+#     )
 
-class APAC_Revenue_growth_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Revenue or net sales growth for the APAC region.\n"
-            "Prefer organic growth if available, otherwise reported.\n"
-            "Return signed numeric percentage only.\n"
-            "If not disclosed, return -1."
-        ),
-    )
+# class APAC_Revenue_growth_pct(BaseModel):
+#     question: float = Field(
+#         -1,
+#         description=(
+#             "Revenue or net sales growth for the APAC region.\n"
+#             "Prefer organic growth if available, otherwise reported.\n"
+#             "Return signed numeric percentage only.\n"
+#             "If not disclosed, return -1."
+#         ),
+#     )
 
-class North_America_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for North America.\n"
-            "Match: 'North America', 'US & Canada', 'United States and Canada', "
-            "'USA & Canada'.\n"
-            "Geographic segmentation only.\n"
-            "Latest fiscal year only.\n"
-            "Return numeric amount only.\n"
-            "If not reported, return -1."
-        ),
-    )
+# class North_America_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for North America.\n"
+#             "Match: 'North America', 'US & Canada', 'United States and Canada', "
+#             "'USA & Canada'.\n"
+#             "Geographic segmentation only.\n"
+#             "Latest fiscal year only.\n"
+#             "Return numeric amount only.\n"
+#             "If not reported, return -1."
+#         ),
+#     )
 
-class North_America_Revenue_growth_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Revenue/net sales growth for North America.\n"
-            "Prefer organic first, otherwise reported.\n"
-            "Return signed numeric percentage only.\n"
-            "If missing, return -1."
-        ),
-    )
-class Europe_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for the Europe region only (excluding Middle East and Africa).\n"
-            "Match labels: 'Europe', 'Western Europe', 'Central & Eastern Europe'.\n"
-            "Do NOT use EMEA values here.\n"
-            "Latest fiscal year only.\n"
-            "Return numeric amount only.\n"
-            "If not reported separately, return -1."
-        ),
-    )
+# class North_America_Revenue_growth_pct(BaseModel):
+#     question: float = Field(
+#         -1,
+#         description=(
+#             "Revenue/net sales growth for North America.\n"
+#             "Prefer organic first, otherwise reported.\n"
+#             "Return signed numeric percentage only.\n"
+#             "If missing, return -1."
+#         ),
+#     )
+# class Europe_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for the Europe region only (excluding Middle East and Africa).\n"
+#             "Match labels: 'Europe', 'Western Europe', 'Central & Eastern Europe'.\n"
+#             "Do NOT use EMEA values here.\n"
+#             "Latest fiscal year only.\n"
+#             "Return numeric amount only.\n"
+#             "If not reported separately, return -1."
+#         ),
+#     )
 
-class Latin_America_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for Latin America.\n"
-            "Match: 'Latin America', 'South America', 'LATAM'.\n"
-            "Geographic segmentation only.\n"
-            "Latest fiscal year only.\n"
-            "Return numeric amount only.\n"
-            "If not disclosed, return -1."
-        ),
-    )
+# class Latin_America_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for Latin America.\n"
+#             "Match: 'Latin America', 'South America', 'LATAM'.\n"
+#             "Geographic segmentation only.\n"
+#             "Latest fiscal year only.\n"
+#             "Return numeric amount only.\n"
+#             "If not disclosed, return -1."
+#         ),
+#     )
 
-class Middle_East_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for the Middle East when disclosed separately.\n"
-            "Match: 'Middle East', 'Gulf', 'MENAC'.\n"
-            "Do NOT use EMEA totals here.\n"
-            "Return numeric amount only.\n"
-            "If not separate, return -1."
-        ),
-    )
+# class Middle_East_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for the Middle East when disclosed separately.\n"
+#             "Match: 'Middle East', 'Gulf', 'MENAC'.\n"
+#             "Do NOT use EMEA totals here.\n"
+#             "Return numeric amount only.\n"
+#             "If not separate, return -1."
+#         ),
+#     )
 
-class Africa_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for Africa when disclosed separately.\n"
-            "Match: 'Africa', 'Sub-Saharan Africa'.\n"
-            "Do NOT use EMEA totals here.\n"
-            "Return numeric amount only.\n"
-            "If not separate, return -1."
-        ),
-    )
+# class Africa_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for Africa when disclosed separately.\n"
+#             "Match: 'Africa', 'Sub-Saharan Africa'.\n"
+#             "Do NOT use EMEA totals here.\n"
+#             "Return numeric amount only.\n"
+#             "If not separate, return -1."
+#         ),
+#     )
 
 
-class Global_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total global/group net sales.\n"
-            "Match: 'Group', 'Global', 'Worldwide'.\n"
-            "Consolidated total only.\n"
-            "Return numeric amount only.\n"
-            "If not found, return -1."
-        ),
-    )
+# class Global_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Total global/group net sales.\n"
+#             "Match: 'Group', 'Global', 'Worldwide'.\n"
+#             "Consolidated total only.\n"
+#             "Return numeric amount only.\n"
+#             "If not found, return -1."
+#         ),
+#     )
 
-class Rest_of_World_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Net sales for the 'Rest of World' region.\n"
-            "Match: 'Rest of World', 'ROW', 'International'.\n"
-            "Do NOT use Global totals.\n"
-            "Return numeric amount only.\n"
-            "If not disclosed, return -1."
-        ),
-    )
+# class Rest_of_World_Net_sales(BaseModel):
+#     question: int = Field(
+#         -1,
+#         description=(
+#             "Net sales for the 'Rest of World' region.\n"
+#             "Match: 'Rest of World', 'ROW', 'International'.\n"
+#             "Do NOT use Global totals.\n"
+#             "Return numeric amount only.\n"
+#             "If not disclosed, return -1."
+#         ),
+#     )
 
 
 class Quantity_key_brands(BaseModel):
@@ -658,51 +658,7 @@ class Ready_to_drink_brands(BaseModel):
         ),
     )
 
-
-class Total_net_sales(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Total full-year Net Sales (absolute amount). "
-            "Extract ONLY the numeric amount in the original currency, ignore currency symbols. "
-            "Convert thousands/millions/billions to the full number. "
-            "If not found, output -1."
-        ),
-    )
-
-
-class Organic_decline_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Organic decline (or growth) percentage in total Net Sales. "
-            "Extract ONLY the signed numeric percentage value, without the % sign (e.g., '-3.0%' → -3.0). "
-            "If not found, output -1."
-        ),
-    )
-
-
-class Reported_decline_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Reported decline (or growth) percentage in total Net Sales. "
-            "Extract ONLY the signed numeric percentage value, without the % sign. "
-            "If not found, output -1."
-        ),
-    )
-
-
-class Net_sales_analysis_by_period(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Textual summary or table description of Net Sales analysis by period and region "
-            "(e.g., breakdown by half-year, quarter, and/or region). "
-            "Return a concise text summary capturing the structure (periods and regions) and key numbers. "
-            "If not found, output 'Unknown'."
-        ),
-    )
+#SALES DRINKS
 
 
 class Fx_impact(BaseModel):
@@ -785,38 +741,269 @@ class India_growth(BaseModel):
     )
 
 
-class Spirits_market_trend_value(BaseModel):
+class Fy_group_net_sales_current(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Total Group net sales for the CURRENT fiscal year in the comparison "
+            "described as 'FYXX vs FYXX Net Sales by region'.\n"
+            "Example text pattern: 'Group €11,598m vs €12,137m (-4% reported, -1% organic; …)'.\n"
+            "Extract ONLY the current year amount (the FIRST number before 'vs'), "
+            "in the original currency and scale (e.g. 11598 if expressed as '€11,598m'). "
+            "Ignore the prior-year amount and all percentages.\n"
+            "Return only digits, no separators and no currency symbols. If not found, return -1."
+        ),
+    )
+
+class Fy_group_net_sales_prior(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Total Group net sales for the PRIOR fiscal year in the comparison "
+            "described as 'FYXX vs FYXX Net Sales by region'.\n"
+            "Example: in 'Group €11,598m vs €12,137m', extract the SECOND amount (12,137m).\n"
+            "Return only digits, no separators and no currency symbols, in the same scale as written.\n"
+            "If not found, return -1."
+        ),
+    )
+
+
+class Fy_group_net_sales_reported_change_pct(BaseModel):
     question: float = Field(
         -1,
         description=(
-            "Estimated global spirits market growth or normalization percentage, if quantified "
-            "(e.g., 'market normalizing to +2–3%' → use the central or explicitly stated value). "
-            "Extract ONLY the numeric percentage value, without the % sign. "
-            "If not quantified, output -1."
+            "Group net sales REPORTED change percentage for the full fiscal year comparison "
+            "('FYXX vs FYXX Net Sales by region').\n"
+            "Example: in 'Group €11,598m vs €12,137m (-4% reported, -1% organic; perimeter +3%, FX -6%)', "
+            "extract -4.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign. "
+            "If not found, return -1."
         ),
     )
 
 
-class Spirits_market_trend(BaseModel):
-    question: str = Field(
-        "Unknown",
+class Fy_group_net_sales_organic_change_pct(BaseModel):
+    question: float = Field(
+        -1,
         description=(
-            "Short textual summary of the global spirits market trend or normalization "
-            "(e.g., 'market normalizing after COVID-driven peak', 'softness in US spirits', etc.). "
-            "If not described, output 'Unknown'."
+            "Group net sales ORGANIC change percentage for the full fiscal year comparison.\n"
+            "Example: in '(-4% reported, -1% organic; …)', extract -1.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign. "
+            "If not found, return -1."
         ),
     )
 
 
-class Inventory_adjustments(BaseModel):
-    question: str = Field(
-        "Unknown",
+class Fy_group_net_sales_perimeter_contrib_pct(BaseModel):
+    question: float = Field(
+        -1,
         description=(
-            "Short summary of inventory adjustments mentioned in the report "
-            "(e.g., distributor destocking, channel inventory normalization, one-off write-downs). "
-            "If not mentioned, output 'Unknown'."
+            "Contribution of perimeter (scope/M&A) to Group net sales change for the full fiscal year.\n"
+            "Example: in '(…; perimeter +3%, FX -6%)', extract +3.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign. "
+            "If perimeter is not mentioned, return -1."
         ),
     )
+
+
+class Fy_group_net_sales_fx_contrib_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Contribution of foreign exchange (FX) to Group net sales change for the full fiscal year.\n"
+            "Example: in '(…; perimeter +3%, FX -6%)', extract -6.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign. "
+            "If FX is not mentioned, return -1."
+        ),
+    )
+
+
+class Fy_region_net_sales_current(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for the geographic region named <REGION_NAME> for the CURRENT fiscal year "
+            "in the 'FYXX vs FYXX Net Sales by region' sentence.\n"
+            "Example: 'Americas €3,340m vs €3,481m …' → extract 3,340m.\n"
+            "Use the FIRST numeric amount following the region name and before 'vs'.\n"
+            "Return only digits, no separators and no currency symbols, in the same scale as written. "
+            "If not found, return -1."
+        ),
+    )
+
+
+class Fy_region_net_sales_prior(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for the geographic region named <REGION_NAME> for the PRIOR fiscal year "
+            "in the 'FYXX vs FYXX Net Sales by region' sentence.\n"
+            "Example: 'Americas €3,340m vs €3,481m …' → extract 3,481m.\n"
+            "Use the SECOND numeric amount in the 'X vs Y' expression after <REGION_NAME>.\n"
+            "Return only digits, no separators and no currency symbols, in the same scale as written. "
+            "If not found, return -1."
+        ),
+    )
+
+
+class Fy_region_net_sales_reported_change_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "REPORTED net sales change percentage for the region <REGION_NAME> in the full-year comparison.\n"
+            "Example: 'Americas €3,340m vs €3,481m (-4% reported, -5% organic; …)' → extract -4.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign. "
+            "If not found, return -1."
+        ),
+    )
+
+
+class Fy_region_net_sales_organic_change_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "ORGANIC net sales change percentage for the region <REGION_NAME> in the full-year comparison.\n"
+            "Example: '(-4% reported, -5% organic; …)' → extract -5.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign. "
+            "If the organic figure is not given for <REGION_NAME>, return -1."
+        ),
+    )
+
+
+class Fy_region_net_sales_perimeter_contrib_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Contribution of perimeter (scope/M&A) to net sales change for <REGION_NAME> "
+            "in the full-year comparison.\n"
+            "Example: '(…; perimeter +8%, FX -8%)' for Americas → extract +8.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign.\n"
+            "If perimeter is not mentioned for <REGION_NAME>, return -1."
+        ),
+    )
+
+
+class Fy_region_net_sales_fx_contrib_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Contribution of foreign exchange (FX) to net sales change for <REGION_NAME> "
+            "in the full-year comparison.\n"
+            "Example: '(…; perimeter +8%, FX -8%)' for Americas → extract -8.\n"
+            "Return ONLY the numeric percentage value including sign, without the % sign.\n"
+            "If FX is not mentioned for <REGION_NAME>, return -1."
+        ),
+    )
+
+class Fy_region_net_sales_share_of_group_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Region <REGION_NAME>'s share of total Group net sales for the full fiscal year.\n"
+            "Look for text like 'representing 28.8% of FY24' or 'representing 42.9%'.\n"
+            "Example: 'Americas … representing 28.8% of FY24' → extract 28.8.\n"
+            "Return ONLY the numeric percentage value, without the % sign. "
+            "If share of Group is not stated for <REGION_NAME>, return -1."
+        ),
+    )
+
+class H2_group_net_sales_current(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Group net sales for the CURRENT half-year in the comparison described as "
+            "'H2 FYXX vs H2 FYXX'.\n"
+            "Example: 'Group €5,008m vs €5,022m (0% reported, +1% organic; …)' → extract 5,008m.\n"
+            "Return only digits, no separators and no currency symbols, in the same scale as written. "
+            "If not found, return -1."
+        ),
+    )
+
+
+class H2_group_net_sales_prior(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Group net sales for the PRIOR half-year in the 'H2 FYXX vs H2 FYXX' comparison.\n"
+            "Example: 'Group €5,008m vs €5,022m …' → extract 5,022m.\n"
+            "Return only digits, no separators and no currency symbols. If not found, return -1."
+        ),
+    )
+
+
+class H2_group_net_sales_reported_change_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Group net sales RE REPORTED change percentage for the half-year comparison 'H2 FYXX vs H2 FYXX'.\n"
+            "Example: '(0% reported, +1% organic; …)' → extract 0.\n"
+            "Return ONLY the numeric percentage, including sign, without the % sign. If not found, return -1."
+        ),
+    )
+
+
+class H2_group_net_sales_organic_change_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Group net sales ORGANIC change percentage for the half-year comparison.\n"
+            "Example: '(0% reported, +1% organic; …)' → extract +1.\n"
+            "Return ONLY the numeric percentage, including sign, without the % sign. If not found, return -1."
+        ),
+    )
+
+
+class Q4_region_net_sales_current(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for region <REGION_NAME> for the CURRENT quarter in the "
+            "'Q4 FYXX vs Q4 FYXX' comparison.\n"
+            "Example: 'Americas €766m vs €728m (+5% reported, +5% organic)' → extract 766.\n"
+            "Return only digits, no separators and no currency symbols, in the same scale as written. "
+            "If not found, return -1."
+        ),
+    )
+
+
+class Q4_region_net_sales_prior(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Net sales for region <REGION_NAME> for the PRIOR quarter in the "
+            "'Q4 FYXX vs Q4 FYXX' comparison.\n"
+            "Example: 'Americas €766m vs €728m …' → extract 728.\n"
+            "Return only digits, no separators and no currency symbols. If not found, return -1."
+        ),
+    )
+
+class Q4_region_net_sales_reported_change_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "REPORTED net sales change percentage for region <REGION_NAME> in the "
+            "'Q4 FYXX vs Q4 FYXX' comparison.\n"
+            "Example: '(+5% reported, +5% organic)' for Americas → extract +5.\n"
+            "Return ONLY the numeric percentage including sign, without the % sign. "
+            "If not found, return -1."
+        ),
+    )
+
+
+class Q4_region_net_sales_organic_change_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "ORGANIC net sales change percentage for region <REGION_NAME> in the "
+            "'Q4 FYXX vs Q4 FYXX' comparison.\n"
+            "Example: '(+5% reported, +5% organic)' for Americas → extract +5.\n"
+            "Return ONLY the numeric percentage including sign, without the % sign. "
+            "If not found, return -1."
+        ),
+    )
+
+
+
 
 
 class Pro_amount(BaseModel):
@@ -1451,11 +1638,12 @@ class Responsible_consumption(BaseModel):
 
 group_fields = {
     "FiscalYear": [Year , Period_start , Period_end],
-    "Region": [ Region_name, EMEA_Net_sales ,EMEA_Revenue_growth_pct, APAC_Net_sales ,APAC_Revenue_growth_pct, North_America_Net_sales, North_America_Revenue_growth_pct, Europe_Net_sales ,Latin_America_Net_sales, Africa_Net_sales, Global_Net_sales, Rest_of_World_Net_sales],
+    #"Region": [EMEA_Net_sales ,EMEA_Revenue_growth_pct, APAC_Net_sales ,APAC_Revenue_growth_pct, North_America_Net_sales, North_America_Revenue_growth_pct, Europe_Net_sales ,Latin_America_Net_sales, Africa_Net_sales, Global_Net_sales, Rest_of_World_Net_sales],
     "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps , Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Operating_income , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
     "FreeCashFlow_Debt": [Free_cash_flow_amount,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed],
     "Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_local_brands, Non_alcoholic_brands],
-    "Sales_Drinks": [Total_net_sales,Organic_decline_pct,Reported_decline_pct,Net_sales_analysis_by_period,Fx_impact,Perimeter_impact,Americas_growth,Usa_growth,Asia_row_growth,China_growth,India_growth,Spirits_market_trend_value,Spirits_market_trend,Inventory_adjustments],
+    "Sales_Drinks": [Fy_group_net_sales_current, Fy_group_net_sales_prior, Fy_group_net_sales_reported_change_pct , Fy_group_net_sales_organic_change_pct,Fy_group_net_sales_perimeter_contrib_pct, Fy_group_net_sales_fx_contrib_pct, Fy_region_net_sales_current, Fy_region_net_sales_prior, Fy_region_net_sales_reported_change_pct, Fy_region_net_sales_organic_change_pct ,
+     Fy_region_net_sales_perimeter_contrib_pct, Fy_region_net_sales_fx_contrib_pct, Fy_region_net_sales_share_of_group_pct, H2_group_net_sales_current, H2_group_net_sales_prior , H2_group_net_sales_reported_change_pct , H2_group_net_sales_organic_change_pct, Q4_region_net_sales_current, Q4_region_net_sales_prior, Q4_region_net_sales_reported_change_pct, Q4_region_net_sales_organic_change_pct, Fx_impact, Perimeter_impact,Americas_growth,Usa_growth,Asia_row_growth,China_growth,India_growth],
     "Results_Drinks": [Pro_amount,Pro_organic_growth_pct,Gross_margin_expansion_bps,Ap_amount,Ap_pct_of_net_sales,Operating_margin_org_bps,Operating_margin_org_pct,Operating_margin_reported_pct,Fx_impact_amount,Perimeter_effect_amount,Group_share_net_pro_amount,Group_share_net_pro_change_pct,Avg_cost_of_debt_pct,Group_share_net_profit_amount,Group_share_net_profit_change_pct, Eps_amount],
     "Corporate_information": [Headquarters,Executive_committee_examples,Executive_committee_quantity,Board_of_directors_examples,Board_of_directors_quantity,Affiliate_name,Affiliates,Affiliate_quantity,Total_employees,Avg_age,Qty_nationalities],
     "Social_DEI": [Total_employees_social, Women_in_workforce_pct, Women_in_management_pct, Ethnically_diverse_leaders_pct, Employees_with_disabilities_pct_social, Lgbtq_inclusion_programs, Community_investment_amount],
