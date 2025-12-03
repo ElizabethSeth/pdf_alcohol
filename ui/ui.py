@@ -111,8 +111,8 @@ def generate_excel_client(selected_collections):
 custom_css = """
 /* ===== ROOT / BACKGROUND ===== */
 body, .gradio-container {
-    background: linear-gradient(135deg, #0a1128 0%, #1c2541 50%, #2d4263 100%);
-    color: #e8eef2;
+    background: linear-gradient(135deg, #003049 0%, #780000 30%, #003049 100%);
+    color: #FDF0D5;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
@@ -129,7 +129,7 @@ body, .gradio-container {
     font-weight: 700;
     margin-bottom: 0.5rem;
     letter-spacing: -0.02em;
-    background: linear-gradient(120deg, #5fa8d3, #7eb2d8, #a8dadc);
+    background: linear-gradient(120deg, #C1121F, #780000, #669BBC);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -137,7 +137,7 @@ body, .gradio-container {
 #app-subtitle {
     text-align: center;
     font-size: 1.05rem;
-    color: #b8c5d6;
+    color: #FDF0D5;
     margin-bottom: 3rem;
     font-weight: 400;
 }
@@ -146,17 +146,18 @@ body, .gradio-container {
 .app-card {
     border-radius: 24px;
     padding: 32px 28px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(95, 168, 211, 0.2);
-    background: linear-gradient(165deg, rgba(28, 37, 65, 0.95) 0%, rgba(15, 20, 40, 0.98) 100%);
-    color: #e8eef2;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(193, 18, 31, 0.3);
+    background: linear-gradient(165deg, rgba(0, 48, 73, 0.7) 0%, rgba(120, 0, 0, 0.5) 50%, rgba(0, 48, 73, 0.8) 100%);
+    color: #FDF0D5;
     backdrop-filter: blur(12px);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .app-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 25px 70px rgba(95, 168, 211, 0.15);
+    box-shadow: 0 25px 70px rgba(193, 18, 31, 0.4);
+    border-color: rgba(193, 18, 31, 0.5);
 }
 
 .app-card .wrap {
@@ -167,7 +168,7 @@ body, .gradio-container {
 
 .app-card label {
     font-weight: 600;
-    color: #b8dfe8;
+    color: #FDF0D5;
     font-size: 0.95rem;
     letter-spacing: 0.01em;
 }
@@ -177,29 +178,33 @@ body, .gradio-container {
     text-align: center;
     font-size: 1.4rem;
     font-weight: 600;
-    color: #a8dadc;
+    color: #FDF0D5;
     margin-bottom: 1.5rem;
     letter-spacing: -0.01em;
+    background: linear-gradient(135deg, rgba(193, 18, 31, 0.3) 0%, rgba(120, 0, 0, 0.2) 100%);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(193, 18, 31, 0.4);
 }
 
 /* ===== GENERIC INPUTS ===== */
 input, textarea, select {
-    background-color: rgba(15, 20, 40, 0.8) !important;
-    color: #e8eef2 !important;
+    background-color: rgba(0, 48, 73, 0.5) !important;
+    color: #FDF0D5 !important;
     border-radius: 14px !important;
-    border: 1.5px solid rgba(95, 168, 211, 0.4) !important;
+    border: 1.5px solid rgba(102, 155, 188, 0.4) !important;
     padding: 0.65rem 0.85rem !important;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input:focus, textarea:focus, select:focus {
-    border-color: rgba(95, 168, 211, 0.8) !important;
-    box-shadow: 0 0 0 3px rgba(95, 168, 211, 0.1) !important;
+    border-color: rgba(193, 18, 31, 0.8) !important;
+    box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.15) !important;
     outline: none !important;
 }
 
 input::placeholder, textarea::placeholder {
-    color: #6b7c93 !important;
+    color: rgba(253, 240, 213, 0.5) !important;
 }
 
 .gr-textbox, .gr-dropdown {
@@ -209,22 +214,22 @@ input::placeholder, textarea::placeholder {
 /* ===== FILE UPLOAD AREA ===== */
 .gr-file, .gr-file * {
     background: transparent !important;
-    color: #e8eef2 !important;
+    color: #FDF0D5 !important;
 }
 
 .gr-file {
     border-radius: 16px !important;
-    border: 2px dashed rgba(95, 168, 211, 0.5) !important;
+    border: 2px dashed rgba(193, 18, 31, 0.5) !important;
     transition: border-color 0.2s ease;
 }
 
 .gr-file:hover {
-    border-color: rgba(95, 168, 211, 0.8) !important;
+    border-color: rgba(193, 18, 31, 0.8) !important;
 }
 
 /* ===== STATUS TEXTAREAS ===== */
 textarea {
-    background: rgba(15, 20, 40, 0.6) !important;
+    background: rgba(0, 48, 73, 0.4) !important;
     font-family: 'SF Mono', 'Monaco', 'Consolas', monospace !important;
     font-size: 0.9rem !important;
 }
@@ -236,10 +241,10 @@ button[variant="primary"],
 button.gr-button-primary {
     font-weight: 600 !important;
     border-radius: 12px !important;
-    background: linear-gradient(135deg, #5fa8d3 0%, #4a8fb8 100%) !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #C1121F 0%, #780000 100%) !important;
+    color: #FDF0D5 !important;
     border: none !important;
-    box-shadow: 0 8px 24px rgba(95, 168, 211, 0.35) !important;
+    box-shadow: 0 8px 24px rgba(193, 18, 31, 0.5) !important;
     transition: all 0.2s ease;
     padding: 0.7rem 1.5rem !important;
     font-size: 0.95rem !important;
@@ -249,8 +254,8 @@ button.primary:hover,
 button[variant="primary"]:hover,
 button.gr-button-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(95, 168, 211, 0.5) !important;
-    background: linear-gradient(135deg, #6ab8e3 0%, #5fa8d3 100%) !important;
+    box-shadow: 0 12px 32px rgba(193, 18, 31, 0.7) !important;
+    background: linear-gradient(135deg, #780000 0%, #C1121F 100%) !important;
 }
 
 /* Secondary buttons */
@@ -258,9 +263,9 @@ button.secondary,
 button[variant="secondary"],
 button.variant-secondary {
     border-radius: 12px !important;
-    background: linear-gradient(135deg, rgba(168, 218, 220, 0.15) 0%, rgba(95, 168, 211, 0.1) 100%) !important;
-    color: #a8dadc !important;
-    border: 1.5px solid rgba(95, 168, 211, 0.4) !important;
+    background: linear-gradient(135deg, rgba(102, 155, 188, 0.2) 0%, rgba(0, 48, 73, 0.3) 100%) !important;
+    color: #669BBC !important;
+    border: 1.5px solid rgba(102, 155, 188, 0.5) !important;
     font-weight: 600 !important;
     padding: 0.7rem 1.5rem !important;
     transition: all 0.2s ease;
@@ -269,20 +274,20 @@ button.variant-secondary {
 button.secondary:hover,
 button[variant="secondary"]:hover,
 button.variant-secondary:hover {
-    background: linear-gradient(135deg, rgba(168, 218, 220, 0.25) 0%, rgba(95, 168, 211, 0.2) 100%) !important;
-    border-color: rgba(95, 168, 211, 0.6) !important;
+    background: linear-gradient(135deg, rgba(102, 155, 188, 0.3) 0%, rgba(0, 48, 73, 0.4) 100%) !important;
+    border-color: rgba(102, 155, 188, 0.7) !important;
     transform: translateY(-1px);
 }
 
 /* ===== LINKS ===== */
 a {
-    color: #7eb2d8;
+    color: #669BBC;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #a8dadc;
+    color: #C1121F;
 }
 
 /* ===== SCROLLBAR ===== */
@@ -290,30 +295,30 @@ a:hover {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(15, 20, 40, 0.3);
+    background: rgba(0, 48, 73, 0.3);
 }
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #5fa8d3, #4a8fb8);
+    background: linear-gradient(180deg, #C1121F, #780000);
     border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #6ab8e3, #5fa8d3);
+    background: linear-gradient(180deg, #780000, #C1121F);
 }
 
 /* ===== INFO TEXT ===== */
 .info-text {
-    background: rgba(95, 168, 211, 0.08);
-    border-left: 3px solid #5fa8d3;
+    background: rgba(0, 48, 73, 0.4);
+    border-left: 3px solid #C1121F;
     padding: 1rem 1.25rem;
     border-radius: 8px;
-    color: #b8dfe8;
+    color: #FDF0D5;
     font-size: 0.95rem;
     line-height: 1.7;
     margin-top: 2rem;
 }
 
 .info-text strong {
-    color: #a8dadc;
+    color: #669BBC;
     font-weight: 600;
 }
 
@@ -321,10 +326,10 @@ a:hover {
 #footer-text {
     text-align: center;
     font-size: 0.9rem;
-    color: #6b7c93;
+    color: rgba(253, 240, 213, 0.6);
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(95, 168, 211, 0.15);
+    border-top: 1px solid rgba(193, 18, 31, 0.3);
 }
 """
 
@@ -434,6 +439,334 @@ with gr.Blocks(title="SR-KES") as app:
 
 if __name__ == "__main__":
     app.launch(server_name="0.0.0.0", server_port=8001)
+
+
+# custom_css = """
+# /* ===== ROOT / BACKGROUND ===== */
+# body, .gradio-container {
+#     background: linear-gradient(135deg, #0a1128 0%, #1c2541 50%, #2d4263 100%);
+#     color: #e8eef2;
+#     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+# }
+
+# /* ===== MAIN CONTAINER ===== */
+# .main {
+#     max-width: 1400px;
+#     margin: 0 auto;
+# }
+
+# /* ===== TOP TITLE AREA ===== */
+# #app-title {
+#     text-align: center;
+#     font-size: 2.8rem;
+#     font-weight: 700;
+#     margin-bottom: 0.5rem;
+#     letter-spacing: -0.02em;
+#     background: linear-gradient(120deg, #5fa8d3, #7eb2d8, #a8dadc);
+#     -webkit-background-clip: text;
+#     -webkit-text-fill-color: transparent;
+# }
+
+# #app-subtitle {
+#     text-align: center;
+#     font-size: 1.05rem;
+#     color: #b8c5d6;
+#     margin-bottom: 3rem;
+#     font-weight: 400;
+# }
+
+# /* ===== CARDS ===== */
+# .app-card {
+#     border-radius: 24px;
+#     padding: 32px 28px;
+#     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+#     border: 1px solid rgba(95, 168, 211, 0.2);
+#     background: linear-gradient(165deg, rgba(28, 37, 65, 0.95) 0%, rgba(15, 20, 40, 0.98) 100%);
+#     color: #e8eef2;
+#     backdrop-filter: blur(12px);
+#     transition: transform 0.2s ease, box-shadow 0.2s ease;
+# }
+
+# .app-card:hover {
+#     transform: translateY(-2px);
+#     box-shadow: 0 25px 70px rgba(95, 168, 211, 0.15);
+# }
+
+# .app-card .wrap {
+#     display: flex;
+#     flex-direction: column;
+#     gap: 16px;
+# }
+
+# .app-card label {
+#     font-weight: 600;
+#     color: #b8dfe8;
+#     font-size: 0.95rem;
+#     letter-spacing: 0.01em;
+# }
+
+# /* ===== SECTION HEADERS ===== */
+# .section-header {
+#     text-align: center;
+#     font-size: 1.4rem;
+#     font-weight: 600;
+#     color: #a8dadc;
+#     margin-bottom: 1.5rem;
+#     letter-spacing: -0.01em;
+# }
+
+# /* ===== GENERIC INPUTS ===== */
+# input, textarea, select {
+#     background-color: rgba(15, 20, 40, 0.8) !important;
+#     color: #e8eef2 !important;
+#     border-radius: 14px !important;
+#     border: 1.5px solid rgba(95, 168, 211, 0.4) !important;
+#     padding: 0.65rem 0.85rem !important;
+#     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+# }
+
+# input:focus, textarea:focus, select:focus {
+#     border-color: rgba(95, 168, 211, 0.8) !important;
+#     box-shadow: 0 0 0 3px rgba(95, 168, 211, 0.1) !important;
+#     outline: none !important;
+# }
+
+# input::placeholder, textarea::placeholder {
+#     color: #6b7c93 !important;
+# }
+
+# .gr-textbox, .gr-dropdown {
+#     background: transparent !important;
+# }
+
+# /* ===== FILE UPLOAD AREA ===== */
+# .gr-file, .gr-file * {
+#     background: transparent !important;
+#     color: #e8eef2 !important;
+# }
+
+# .gr-file {
+#     border-radius: 16px !important;
+#     border: 2px dashed rgba(95, 168, 211, 0.5) !important;
+#     transition: border-color 0.2s ease;
+# }
+
+# .gr-file:hover {
+#     border-color: rgba(95, 168, 211, 0.8) !important;
+# }
+
+# /* ===== STATUS TEXTAREAS ===== */
+# textarea {
+#     background: rgba(15, 20, 40, 0.6) !important;
+#     font-family: 'SF Mono', 'Monaco', 'Consolas', monospace !important;
+#     font-size: 0.9rem !important;
+# }
+
+# /* ===== BUTTONS ===== */
+# /* Primary buttons */
+# button.primary,
+# button[variant="primary"],
+# button.gr-button-primary {
+#     font-weight: 600 !important;
+#     border-radius: 12px !important;
+#     background: linear-gradient(135deg, #5fa8d3 0%, #4a8fb8 100%) !important;
+#     color: #ffffff !important;
+#     border: none !important;
+#     box-shadow: 0 8px 24px rgba(95, 168, 211, 0.35) !important;
+#     transition: all 0.2s ease;
+#     padding: 0.7rem 1.5rem !important;
+#     font-size: 0.95rem !important;
+# }
+
+# button.primary:hover,
+# button[variant="primary"]:hover,
+# button.gr-button-primary:hover {
+#     transform: translateY(-2px);
+#     box-shadow: 0 12px 32px rgba(95, 168, 211, 0.5) !important;
+#     background: linear-gradient(135deg, #6ab8e3 0%, #5fa8d3 100%) !important;
+# }
+
+# /* Secondary buttons */
+# button.secondary,
+# button[variant="secondary"],
+# button.variant-secondary {
+#     border-radius: 12px !important;
+#     background: linear-gradient(135deg, rgba(168, 218, 220, 0.15) 0%, rgba(95, 168, 211, 0.1) 100%) !important;
+#     color: #a8dadc !important;
+#     border: 1.5px solid rgba(95, 168, 211, 0.4) !important;
+#     font-weight: 600 !important;
+#     padding: 0.7rem 1.5rem !important;
+#     transition: all 0.2s ease;
+# }
+
+# button.secondary:hover,
+# button[variant="secondary"]:hover,
+# button.variant-secondary:hover {
+#     background: linear-gradient(135deg, rgba(168, 218, 220, 0.25) 0%, rgba(95, 168, 211, 0.2) 100%) !important;
+#     border-color: rgba(95, 168, 211, 0.6) !important;
+#     transform: translateY(-1px);
+# }
+
+# /* ===== LINKS ===== */
+# a {
+#     color: #7eb2d8;
+#     text-decoration: none;
+#     transition: color 0.2s ease;
+# }
+
+# a:hover {
+#     color: #a8dadc;
+# }
+
+# /* ===== SCROLLBAR ===== */
+# ::-webkit-scrollbar {
+#     width: 10px;
+# }
+# ::-webkit-scrollbar-track {
+#     background: rgba(15, 20, 40, 0.3);
+# }
+# ::-webkit-scrollbar-thumb {
+#     background: linear-gradient(180deg, #5fa8d3, #4a8fb8);
+#     border-radius: 10px;
+# }
+# ::-webkit-scrollbar-thumb:hover {
+#     background: linear-gradient(180deg, #6ab8e3, #5fa8d3);
+# }
+
+# /* ===== INFO TEXT ===== */
+# .info-text {
+#     background: rgba(95, 168, 211, 0.08);
+#     border-left: 3px solid #5fa8d3;
+#     padding: 1rem 1.25rem;
+#     border-radius: 8px;
+#     color: #b8dfe8;
+#     font-size: 0.95rem;
+#     line-height: 1.7;
+#     margin-top: 2rem;
+# }
+
+# .info-text strong {
+#     color: #a8dadc;
+#     font-weight: 600;
+# }
+
+# /* ===== FOOTER ===== */
+# #footer-text {
+#     text-align: center;
+#     font-size: 0.9rem;
+#     color: #6b7c93;
+#     margin-top: 3rem;
+#     padding-top: 2rem;
+#     border-top: 1px solid rgba(95, 168, 211, 0.15);
+# }
+# """
+
+# with gr.Blocks(title="SR-KES") as app:
+#     gr.HTML(f"<style>{custom_css}</style>")
+
+#     gr.Markdown(
+#         """
+# <div id="app-title">📊 Strategic Report Knowledge Extraction System</div>
+# <div id="app-subtitle">
+#     Upload ESG / financial PDFs, index them in Qdrant and generate structured Excel reports
+# </div>
+#         """,
+#     )
+
+#     with gr.Row():
+#         with gr.Column(scale=1):
+#             with gr.Group(elem_classes=["app-card"]):
+#                 gr.HTML('<div class="section-header">Upload & Index PDFs</div>')
+                
+#                 collection_name_input = gr.Textbox(
+#                     label="Collection name",
+#                     placeholder="e.g. pernod24, brown_forman_fy24",
+#                     max_lines=1,
+#                 )
+
+#                 pdf_input = gr.File(
+#                     label="PDF files",
+#                     file_count="multiple",
+#                     file_types=[".pdf"],
+#                     type="filepath",
+#                 )
+
+#                 upload_btn = gr.Button(
+#                     "⬆️ Upload & Index PDFs",
+#                     variant="primary",
+#                     size="lg",
+#                 )
+
+#                 upload_status = gr.Textbox(
+#                     label="Status",
+#                     placeholder="Upload / indexing status will appear here...",
+#                     lines=3,
+#                 )
+
+#         with gr.Column(scale=1):
+#             with gr.Group(elem_classes=["app-card"]):
+#                 gr.HTML('<div class="section-header">Generate Excel Report</div>')
+                
+#                 collections_dropdown = gr.Dropdown(
+#                     label="Collections",
+#                     choices=[],
+#                     multiselect=True,
+#                     info="Select one or more Qdrant collections to include in the report.",
+#                 )
+
+#                 with gr.Row():
+#                     refresh_btn = gr.Button(
+#                         "🔄 Refresh",
+#                         variant="secondary",
+#                     )
+#                     generate_btn = gr.Button(
+#                         "📊 Generate Report",
+#                         variant="primary",
+#                     )
+
+#                 excel_output = gr.File(
+#                     label="📥 Download Excel Report",
+#                     interactive=False,
+#                 )
+
+#                 report_status = gr.Textbox(
+#                     label="Report Status",
+#                     placeholder="Report generation status will appear here...",
+#                     lines=1,
+#                 )
+
+#     gr.HTML(
+#         """
+# <div class="info-text">
+#     <strong>How it works:</strong><br>
+#     1. Enter a collection name and upload PDF reports, then click <strong>Upload & Index PDFs</strong><br>
+#     2. Click <strong>Refresh</strong> and choose collections from the dropdown<br>
+#     3. Click <strong>Generate Report</strong> and download your report.xlsx
+# # </div>
+# #         """
+#     )
+
+#     # Callbacks
+#     upload_btn.click(
+#         fn=upload_pdfs_client,
+#         inputs=[pdf_input, collection_name_input],
+#         outputs=[upload_status],
+#     )
+
+#     refresh_btn.click(
+#         fn=fetch_collections_client,
+#         inputs=[],
+#         outputs=[collections_dropdown, report_status],
+#     )
+
+#     generate_btn.click(
+#         fn=generate_excel_client,
+#         inputs=[collections_dropdown],
+#         outputs=[excel_output, report_status],
+#     )
+
+# if __name__ == "__main__":
+#     app.launch(server_name="0.0.0.0", server_port=8001)
 
 # with gr.Blocks(
 #     title="PDF Report Generator"
