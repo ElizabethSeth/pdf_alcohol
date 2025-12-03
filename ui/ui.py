@@ -102,12 +102,6 @@ def generate_excel_client(selected_collections):
     except Exception as e:
         return None, f"❌ Error during report generation: {str(e)}"
 
-# with gr.Blocks(
-#     title="PDF Report Generator",
-#     css=custom_css,
-#     theme=gr.themes.Soft(),
-# ) as app:
-
 custom_css = """
 /* ===== ROOT / BACKGROUND ===== */
 body, .gradio-container {
@@ -239,10 +233,10 @@ a:hover {
 
 /* ===== INFO TEXT ===== */
 .info-text {
-    background: white;
-    border-left: 4px solid #606C38;
-    padding: 1rem 1.25rem;
-    border-radius: 8px;
+    background: transparent;
+    border-left: none;
+    padding: 0;
+    border-radius: 0;
     color: #003049;
 }
 
@@ -256,7 +250,6 @@ a:hover {
     border-top: 1px solid #003049;
 }
 """
-
 
 with gr.Blocks(title="SR-KES") as app:
     gr.HTML(f"<style>{custom_css}</style>")
@@ -297,7 +290,7 @@ with gr.Blocks(title="SR-KES") as app:
                 upload_status = gr.Textbox(
                     label="Status",
                     placeholder="Upload / indexing status will appear here...",
-                    lines=3,
+                    lines=1,
                 )
 
         with gr.Column(scale=1):
