@@ -7,10 +7,10 @@ import os, re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 
-API_URL = "http://api:8003"
+#API_URL = "http://api:8003"
 
 
-#API_URL = "https://generate-reports.api.elsth.com"
+API_URL = "https://generate-reports.api.elsth.com"
 
 def upload_pdfs_client(files, collection_name):
     if not files:
