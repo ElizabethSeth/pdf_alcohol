@@ -236,6 +236,10 @@ a:hover {
     color: #003049 !important;   /* dark navy text */
     font-weight: 500;
 }
+.info-text strong {
+    color: #003049 !important;
+    font-weight: 700;
+}
 
 /* ===== FOOTER ===== */
 #footer-text {
@@ -287,7 +291,7 @@ with gr.Blocks(title="SR-KES") as app:
                 upload_status = gr.Textbox(
                     label="Status",
                     placeholder="Upload / indexing status will appear here...",
-                    lines=1,
+                    lines=2,
                 )
 
         with gr.Column(scale=1):
@@ -319,7 +323,7 @@ with gr.Blocks(title="SR-KES") as app:
                 report_status = gr.Textbox(
                     label="Report Status",
                     placeholder="Report generation status will appear here...",
-                    lines=1,
+                    lines=2,
                 )
 
     gr.HTML(
