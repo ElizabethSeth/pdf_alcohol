@@ -13,10 +13,10 @@ from typing import List
 API_URL = "https://generate-reports.api.elsth.com"
 
 
-def return_apikey():
-    resp = requests.post(f"{API_URL}/return_apikey", timeout=10)
-    data = resp.json()
-    return data.get("api_key", "")
+# def return_apikey():
+#     resp = requests.post(f"{API_URL}/return_apikey", timeout=10)
+#     data = resp.json()
+#     return data.get("api_key", "")
   
 
 
@@ -111,52 +111,165 @@ def generate_excel_client(selected_collections):
     except Exception as e:
         return None, f"❌ Error during report generation: {str(e)}"
 
-
 custom_css = """
+/* ===== GLOBAL ===== */
+body {
+    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+}
+
+/* ===== TITLES ===== */
 #app-title {
     text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+    background: linear-gradient(90deg, #8b5cf6, #38bdf8, #c7c27c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 #app-subtitle {
     text-align: center;
     font-size: 0.95rem;
-    color: #6b7280;
-    margin-bottom: 1.75rem;
+    color: #cbd5f5;
+    margin-bottom: 1.9rem;
 }
 
+/* ===== CARDS ===== */
 .app-card {
-    border-radius: 18px;
-    padding: 18px 20px;
-    box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
-    border: 1px solid rgba(148, 163, 184, 0.35);
-    background: radial-gradient(circle at top left, #0f172a 0, #020617 40%, #020617 100%);
+    border-radius: 20px;
+    padding: 20px 22px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: linear-gradient(160deg, #312e81, #020617);
     color: #e5e7eb;
+    backdrop-filter: blur(8px);
 }
 
 .app-card .wrap {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 13px;
 }
 
 .app-card label {
     font-weight: 600;
+    color: #e0e7ff;
 }
 
-#search-btn {
-    font-weight: 600;
+/* ===== BUTTONS ===== */
+#search-btn,
+button[data-testid="button"] {
+    font-weight: 700;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366f1, #2563eb);
+    color: white !important;
+    border: none;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.45);
 }
 
+button[data-testid="button"]:hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 15px 35px rgba(99, 102, 241, 0.65);
+}
+
+/* ===== SECONDARY BUTTONS ===== */
+button.variant-secondary {
+    background: linear-gradient(135deg, #a3a36a, #6b7280);
+    color: #020617 !important;
+}
+
+/* ===== INPUTS ===== */
+input, textarea, select {
+    background-color: #020617 !important;
+    color: #e5e7eb !important;
+    border: 1px solid #6366f1 !important;
+    border-radius: 10px !important;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* ===== DROPDOWN ===== */
+.gr-dropdown {
+    background-color: #020617 !important;
+}
+
+/* ===== FILE UPLOAD ===== */
+.gr-file {
+    border-radius: 12px;
+    border: 1px dashed #8b5cf6;
+}
+
+/* ===== STATUS BOX ===== */
+textarea {
+    background: rgba(2,6,23,0.85) !important;
+}
+
+/* ===== FOOTER ===== */
 #footer-text {
     text-align: center;
     font-size: 0.85rem;
-    color: #6b7280;
-    margin-top: 1.75rem;
+    color: #c7c27c;
+    margin-top: 2rem;
+}
+
+/* ===== SCROLL ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(#8b5cf6, #38bdf8);
+    border-radius: 10px;
 }
 """
+
+# custom_css = """
+# #app-title {
+#     text-align: center;
+#     font-size: 2.2rem;
+#     font-weight: 700;
+#     margin-bottom: 0.25rem;
+# }
+
+# #app-subtitle {
+#     text-align: center;
+#     font-size: 0.95rem;
+#     color: #6b7280;
+#     margin-bottom: 1.75rem;
+# }
+
+# .app-card {
+#     border-radius: 18px;
+#     padding: 18px 20px;
+#     box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
+#     border: 1px solid rgba(148, 163, 184, 0.35);
+#     background: radial-gradient(circle at top left, #0f172a 0, #020617 40%, #020617 100%);
+#     color: #e5e7eb;
+# }
+
+# .app-card .wrap {
+#     display: flex;
+#     flex-direction: column;
+#     gap: 12px;
+# }
+
+# .app-card label {
+#     font-weight: 600;
+# }
+
+# #search-btn {
+#     font-weight: 600;
+# }
+
+# #footer-text {
+#     text-align: center;
+#     font-size: 0.85rem;
+#     color: #6b7280;
+#     margin-top: 1.75rem;
+# }
+# """
 
 # with gr.Blocks(
 #     title="PDF Report Generator",
@@ -182,7 +295,6 @@ with gr.Blocks(
 
     with gr.Tab("📄 PDF Processing"):
         with gr.Row():
-            # Левая карточка: upload & index
             with gr.Column(scale=2):
                 with gr.Group(elem_classes=["app-card"]):
                     with gr.Column(elem_classes=["wrap"]):
@@ -247,10 +359,10 @@ with gr.Blocks(
                             lines=3,
                         )
 
-                        api_button = gr.Button(
-                            "Show OpenAI API Key",
-                            variant="secondary",
-                        )
+                        # api_button = gr.Button(
+                        #     "Show OpenAI API Key",
+                        #     variant="secondary",
+                        # )
 
         gr.Markdown(
             """
@@ -274,10 +386,7 @@ with gr.Blocks(
         inputs=[],
         outputs=[collections_dropdown, report_status],
     )
-    api_button.click(
-        fn=return_apikey,
-        outputs=[],
-    )
+    
 
     generate_btn.click(
         fn=generate_excel_client,

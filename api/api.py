@@ -1774,9 +1774,9 @@ async def add_collection(
         return {"status": "error", "message": str(e)}
 
 
-@app.post("/return_apikey")
-async def return_apikey():
-    return {"api_key": OPENAI_API_KEY}
+# @app.post("/return_apikey")
+# async def return_apikey():
+#     return {"api_key": OPENAI_API_KEY}
 
 
 
