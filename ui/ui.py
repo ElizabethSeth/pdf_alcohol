@@ -233,17 +233,8 @@ a:hover {
 
 /* ===== INFO TEXT ===== */
 .info-text {
-    background: rgba(0, 48, 73, 0.08);   
-    border-left: 4px solid #606C38;    
-    padding: 1rem 1.25rem;
-    border-radius: 10px;
-    color: #003049;                     
-    font-size: 1rem;
-    line-height: 1.8;
-}
-.info-text strong {
-    color: #003049;
-    font-weight: 600;
+    color: #003049 !important;   /* dark navy text */
+    font-weight: 500;
 }
 
 /* ===== FOOTER ===== */
