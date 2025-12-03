@@ -241,6 +241,10 @@ a:hover {
     font-size: 1rem;
     line-height: 1.8;
 }
+.info-text strong {
+    color: #003049;
+    font-weight: 600;
+}
 
 /* ===== FOOTER ===== */
 #footer-text {
