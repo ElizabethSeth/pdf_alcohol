@@ -111,8 +111,8 @@ def generate_excel_client(selected_collections):
 custom_css = """
 /* ===== ROOT / BACKGROUND ===== */
 body, .gradio-container {
-    background: linear-gradient(135deg, #003049 0%, #780000 30%, #003049 100%);
-    color: #FDF0D5;
+    background: #FDF0D5;
+    color: #003049;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
@@ -129,15 +129,13 @@ body, .gradio-container {
     font-weight: 700;
     margin-bottom: 0.5rem;
     letter-spacing: -0.02em;
-    background: linear-gradient(120deg, #C1121F, #780000, #669BBC);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #606C38;
 }
 
 #app-subtitle {
     text-align: center;
     font-size: 1.05rem;
-    color: #FDF0D5;
+    color: #003049;
     margin-bottom: 3rem;
     font-weight: 400;
 }
@@ -146,31 +144,22 @@ body, .gradio-container {
 .app-card {
     border-radius: 24px;
     padding: 32px 28px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(193, 18, 31, 0.3);
-    background: linear-gradient(165deg, rgba(0, 48, 73, 0.7) 0%, rgba(120, 0, 0, 0.5) 50%, rgba(0, 48, 73, 0.8) 100%);
-    color: #FDF0D5;
-    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0, 48, 73, 0.15);
+    border: 1px solid #003049;
+    background: rgba(255, 255, 255, 0.8);
+    color: #003049;
+    backdrop-filter: blur(10px);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .app-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 25px 70px rgba(193, 18, 31, 0.4);
-    border-color: rgba(193, 18, 31, 0.5);
-}
-
-.app-card .wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    box-shadow: 0 25px 70px rgba(0, 48, 73, 0.25);
 }
 
 .app-card label {
     font-weight: 600;
-    color: #FDF0D5;
-    font-size: 0.95rem;
-    letter-spacing: 0.01em;
+    color: #003049;
 }
 
 /* ===== SECTION HEADERS ===== */
@@ -178,160 +167,96 @@ body, .gradio-container {
     text-align: center;
     font-size: 1.4rem;
     font-weight: 600;
-    color: #FDF0D5;
+    color: #606C38;
     margin-bottom: 1.5rem;
-    letter-spacing: -0.01em;
-    background: linear-gradient(135deg, rgba(193, 18, 31, 0.3) 0%, rgba(120, 0, 0, 0.2) 100%);
+    background: rgba(102, 155, 188, 0.15);
     padding: 0.75rem 1rem;
     border-radius: 12px;
-    border: 1px solid rgba(193, 18, 31, 0.4);
+    border: 1px solid #669BBC;
 }
 
 /* ===== GENERIC INPUTS ===== */
 input, textarea, select {
-    background-color: rgba(0, 48, 73, 0.5) !important;
-    color: #FDF0D5 !important;
+    background-color: white !important;
+    color: #003049 !important;
     border-radius: 14px !important;
-    border: 1.5px solid rgba(102, 155, 188, 0.4) !important;
+    border: 1.5px solid #003049 !important;
     padding: 0.65rem 0.85rem !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input:focus, textarea:focus, select:focus {
-    border-color: rgba(193, 18, 31, 0.8) !important;
-    box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.15) !important;
+    border-color: #669BBC !important;
+    box-shadow: 0 0 0 3px rgba(102, 155, 188, 0.25) !important;
     outline: none !important;
 }
 
 input::placeholder, textarea::placeholder {
-    color: rgba(253, 240, 213, 0.5) !important;
-}
-
-.gr-textbox, .gr-dropdown {
-    background: transparent !important;
+    color: rgba(0, 48, 73, 0.45) !important;
 }
 
 /* ===== FILE UPLOAD AREA ===== */
-.gr-file, .gr-file * {
-    background: transparent !important;
-    color: #FDF0D5 !important;
-}
-
 .gr-file {
     border-radius: 16px !important;
-    border: 2px dashed rgba(193, 18, 31, 0.5) !important;
-    transition: border-color 0.2s ease;
-}
-
-.gr-file:hover {
-    border-color: rgba(193, 18, 31, 0.8) !important;
-}
-
-/* ===== STATUS TEXTAREAS ===== */
-textarea {
-    background: rgba(0, 48, 73, 0.4) !important;
-    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace !important;
-    font-size: 0.9rem !important;
+    border: 2px dashed #669BBC !important;
+    background: white !important;
 }
 
 /* ===== BUTTONS ===== */
-/* Primary buttons */
+/* Primary */
 button.primary,
 button[variant="primary"],
 button.gr-button-primary {
     font-weight: 600 !important;
     border-radius: 12px !important;
-    background: linear-gradient(135deg, #C1121F 0%, #780000 100%) !important;
+    background: #606C38 !important;
     color: #FDF0D5 !important;
     border: none !important;
-    box-shadow: 0 8px 24px rgba(193, 18, 31, 0.5) !important;
-    transition: all 0.2s ease;
-    padding: 0.7rem 1.5rem !important;
-    font-size: 0.95rem !important;
+    box-shadow: 0 8px 24px rgba(96, 108, 56, 0.35) !important;
 }
 
-button.primary:hover,
-button[variant="primary"]:hover,
-button.gr-button-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(193, 18, 31, 0.7) !important;
-    background: linear-gradient(135deg, #780000 0%, #C1121F 100%) !important;
+button.primary:hover {
+    background: #003049 !important;
 }
 
-/* Secondary buttons */
+/* Secondary */
 button.secondary,
-button[variant="secondary"],
-button.variant-secondary {
+button[variant="secondary"] {
     border-radius: 12px !important;
-    background: linear-gradient(135deg, rgba(102, 155, 188, 0.2) 0%, rgba(0, 48, 73, 0.3) 100%) !important;
+    background: transparent !important;
     color: #669BBC !important;
-    border: 1.5px solid rgba(102, 155, 188, 0.5) !important;
+    border: 2px solid #669BBC !important;
     font-weight: 600 !important;
-    padding: 0.7rem 1.5rem !important;
-    transition: all 0.2s ease;
-}
-
-button.secondary:hover,
-button[variant="secondary"]:hover,
-button.variant-secondary:hover {
-    background: linear-gradient(135deg, rgba(102, 155, 188, 0.3) 0%, rgba(0, 48, 73, 0.4) 100%) !important;
-    border-color: rgba(102, 155, 188, 0.7) !important;
-    transform: translateY(-1px);
 }
 
 /* ===== LINKS ===== */
 a {
     color: #669BBC;
-    text-decoration: none;
-    transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #C1121F;
-}
-
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-track {
-    background: rgba(0, 48, 73, 0.3);
-}
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #C1121F, #780000);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #780000, #C1121F);
+    color: #606C38;
 }
 
 /* ===== INFO TEXT ===== */
 .info-text {
-    background: rgba(0, 48, 73, 0.4);
-    border-left: 3px solid #C1121F;
+    background: white;
+    border-left: 4px solid #606C38;
     padding: 1rem 1.25rem;
     border-radius: 8px;
-    color: #FDF0D5;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin-top: 2rem;
-}
-
-.info-text strong {
-    color: #669BBC;
-    font-weight: 600;
+    color: #003049;
 }
 
 /* ===== FOOTER ===== */
 #footer-text {
     text-align: center;
     font-size: 0.9rem;
-    color: rgba(253, 240, 213, 0.6);
+    color: rgba(0, 48, 73, 0.6);
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(193, 18, 31, 0.3);
+    border-top: 1px solid #003049;
 }
 """
+
 
 with gr.Blocks(title="SR-KES") as app:
     gr.HTML(f"<style>{custom_css}</style>")
