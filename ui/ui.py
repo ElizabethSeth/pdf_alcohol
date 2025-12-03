@@ -102,98 +102,106 @@ def generate_excel_client(selected_collections):
     except Exception as e:
         return None, f"❌ Error during report generation: {str(e)}"
 
+# with gr.Blocks(
+#     title="PDF Report Generator",
+#     css=custom_css,
+#     theme=gr.themes.Soft(),
+# ) as app:
+
 custom_css = """
 /* ===== ROOT / BACKGROUND ===== */
 body, .gradio-container {
-    background: radial-gradient(circle at top, #101427 0, #020617 45%, #020617 100%);
-    color: #e5e7eb;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    background: linear-gradient(135deg, #0a1128 0%, #1c2541 50%, #2d4263 100%);
+    color: #e8eef2;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.main {
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* ===== TOP TITLE AREA ===== */
 #app-title {
     text-align: center;
-    font-size: 2.4rem;
-    font-weight: 800;
-    margin-bottom: 0.25rem;
-    letter-spacing: 0.02em;
-    background: linear-gradient(90deg, #a5b4fc, #38bdf8, #c7c27c);
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(120deg, #5fa8d3, #7eb2d8, #a8dadc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 #app-subtitle {
     text-align: center;
-    font-size: 0.95rem;
-    color: #cbd5f5;
-    margin-bottom: 1.75rem;
-}
-
-/* ===== TABS (REMOVE ORANGE) ===== */
-.tabs, .tabitem {
-    background: transparent !important;
-}
-
-.tabs .tab-nav {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
-}
-
-.tabs .tab-nav button {
-    border-radius: 999px 999px 0 0;
-    border: none !important;
-    background: transparent !important;
-    color: #9ca3af !important;
-    font-weight: 500;
-    padding: 0.45rem 1.2rem;
-}
-
-.tabs .tab-nav button:hover {
-    color: #e5e7eb !important;
-    background: rgba(15, 23, 42, 0.8) !important;
-}
-
-.tabs .tab-nav button.selected {
-    color: #e0e7ff !important;
-    background: linear-gradient(135deg, rgba(79,70,229,0.95), rgba(59,130,246,0.95)) !important;
-    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35);
+    font-size: 1.05rem;
+    color: #b8c5d6;
+    margin-bottom: 3rem;
+    font-weight: 400;
 }
 
 /* ===== CARDS ===== */
 .app-card {
-    border-radius: 18px;
-    padding: 18px 20px;
-    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(148, 163, 184, 0.35);
-    background: linear-gradient(150deg, #111827 0%, #020617 70%);
-    color: #e5e7eb;
-    backdrop-filter: blur(8px);
+    border-radius: 24px;
+    padding: 32px 28px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(95, 168, 211, 0.2);
+    background: linear-gradient(165deg, rgba(28, 37, 65, 0.95) 0%, rgba(15, 20, 40, 0.98) 100%);
+    color: #e8eef2;
+    backdrop-filter: blur(12px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 70px rgba(95, 168, 211, 0.15);
 }
 
 .app-card .wrap {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .app-card label {
     font-weight: 600;
-    color: #e0e7ff;
+    color: #b8dfe8;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-header {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #a8dadc;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
 }
 
 /* ===== GENERIC INPUTS ===== */
 input, textarea, select {
-    background-color: #020617 !important;
-    color: #e5e7eb !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(99, 102, 241, 0.85) !important;
-    padding: 0.55rem 0.7rem !important;
+    background-color: rgba(15, 20, 40, 0.8) !important;
+    color: #e8eef2 !important;
+    border-radius: 14px !important;
+    border: 1.5px solid rgba(95, 168, 211, 0.4) !important;
+    padding: 0.65rem 0.85rem !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: rgba(95, 168, 211, 0.8) !important;
+    box-shadow: 0 0 0 3px rgba(95, 168, 211, 0.1) !important;
+    outline: none !important;
 }
 
 input::placeholder, textarea::placeholder {
-    color: #9ca3af !important;
+    color: #6b7c93 !important;
 }
 
-/* Gradio textboxes / dropdown wrappers */
 .gr-textbox, .gr-dropdown {
     background: transparent !important;
 }
@@ -201,241 +209,211 @@ input::placeholder, textarea::placeholder {
 /* ===== FILE UPLOAD AREA ===== */
 .gr-file, .gr-file * {
     background: transparent !important;
-    color: #e5e7eb !important;
+    color: #e8eef2 !important;
 }
 
 .gr-file {
-    border-radius: 14px !important;
-    border: 1px dashed rgba(129, 140, 248, 0.9) !important;
+    border-radius: 16px !important;
+    border: 2px dashed rgba(95, 168, 211, 0.5) !important;
+    transition: border-color 0.2s ease;
+}
+
+.gr-file:hover {
+    border-color: rgba(95, 168, 211, 0.8) !important;
 }
 
 /* ===== STATUS TEXTAREAS ===== */
 textarea {
-    background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(2,6,23,1)) !important;
+    background: rgba(15, 20, 40, 0.6) !important;
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace !important;
+    font-size: 0.9rem !important;
 }
 
-/* ===== BUTTONS (REMOVE ALL ORANGE) ===== */
-/* Primary buttons (variant="primary") */
+/* ===== BUTTONS ===== */
+/* Primary buttons */
 button.primary,
 button[variant="primary"],
-#search-btn,
-button[data-testid="button"][class*=primary],
 button.gr-button-primary {
-    font-weight: 700 !important;
-    border-radius: 999px !important;
-    background: linear-gradient(135deg, #6366f1, #3b82f6) !important;
-    color: #f9fafb !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #5fa8d3 0%, #4a8fb8 100%) !important;
+    color: #ffffff !important;
     border: none !important;
-    box-shadow: 0 12px 30px rgba(56, 189, 248, 0.38) !important;
-    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, filter 0.1s ease-out;
+    box-shadow: 0 8px 24px rgba(95, 168, 211, 0.35) !important;
+    transition: all 0.2s ease;
+    padding: 0.7rem 1.5rem !important;
+    font-size: 0.95rem !important;
 }
 
 button.primary:hover,
 button[variant="primary"]:hover,
-#search-btn:hover,
-button[data-testid="button"][class*=primary]:hover,
 button.gr-button-primary:hover {
-    transform: translateY(-1px) scale(1.01);
-    box-shadow: 0 18px 40px rgba(56, 189, 248, 0.55) !important;
-    filter: brightness(1.04);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(95, 168, 211, 0.5) !important;
+    background: linear-gradient(135deg, #6ab8e3 0%, #5fa8d3 100%) !important;
 }
 
-/* Secondary buttons (variant="secondary") */
+/* Secondary buttons */
 button.secondary,
 button[variant="secondary"],
 button.variant-secondary {
-    border-radius: 999px !important;
-    background: linear-gradient(135deg, #e5e7eb, #c7c27c) !important;
-    color: #020617 !important;
-    border: none !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, rgba(168, 218, 220, 0.15) 0%, rgba(95, 168, 211, 0.1) 100%) !important;
+    color: #a8dadc !important;
+    border: 1.5px solid rgba(95, 168, 211, 0.4) !important;
     font-weight: 600 !important;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.45) !important;
+    padding: 0.7rem 1.5rem !important;
+    transition: all 0.2s ease;
 }
 
 button.secondary:hover,
 button[variant="secondary"]:hover,
 button.variant-secondary:hover {
-    filter: brightness(1.03);
+    background: linear-gradient(135deg, rgba(168, 218, 220, 0.25) 0%, rgba(95, 168, 211, 0.2) 100%) !important;
+    border-color: rgba(95, 168, 211, 0.6) !important;
+    transform: translateY(-1px);
 }
 
-/* ===== LINKS / SMALL TEXT ===== */
+/* ===== LINKS ===== */
 a {
-    color: #38bdf8;
+    color: #7eb2d8;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #7dd3fc;
+    color: #a8dadc;
 }
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(15, 20, 40, 0.3);
 }
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(#6366f1, #38bdf8);
-    border-radius: 999px;
+    background: linear-gradient(180deg, #5fa8d3, #4a8fb8);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #6ab8e3, #5fa8d3);
 }
 
-/* ===== FOOTER TEXT (if used) ===== */
+/* ===== INFO TEXT ===== */
+.info-text {
+    background: rgba(95, 168, 211, 0.08);
+    border-left: 3px solid #5fa8d3;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    color: #b8dfe8;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-top: 2rem;
+}
+
+.info-text strong {
+    color: #a8dadc;
+    font-weight: 600;
+}
+
+/* ===== FOOTER ===== */
 #footer-text {
     text-align: center;
-    font-size: 0.85rem;
-    color: #c7c27c;
-    margin-top: 1.75rem;
+    font-size: 0.9rem;
+    color: #6b7c93;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(95, 168, 211, 0.15);
 }
 """
 
-
-# custom_css = """
-# #app-title {
-#     text-align: center;
-#     font-size: 2.2rem;
-#     font-weight: 700;
-#     margin-bottom: 0.25rem;
-# }
-
-# #app-subtitle {
-#     text-align: center;
-#     font-size: 0.95rem;
-#     color: #6b7280;
-#     margin-bottom: 1.75rem;
-# }
-
-# .app-card {
-#     border-radius: 18px;
-#     padding: 18px 20px;
-#     box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
-#     border: 1px solid rgba(148, 163, 184, 0.35);
-#     background: radial-gradient(circle at top left, #0f172a 0, #020617 40%, #020617 100%);
-#     color: #e5e7eb;
-# }
-
-# .app-card .wrap {
-#     display: flex;
-#     flex-direction: column;
-#     gap: 12px;
-# }
-
-# .app-card label {
-#     font-weight: 600;
-# }
-
-# #search-btn {
-#     font-weight: 600;
-# }
-
-# #footer-text {
-#     text-align: center;
-#     font-size: 0.85rem;
-#     color: #6b7280;
-#     margin-top: 1.75rem;
-# }
-# """
-
-# with gr.Blocks(
-#     title="PDF Report Generator",
-#     css=custom_css,
-#     theme=gr.themes.Soft(),
-# ) as app:
-
-with gr.Blocks(
-    title="PDF Report Generator"
-) as app:
+with gr.Blocks(title="SR-KES") as app:
     gr.HTML(f"<style>{custom_css}</style>")
-
 
     gr.Markdown(
         """
-<div id="app-title">📊 Strategic Report Knowledge Extraction System (SR-KES) </div>
+<div id="app-title">📊 Strategic Report Knowledge Extraction System</div>
 <div id="app-subtitle">
-    Upload ESG / financial PDFs, index them in Qdrant and generate a structured Excel report.
+    Upload ESG / financial PDFs, index them in Qdrant and generate structured Excel reports
 </div>
         """,
-        elem_id=None,
     )
 
-    with gr.Tab("📄 PDF Processing"):
-        with gr.Row():
-            with gr.Column(scale=2):
-                with gr.Group(elem_classes=["app-card"]):
-                    with gr.Column(elem_classes=["wrap"]):
-                        gr.Markdown("#### 1️⃣ Upload & index PDFs into Qdrant")
+    with gr.Row():
+        with gr.Column(scale=1):
+            with gr.Group(elem_classes=["app-card"]):
+                gr.HTML('<div class="section-header">Upload & Index PDFs</div>')
+                
+                collection_name_input = gr.Textbox(
+                    label="Collection name",
+                    placeholder="e.g. pernod24, brown_forman_fy24",
+                    max_lines=1,
+                )
 
-                        collection_name_input = gr.Textbox(
-                            label="Collection name",
-                            placeholder="e.g. pernod24, brown_forman_fy24",
-                            max_lines=1,
-                        )
+                pdf_input = gr.File(
+                    label="PDF files",
+                    file_count="multiple",
+                    file_types=[".pdf"],
+                    type="filepath",
+                )
 
-                        pdf_input = gr.File(
-                            label="PDF files",
-                            file_count="multiple",
-                            file_types=[".pdf"],
-                            type="filepath",
-                        )
+                upload_btn = gr.Button(
+                    "⬆️ Upload & Index PDFs",
+                    variant="primary",
+                    size="lg",
+                )
 
-                        upload_btn = gr.Button(
-                            "⬆️ Upload & Index PDFs",
-                            variant="primary",
-                            elem_id="search-btn",
-                            size="lg",
-                        )
+                upload_status = gr.Textbox(
+                    label="Status",
+                    placeholder="Upload / indexing status will appear here...",
+                    lines=3,
+                )
 
-                        upload_status = gr.Textbox(
-                            label="Status",
-                            placeholder="Upload / indexing status will appear here...",
-                            lines=3,
-                        )
+        with gr.Column(scale=1):
+            with gr.Group(elem_classes=["app-card"]):
+                gr.HTML('<div class="section-header">Generate Excel Report</div>')
+                
+                collections_dropdown = gr.Dropdown(
+                    label="Collections",
+                    choices=[],
+                    multiselect=True,
+                    info="Select one or more Qdrant collections to include in the report.",
+                )
 
-            with gr.Column(scale=2):
-                with gr.Group(elem_classes=["app-card"]):
-                    with gr.Column(elem_classes=["wrap"]):
-                        gr.Markdown("#### 2️⃣ Generate Excel report from collections")
+                with gr.Row():
+                    refresh_btn = gr.Button(
+                        "🔄 Refresh",
+                        variant="secondary",
+                    )
+                    generate_btn = gr.Button(
+                        "📊 Generate Report",
+                        variant="primary",
+                    )
 
-                        collections_dropdown = gr.Dropdown(
-                            label="Collections",
-                            choices=[],
-                            multiselect=True,
-                            info="Select one or more Qdrant collections to include in the report.",
-                        )
+                excel_output = gr.File(
+                    label="📥 Download Excel Report",
+                    interactive=False,
+                )
 
-                        with gr.Row():
-                            refresh_btn = gr.Button(
-                                "🔄 Refresh collections",
-                                variant="secondary",
-                            )
-                            generate_btn = gr.Button(
-                                "📊 Generate Excel report",
-                                variant="primary",
-                            )
+                report_status = gr.Textbox(
+                    label="Report Status",
+                    placeholder="Report generation status will appear here...",
+                    lines=1,
+                )
 
-                        excel_output = gr.File(
-                            label="📥 Download Excel Report",
-                            interactive=False,
-                        )
+    gr.HTML(
+        """
+<div class="info-text">
+    <strong>How it works:</strong><br>
+    1. Enter a collection name and upload PDF reports, then click <strong>Upload & Index PDFs</strong><br>
+    2. Click <strong>Refresh</strong> and choose collections from the dropdown<br>
+    3. Click <strong>Generate Report</strong> and download your report.xlsx
+</div>
+        """
+    )
 
-                        report_status = gr.Textbox(
-                            label="Report Status",
-                            placeholder="Report generation status will appear here...",
-                            lines=1,
-                        )
-
-                        # api_button = gr.Button(
-                        #     "Show OpenAI API Key",
-                        #     variant="secondary",
-                        # )
-
-        gr.Markdown(
-            """
-**How it works**
-
-1. Enter a collection name and upload one or more PDF reports, then click **Upload & Index PDFs**.  
-2. Click **Refresh collections** and choose one or several collections from the dropdown.  
-3. Click **Generate Excel report** and download the generated report.xlsx.  
-            """
-        )
-
-    # callbacks
+    # Callbacks
     upload_btn.click(
         fn=upload_pdfs_client,
         inputs=[pdf_input, collection_name_input],
@@ -447,7 +425,6 @@ with gr.Blocks(
         inputs=[],
         outputs=[collections_dropdown, report_status],
     )
-    
 
     generate_btn.click(
         fn=generate_excel_client,
@@ -457,3 +434,123 @@ with gr.Blocks(
 
 if __name__ == "__main__":
     app.launch(server_name="0.0.0.0", server_port=8001)
+
+# with gr.Blocks(
+#     title="PDF Report Generator"
+# ) as app:
+#     gr.HTML(f"<style>{custom_css}</style>")
+
+
+#     gr.Markdown(
+#         """
+# <div id="app-title">📊 Strategic Report Knowledge Extraction System (SR-KES) </div>
+# <div id="app-subtitle">
+#     Upload ESG / financial PDFs, index them in Qdrant and generate a structured Excel report.
+# </div>
+#         """,
+#         elem_id=None,
+#     )
+
+#     with gr.Tab("📄 PDF Processing"):
+#         with gr.Row():
+#             with gr.Column(scale=2):
+#                 with gr.Group(elem_classes=["app-card"]):
+#                     with gr.Column(elem_classes=["wrap"]):
+#                         gr.Markdown("#### 1️⃣ Upload & index PDFs into Qdrant")
+
+#                         collection_name_input = gr.Textbox(
+#                             label="Collection name",
+#                             placeholder="e.g. pernod24, brown_forman_fy24",
+#                             max_lines=1,
+#                         )
+
+#                         pdf_input = gr.File(
+#                             label="PDF files",
+#                             file_count="multiple",
+#                             file_types=[".pdf"],
+#                             type="filepath",
+#                         )
+
+#                         upload_btn = gr.Button(
+#                             "⬆️ Upload & Index PDFs",
+#                             variant="primary",
+#                             elem_id="search-btn",
+#                             size="lg",
+#                         )
+
+#                         upload_status = gr.Textbox(
+#                             label="Status",
+#                             placeholder="Upload / indexing status will appear here...",
+#                             lines=3,
+#                         )
+
+#             with gr.Column(scale=2):
+#                 with gr.Group(elem_classes=["app-card"]):
+#                     with gr.Column(elem_classes=["wrap"]):
+#                         gr.Markdown("#### 2️⃣ Generate Excel report from collections")
+
+#                         collections_dropdown = gr.Dropdown(
+#                             label="Collections",
+#                             choices=[],
+#                             multiselect=True,
+#                             info="Select one or more Qdrant collections to include in the report.",
+#                         )
+
+#                         with gr.Row():
+#                             refresh_btn = gr.Button(
+#                                 "🔄 Refresh collections",
+#                                 variant="secondary",
+#                             )
+#                             generate_btn = gr.Button(
+#                                 "📊 Generate Excel report",
+#                                 variant="primary",
+#                             )
+
+#                         excel_output = gr.File(
+#                             label="📥 Download Excel Report",
+#                             interactive=False,
+#                         )
+
+#                         report_status = gr.Textbox(
+#                             label="Report Status",
+#                             placeholder="Report generation status will appear here...",
+#                             lines=1,
+#                         )
+
+#                         # api_button = gr.Button(
+#                         #     "Show OpenAI API Key",
+#                         #     variant="secondary",
+#                         # )
+
+#         gr.Markdown(
+#             """
+# **How it works**
+
+# 1. Enter a collection name and upload one or more PDF reports, then click **Upload & Index PDFs**.  
+# 2. Click **Refresh collections** and choose one or several collections from the dropdown.  
+# 3. Click **Generate Excel report** and download the generated report.xlsx.  
+#             """
+#         )
+
+#     # callbacks
+#     upload_btn.click(
+#         fn=upload_pdfs_client,
+#         inputs=[pdf_input, collection_name_input],
+#         outputs=[upload_status],
+#     )
+
+#     refresh_btn.click(
+#         fn=fetch_collections_client,
+#         inputs=[],
+#         outputs=[collections_dropdown, report_status],
+#     )
+    
+
+#     generate_btn.click(
+#         fn=generate_excel_client,
+#         inputs=[collections_dropdown],
+#         outputs=[excel_output, report_status],
+#     )
+
+# if __name__ == "__main__":
+#     app.launch(server_name="0.0.0.0", server_port=8001)
