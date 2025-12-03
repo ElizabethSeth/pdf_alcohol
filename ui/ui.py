@@ -7,18 +7,10 @@ import os, re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 
-#API_URL = "http://api:8003"
+API_URL = "http://api:8003"
 
 
-API_URL = "https://generate-reports.api.elsth.com"
-
-
-# def return_apikey():
-#     resp = requests.post(f"{API_URL}/return_apikey", timeout=10)
-#     data = resp.json()
-#     return data.get("api_key", "")
-  
-
+#API_URL = "https://generate-reports.api.elsth.com"
 
 def upload_pdfs_client(files, collection_name):
     if not files:
@@ -90,9 +82,8 @@ def generate_excel_client(selected_collections):
         resp = requests.post(
             f"{API_URL}/return_excel",
             json=collection_names,
-            timeout=2800,
+            timeout=2000,
         )
-
         if resp.status_code == 200:
             if len(collection_names) == 1:
                 file_name = f"{collection_names[0]}.xlsx"
@@ -112,18 +103,21 @@ def generate_excel_client(selected_collections):
         return None, f"❌ Error during report generation: {str(e)}"
 
 custom_css = """
-/* ===== GLOBAL ===== */
-body {
-    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+/* ===== ROOT / BACKGROUND ===== */
+body, .gradio-container {
+    background: radial-gradient(circle at top, #101427 0, #020617 45%, #020617 100%);
+    color: #e5e7eb;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
 }
 
-/* ===== TITLES ===== */
+/* ===== TOP TITLE AREA ===== */
 #app-title {
     text-align: center;
-    font-size: 2.3rem;
+    font-size: 2.4rem;
     font-weight: 800;
-    margin-bottom: 0.35rem;
-    background: linear-gradient(90deg, #8b5cf6, #38bdf8, #c7c27c);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.02em;
+    background: linear-gradient(90deg, #a5b4fc, #38bdf8, #c7c27c);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -132,16 +126,45 @@ body {
     text-align: center;
     font-size: 0.95rem;
     color: #cbd5f5;
-    margin-bottom: 1.9rem;
+    margin-bottom: 1.75rem;
+}
+
+/* ===== TABS (REMOVE ORANGE) ===== */
+.tabs, .tabitem {
+    background: transparent !important;
+}
+
+.tabs .tab-nav {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.tabs .tab-nav button {
+    border-radius: 999px 999px 0 0;
+    border: none !important;
+    background: transparent !important;
+    color: #9ca3af !important;
+    font-weight: 500;
+    padding: 0.45rem 1.2rem;
+}
+
+.tabs .tab-nav button:hover {
+    color: #e5e7eb !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+}
+
+.tabs .tab-nav button.selected {
+    color: #e0e7ff !important;
+    background: linear-gradient(135deg, rgba(79,70,229,0.95), rgba(59,130,246,0.95)) !important;
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35);
 }
 
 /* ===== CARDS ===== */
 .app-card {
-    border-radius: 20px;
-    padding: 20px 22px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    background: linear-gradient(160deg, #312e81, #020617);
+    border-radius: 18px;
+    padding: 18px 20px;
+    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: linear-gradient(150deg, #111827 0%, #020617 70%);
     color: #e5e7eb;
     backdrop-filter: blur(8px);
 }
@@ -149,7 +172,7 @@ body {
 .app-card .wrap {
     display: flex;
     flex-direction: column;
-    gap: 13px;
+    gap: 12px;
 }
 
 .app-card label {
@@ -157,73 +180,111 @@ body {
     color: #e0e7ff;
 }
 
-/* ===== BUTTONS ===== */
-#search-btn,
-button[data-testid="button"] {
-    font-weight: 700;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #6366f1, #2563eb);
-    color: white !important;
-    border: none;
-    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.45);
-}
-
-button[data-testid="button"]:hover {
-    transform: translateY(-1px) scale(1.01);
-    box-shadow: 0 15px 35px rgba(99, 102, 241, 0.65);
-}
-
-/* ===== SECONDARY BUTTONS ===== */
-button.variant-secondary {
-    background: linear-gradient(135deg, #a3a36a, #6b7280);
-    color: #020617 !important;
-}
-
-/* ===== INPUTS ===== */
+/* ===== GENERIC INPUTS ===== */
 input, textarea, select {
     background-color: #020617 !important;
     color: #e5e7eb !important;
-    border: 1px solid #6366f1 !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(99, 102, 241, 0.85) !important;
+    padding: 0.55rem 0.7rem !important;
 }
 
 input::placeholder, textarea::placeholder {
-    color: #94a3b8 !important;
+    color: #9ca3af !important;
 }
 
-/* ===== DROPDOWN ===== */
-.gr-dropdown {
-    background-color: #020617 !important;
+/* Gradio textboxes / dropdown wrappers */
+.gr-textbox, .gr-dropdown {
+    background: transparent !important;
 }
 
-/* ===== FILE UPLOAD ===== */
+/* ===== FILE UPLOAD AREA ===== */
+.gr-file, .gr-file * {
+    background: transparent !important;
+    color: #e5e7eb !important;
+}
+
 .gr-file {
-    border-radius: 12px;
-    border: 1px dashed #8b5cf6;
+    border-radius: 14px !important;
+    border: 1px dashed rgba(129, 140, 248, 0.9) !important;
 }
 
-/* ===== STATUS BOX ===== */
+/* ===== STATUS TEXTAREAS ===== */
 textarea {
-    background: rgba(2,6,23,0.85) !important;
+    background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(2,6,23,1)) !important;
 }
 
-/* ===== FOOTER ===== */
-#footer-text {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #c7c27c;
-    margin-top: 2rem;
+/* ===== BUTTONS (REMOVE ALL ORANGE) ===== */
+/* Primary buttons (variant="primary") */
+button.primary,
+button[variant="primary"],
+#search-btn,
+button[data-testid="button"][class*=primary],
+button.gr-button-primary {
+    font-weight: 700 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, #6366f1, #3b82f6) !important;
+    color: #f9fafb !important;
+    border: none !important;
+    box-shadow: 0 12px 30px rgba(56, 189, 248, 0.38) !important;
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, filter 0.1s ease-out;
 }
 
-/* ===== SCROLL ===== */
+button.primary:hover,
+button[variant="primary"]:hover,
+#search-btn:hover,
+button[data-testid="button"][class*=primary]:hover,
+button.gr-button-primary:hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(56, 189, 248, 0.55) !important;
+    filter: brightness(1.04);
+}
+
+/* Secondary buttons (variant="secondary") */
+button.secondary,
+button[variant="secondary"],
+button.variant-secondary {
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, #e5e7eb, #c7c27c) !important;
+    color: #020617 !important;
+    border: none !important;
+    font-weight: 600 !important;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.45) !important;
+}
+
+button.secondary:hover,
+button[variant="secondary"]:hover,
+button.variant-secondary:hover {
+    filter: brightness(1.03);
+}
+
+/* ===== LINKS / SMALL TEXT ===== */
+a {
+    color: #38bdf8;
+}
+
+a:hover {
+    color: #7dd3fc;
+}
+
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
     width: 8px;
 }
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(#8b5cf6, #38bdf8);
-    border-radius: 10px;
+    background: linear-gradient(#6366f1, #38bdf8);
+    border-radius: 999px;
+}
+
+/* ===== FOOTER TEXT (if used) ===== */
+#footer-text {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #c7c27c;
+    margin-top: 1.75rem;
 }
 """
+
 
 # custom_css = """
 # #app-title {
@@ -356,7 +417,7 @@ with gr.Blocks(
                         report_status = gr.Textbox(
                             label="Report Status",
                             placeholder="Report generation status will appear here...",
-                            lines=3,
+                            lines=1,
                         )
 
                         # api_button = gr.Button(
