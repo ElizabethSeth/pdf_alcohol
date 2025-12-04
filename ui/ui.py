@@ -7,10 +7,10 @@ import os, re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 
-#API_URL = "http://api:8003"
+API_URL = "http://api:8003"
 
 
-API_URL = "https://generate-reports.api.elsth.com"
+#API_URL = "https://generate-reports.api.elsth.com"
 
 def upload_pdfs_client(files, collection_name):
     if not files:
@@ -271,7 +271,7 @@ with gr.Blocks(title="SR-KES") as app:
                 
                 collection_name_input = gr.Textbox(
                     label="Collection name",
-                    placeholder="e.g. pernod24, brown_forman_fy24",
+                    placeholder="Enter a name for the Qdrant collection",
                     max_lines=1,
                 )
 
