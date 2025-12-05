@@ -51,20 +51,18 @@ def upload_pdfs_client(files, collection_name):
     
 
 def fetch_collections_client():
-    try:
-        resp = requests.get(f"{API_URL}/all_collections", timeout=10)
 
-        if resp.status_code == 200:
-            data = resp.json()
-            names = [item["collection_name"] for item in data]
-            if not names:
-                return gr.update(choices=[], value=None), "📭 No collections found"
-            return gr.update(choices=names, value=names[0]), "✅ Collections loaded"
-        else:
-            return gr.update(choices=[], value=None), f"❌ Error: {resp.text}"
+    resp = requests.get(f"{API_URL}/all_collections", timeout=10)
 
-    except Exception as e:
-        return gr.update(choices=[], value=None), f"❌ Error: {str(e)}"
+    if resp.status_code == 200:
+        data = resp.json()
+        names = [item["collection_name"] for item in data]
+        if not names:
+            return gr.update(choices=[], value=None), "📭 No collections found"
+        return gr.update(choices=names, value=names[0]), "✅ Collections loaded"
+    else:
+        return gr.update(choices=[], value=None), f"❌ Error: {resp.text}"
+
 
 
 
@@ -77,30 +75,22 @@ def generate_excel_client(selected_collections):
         collection_names = [selected_collections]
     else:
         collection_names = selected_collections
+    resp = requests.post(
+        f"{API_URL}/return_excel",
+        json=collection_names,
+        timeout=2000,
+    )
+    if len(collection_names) == 1:
+        file_name = f"{collection_names[0]}.xlsx"
+    else:
+        joined = "_".join(collection_names)
+        file_name = f"report_{joined}.xlsx"
 
-    try:
-        resp = requests.post(
-            f"{API_URL}/return_excel",
-            json=collection_names,
-            timeout=2000,
-        )
-        if resp.status_code == 200:
-            if len(collection_names) == 1:
-                file_name = f"{collection_names[0]}.xlsx"
-            else:
-                joined = "_".join(collection_names)
-                file_name = f"report_{joined}.xlsx"
+    output_path = file_name
+    with open(output_path, "wb") as f:
+        f.write(resp.content)
 
-            output_path = file_name
-            with open(output_path, "wb") as f:
-                f.write(resp.content)
-
-            return output_path, f"✅ Report successfully generated: {file_name}"
-        else:
-            return None, f"❌ Error from /return_excel: {resp.text}"
-
-    except Exception as e:
-        return None, f"❌ Error during report generation: {str(e)}"
+    return output_path, {file_name}
 
 custom_css = """
 /* ===== ROOT / BACKGROUND ===== */
