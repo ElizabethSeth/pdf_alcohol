@@ -48,9 +48,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.output_parsers.pydantic import PydanticOutputParser
 from langchain_core.prompts.prompt import PromptTemplate
 import json 
-from datetime import datetime
+from datetime import datetime, timezone
 app = FastAPI()
-
+from google.cloud import bigquery
 load_dotenv()
 #QDRANT_URL = os.getenv("QDRANT_URL")
 client_qd = QdrantClient(path="./qdrant_data")
@@ -65,6 +65,17 @@ dim = 1536
 
 splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=2200, chunk_overlap=200)
 executor = ThreadPoolExecutor(max_workers=10)
+
+
+# BigQuery_id = os.getenv('BIGQUERY_PROJECT_ID')
+# BigQuery_database = os.getenv('BIGQUERY_DATASET')
+# BigQuery_table = os.getenv('BIGQUERY_TABLE')
+
+
+# client = bigquery.Client(project=BigQuery_id)
+# dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
+DATASET_ID = "Reports"
+PROJECT_ID = "vibrant-period-472510-g7"
 
 
 def get_vectorstore() -> QdrantVectorStore:
@@ -1638,17 +1649,17 @@ class Responsible_consumption(BaseModel):
 
 group_fields = {
     "FiscalYear": [Year , Period_start , Period_end],
-    #"Region": [EMEA_Net_sales ,EMEA_Revenue_growth_pct, APAC_Net_sales , Europe_Net_sales , Global_Net_sales, Rest_of_World_Net_sales],
-    "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps] ,# Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Operating_income , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
+    "Region": [EMEA_Net_sales ,EMEA_Revenue_growth_pct, APAC_Net_sales , Europe_Net_sales , Global_Net_sales, Rest_of_World_Net_sales],
+    "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps, Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Operating_income , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
     "FreeCashFlow_Debt": [Free_cash_flow_amount,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed],
-    #"Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_local_brands, Non_alcoholic_brands],
-    #"Sales_Drinks": [Fy_group_net_sales_current, Fy_group_net_sales_prior, Fy_group_net_sales_reported_change_pct , Fy_group_net_sales_organic_change_pct,Fy_group_net_sales_perimeter_contrib_pct, Fy_group_net_sales_fx_contrib_pct, Fy_region_net_sales_current, Fy_region_net_sales_prior, Fy_region_net_sales_reported_change_pct, Fy_region_net_sales_organic_change_pct ,
-    #Fy_region_net_sales_perimeter_contrib_pct, Fy_region_net_sales_fx_contrib_pct, Fy_region_net_sales_share_of_group_pct, H2_group_net_sales_current, H2_group_net_sales_prior , H2_group_net_sales_reported_change_pct , H2_group_net_sales_organic_change_pct, Q4_region_net_sales_current, Q4_region_net_sales_prior, Q4_region_net_sales_reported_change_pct, Q4_region_net_sales_organic_change_pct, Fx_impact, Perimeter_impact,Americas_growth,Usa_growth,Asia_row_growth,China_growth,India_growth],
-    #"Results_Drinks": [Pro_amount,Pro_organic_growth_pct,Gross_margin_expansion_bps,Ap_amount,Ap_pct_of_net_sales],#Operating_margin_org_bps,Operating_margin_org_pct,Operating_margin_reported_pct,Fx_impact_amount,Perimeter_effect_amount,Group_share_net_pro_amount,Group_share_net_pro_change_pct,Avg_cost_of_debt_pct,Group_share_net_profit_amount,Group_share_net_profit_change_pct, Eps_amount],
-    #"Corporate_information": [Headquarters,Executive_committee_examples,Executive_committee_quantity,Board_of_directors_examples,Board_of_directors_quantity,Affiliate_name,Affiliates,Affiliate_quantity,Avg_age,Qty_nationalities],
-    #"Social_DEI": [Total_employees_social, Women_in_workforce_pct, Women_in_management_pct, Ethnically_diverse_leaders_pct, Employees_with_disabilities_pct_social, Lgbtq_inclusion_programs, Community_investment_amount],
-    #"Environmental": [Carbon_emissions_total, Carbon_emissions_scope3, Emission_intensity, Renewable_energy_pct, Energy_consumption_total, Water_withdrawal_total, Waste_recycled_pct, Biodiversity_initiatives],
-    #"Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
+    "Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_local_brands, Non_alcoholic_brands],
+    "Sales_Drinks": [Fy_group_net_sales_current, Fy_group_net_sales_prior, Fy_group_net_sales_reported_change_pct , Fy_group_net_sales_organic_change_pct,Fy_group_net_sales_perimeter_contrib_pct, Fy_group_net_sales_fx_contrib_pct, Fy_region_net_sales_current, Fy_region_net_sales_prior, Fy_region_net_sales_reported_change_pct, Fy_region_net_sales_organic_change_pct ,
+    Fy_region_net_sales_perimeter_contrib_pct, Fy_region_net_sales_fx_contrib_pct, Fy_region_net_sales_share_of_group_pct, H2_group_net_sales_current, H2_group_net_sales_prior , H2_group_net_sales_reported_change_pct , H2_group_net_sales_organic_change_pct, Q4_region_net_sales_current, Q4_region_net_sales_prior, Q4_region_net_sales_reported_change_pct, Q4_region_net_sales_organic_change_pct, Fx_impact, Perimeter_impact,Americas_growth,Usa_growth,Asia_row_growth,China_growth,India_growth],
+    "Results_Drinks": [Pro_amount,Pro_organic_growth_pct,Gross_margin_expansion_bps,Ap_amount,Ap_pct_of_net_sales,Operating_margin_org_bps,Operating_margin_org_pct,Operating_margin_reported_pct,Fx_impact_amount,Perimeter_effect_amount,Group_share_net_pro_amount,Group_share_net_pro_change_pct,Avg_cost_of_debt_pct,Group_share_net_profit_amount,Group_share_net_profit_change_pct, Eps_amount],
+    "Corporate_information": [Headquarters,Executive_committee_examples,Executive_committee_quantity,Board_of_directors_examples,Board_of_directors_quantity,Affiliate_name,Affiliates,Affiliate_quantity,Avg_age,Qty_nationalities],
+    "Social_DEI": [Total_employees_social, Women_in_workforce_pct, Women_in_management_pct, Ethnically_diverse_leaders_pct, Employees_with_disabilities_pct_social, Lgbtq_inclusion_programs, Community_investment_amount],
+    "Environmental": [Carbon_emissions_total, Carbon_emissions_scope3, Emission_intensity, Renewable_energy_pct, Energy_consumption_total, Water_withdrawal_total, Waste_recycled_pct, Biodiversity_initiatives],
+    "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
 }
 
 
@@ -1763,6 +1774,7 @@ async def add_collection(
 
         loop = asyncio.get_event_loop()
         text = await loop.run_in_executor(executor, extract_text_from_pdf, pdf_bytes)
+        file_hash = hashlib.sha256(pdf_bytes).hexdigest()
 
         await loop.run_in_executor(executor, ensure_collection, name, dim)
         await loop.run_in_executor(executor, text_into_qdrant, name, text)
@@ -1780,6 +1792,34 @@ async def add_collection(
 
 
 
+
+def bq_insert(col_name:str, file_name:str, file_hash:str):
+    rows = [
+        {   
+            "collection_name": col_name,
+            "file_name": file_name,
+            "file_hash": file_hash,
+            "processed_at": datetime.now(timezone.utc).isoformat(),
+        }
+    ]
+    client.insert_rows_json(table=f"{BigQuery_database}.{BigQuery_table}", json_rows=rows)
+
+
+
+
+
+
+def bq_hash(file_hash):
+
+    query = f'''
+    Select *
+    from {hash_table}
+    where file_hash = "{file_hash}"
+    '''
+    return len(list(client.query(query).result())) > 0
+
+
+
 @app.post("/upload_pdfs")
 async def upload_pdfs(
     col_name: str = Form(...),
@@ -1792,7 +1832,7 @@ async def upload_pdfs(
             pdf_bytes = await file.read()
             text = extract_text_from_pdf(pdf_bytes)
             text_into_qdrant(collection_name=col_name, text=text)
-
+        
         return {
             "status": "success",
             "collection_name": col_name,
@@ -1810,34 +1850,59 @@ def make_df_excel_safe(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def file_sha256(files: List[UploadFile] ) -> str:
+    lst = []
+    for file in files:
+        pdf_reader = PdfReader(io.BytesIO(file))
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text() + "\n"
+        lst.append(text)
+    lst.sort()
+    text = "\n\n".join(lst)
+    h = hashlib.sha256()
+    h.update(text)
+    return h.hexdigest()
+
+
+
+
 @app.post("/return_excel")
-async def return_excel(collection_names: List[str] = Body(...)):
+async def return_excel(collection_names: List[str] = Body(...), files: List[UploadFile] = File(...)):
     all_frames: Dict[str, pd.DataFrame] = {}
-        
-    for sheet_name, class_list in group_fields.items():
-        cols = [cls.__name__ for cls in class_list]
-        tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-        all_results = await asyncio.gather(*tasks)
-        df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-
-        all_frames[sheet_name] = df
-
-    buf = io.BytesIO()
-    with pd.ExcelWriter(buf, engine="openpyxl") as w:
-        for sheet, df in all_frames.items():
-            wsheet = sheet[:31]
-            df_safe = make_df_excel_safe(df)
-            df_safe.to_excel(w, sheet_name=wsheet)
-    buf.seek(0)
-
-    if len(collection_names) == 1:
-        file_name = f"{collection_names[0]}.xlsx"
+    
+    file_hash = file_sha256(files)
+    
+    if bq_hash(file_hash):
+        pass
     else:
-        joined = "_".join(collection_names)
-        file_name = f"report_{joined}.xlsx"
+        for sheet_name, class_list in group_fields.items():
+            cols = [cls.__name__ for cls in class_list]
+            tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
+            all_results = await asyncio.gather(*tasks)
+            df = pd.DataFrame(all_results, columns=cols, index=collection_names)
 
-    return StreamingResponse(
-        io.BytesIO(buf.read()),
-        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
-    )
+            all_frames[sheet_name] = df.copy()
+            df["Hash"] = file_hash
+            client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{BigQuery_table}", dataframe=df)
+            
+
+        buf = io.BytesIO()
+        with pd.ExcelWriter(buf, engine="openpyxl") as w:
+            for sheet, df in all_frames.items():
+                wsheet = sheet[:31]
+                df_safe = make_df_excel_safe(df)
+                df_safe.to_excel(w, sheet_name=wsheet)
+        buf.seek(0)
+
+        if len(collection_names) == 1:
+            file_name = f"{collection_names[0]}.xlsx"
+        else:
+            joined = "_".join(collection_names)
+            file_name = f"report_{joined}.xlsx"
+
+        return StreamingResponse(
+            io.BytesIO(buf.read()),
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
+        )

@@ -13,3 +13,4 @@ docx
 langchain_community
 gradio
 openpyxl
+bigquery
