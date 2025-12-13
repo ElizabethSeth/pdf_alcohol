@@ -1786,12 +1786,6 @@ async def add_collection(
         return {"status": "error", "message": str(e)}
 
 
-# @app.post("/return_apikey")
-# async def return_apikey():
-#     return {"api_key": OPENAI_API_KEY}
-
-
-
 
 def bq_insert(col_name:str, file_name:str, file_hash:str):
     rows = [
@@ -1813,7 +1807,7 @@ def bq_hash(file_hash):
 
     query = f'''
     Select *
-    from {hash_table}
+    from "{BigQuery_database}.{BigQuery_table}"
     where file_hash = "{file_hash}"
     '''
     return len(list(client.query(query).result())) > 0
@@ -1884,7 +1878,7 @@ async def return_excel(collection_names: List[str] = Body(...), files: List[Uplo
 
             all_frames[sheet_name] = df.copy()
             df["Hash"] = file_hash
-            client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{BigQuery_table}", dataframe=df)
+            client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{sheet_name}", dataframe=df)
             
 
         buf = io.BytesIO()
