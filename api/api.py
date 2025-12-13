@@ -67,15 +67,15 @@ splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=2200,
 executor = ThreadPoolExecutor(max_workers=10)
 
 
-# BigQuery_id = os.getenv('BIGQUERY_PROJECT_ID')
-# BigQuery_database = os.getenv('BIGQUERY_DATASET')
-# BigQuery_table = os.getenv('BIGQUERY_TABLE')
+BigQuery_id = os.getenv('DATASET_ID')
+BigQuery_database = os.getenv('PROJECT_ID')
+BigQuery_table = os.getenv('BIGQUERY_TABLE')
 
 
-# client = bigquery.Client(project=BigQuery_id)
-# dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
-DATASET_ID = "Reports"
-PROJECT_ID = "vibrant-period-472510-g7"
+client = bigquery.Client(project=BigQuery_id)
+dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
+# DATASET_ID = "Reports"
+# PROJECT_ID = "vibrant-period-472510-g7"
 
 
 def get_vectorstore() -> QdrantVectorStore:
