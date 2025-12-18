@@ -2,7 +2,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import io
 from fastapi.responses import StreamingResponse
-from fastapi.temp_pydantic_v1_params import Body
+from fastapi import Body
 from langchain_ollama import OllamaEmbeddings
 from qdrant_client import QdrantClient
 import os
@@ -1860,43 +1860,86 @@ def file_sha256(files: List[UploadFile] ) -> str:
 
 
 
-
 @app.post("/return_excel")
-async def return_excel(collection_names: List[str] = Body(...), files: List[UploadFile] = File(...)):
+async def return_excel(collection_names: List[str]=Body(...)):
     all_frames: Dict[str, pd.DataFrame] = {}
-    
-    file_hash = file_sha256(files)
-    
-    if bq_hash(file_hash):
-        pass
-    else:
-        for sheet_name, class_list in group_fields.items():
-            cols = [cls.__name__ for cls in class_list]
-            tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-            all_results = await asyncio.gather(*tasks)
-            df = pd.DataFrame(all_results, columns=cols, index=collection_names)
 
-            all_frames[sheet_name] = df.copy()
-            df["Hash"] = file_hash
-            client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{sheet_name}", dataframe=df)
+    for sheet_name, class_list in group_fields.items():
+        cols = [cls.__name__ for cls in class_list]
+        tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
+        all_results = await asyncio.gather(*tasks)
+        df = pd.DataFrame(all_results, columns=cols, index=collection_names)
+
+        all_frames[sheet_name] = df.copy()
+        
+
+    buf = io.BytesIO()
+    with pd.ExcelWriter(buf, engine="openpyxl") as w:
+        for sheet, df in all_frames.items():
+            wsheet = sheet[:31]
+            df_safe = make_df_excel_safe(df)
+            df_safe.to_excel(w, sheet_name=wsheet)
+    buf.seek(0)
+
+    if len(collection_names) == 1:
+        file_name = f"{collection_names[0]}.xlsx"
+    else:
+        joined = "_".join(collection_names)
+        file_name = f"report_{joined}.xlsx"
+
+    return StreamingResponse(
+        io.BytesIO(buf.read()),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+# @app.post("/return_excel")
+# async def return_excel(collection_names: List[str]=Body(...), files: List[UploadFile] = File(...)):
+#     all_frames: Dict[str, pd.DataFrame] = {}
+    
+#     file_hash = file_sha256(files)
+    
+#     if bq_hash(file_hash):
+#         pass
+#     else:
+#         for sheet_name, class_list in group_fields.items():
+#             cols = [cls.__name__ for cls in class_list]
+#             tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
+#             all_results = await asyncio.gather(*tasks)
+#             df = pd.DataFrame(all_results, columns=cols, index=collection_names)
+
+#             all_frames[sheet_name] = df.copy()
+#             df["Hash"] = file_hash
+#             client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{sheet_name}", dataframe=df)
             
 
-        buf = io.BytesIO()
-        with pd.ExcelWriter(buf, engine="openpyxl") as w:
-            for sheet, df in all_frames.items():
-                wsheet = sheet[:31]
-                df_safe = make_df_excel_safe(df)
-                df_safe.to_excel(w, sheet_name=wsheet)
-        buf.seek(0)
+#         buf = io.BytesIO()
+#         with pd.ExcelWriter(buf, engine="openpyxl") as w:
+#             for sheet, df in all_frames.items():
+#                 wsheet = sheet[:31]
+#                 df_safe = make_df_excel_safe(df)
+#                 df_safe.to_excel(w, sheet_name=wsheet)
+#         buf.seek(0)
 
-        if len(collection_names) == 1:
-            file_name = f"{collection_names[0]}.xlsx"
-        else:
-            joined = "_".join(collection_names)
-            file_name = f"report_{joined}.xlsx"
+#         if len(collection_names) == 1:
+#             file_name = f"{collection_names[0]}.xlsx"
+#         else:
+#             joined = "_".join(collection_names)
+#             file_name = f"report_{joined}.xlsx"
 
-        return StreamingResponse(
-            io.BytesIO(buf.read()),
-            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
-        )
+#         return StreamingResponse(
+#             io.BytesIO(buf.read()),
+#             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+#             headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
+#         )
