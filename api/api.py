@@ -69,7 +69,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 BigQuery_id = os.getenv('PROJECT_ID')
 BigQuery_database = os.getenv('DATASET_ID') 
-BigQuery_table = os.getenv('BIGQUERY_TABLE')
+#BigQuery_table = os.getenv('BIGQUERY_TABLE')
 
 
 client = bigquery.Client(project=BigQuery_id)
