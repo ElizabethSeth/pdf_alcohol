@@ -66,7 +66,7 @@ def fetch_collections_client():
 
 
 
-def generate_excel_client(selected_collections):
+def generate_excel_client(selected_collections, pdf_files):
    
     if not selected_collections:
         return None, "⚠️ Please select at least one collection"
@@ -76,11 +76,19 @@ def generate_excel_client(selected_collections):
     else:
         collection_names = selected_collections
 
-    data = [("collection_names", name) for name in collection_names]
+    files_to_hash = []
+    for file in pdf_files:
+        file_path = file if isinstance(file, str) else file.name
+        files_to_hash.append(
+            (
+                "files",
+                (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
+            )
+        )
     resp = requests.post(
         f"{API_URL}/return_excel",
-        json=data,  #instead of collection_names
-        files=[("files", ("dummy.txt", b"1", "text/plain"))],
+        json=collection_names,  #instead of collection_names
+        files=files_to_hash,
         timeout=2000,
     )
 
@@ -345,7 +353,7 @@ with gr.Blocks(title="SR-KES") as app:
 
     generate_btn.click(
         fn=generate_excel_client,
-        inputs=[collections_dropdown],
+        inputs=[collections_dropdown, pdf_input],
         outputs=[excel_output, report_status],
     )
 
