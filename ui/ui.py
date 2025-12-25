@@ -75,12 +75,15 @@ def generate_excel_client(selected_collections):
         collection_names = [selected_collections]
     else:
         collection_names = selected_collections
+
+    data = [("collection_names", name) for name in collection_names]
     resp = requests.post(
         f"{API_URL}/return_excel",
         json=collection_names,
         files=[("files", ("dummy.txt", b"1", "text/plain"))],
         timeout=2000,
     )
+
     if len(collection_names) == 1:
         file_name = f"{collection_names[0]}.xlsx"
     else:
