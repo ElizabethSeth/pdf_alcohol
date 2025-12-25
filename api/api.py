@@ -67,8 +67,8 @@ splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(chunk_size=2200,
 executor = ThreadPoolExecutor(max_workers=10)
 
 
-BigQuery_id = os.getenv('DATASET_ID')
-BigQuery_database = os.getenv('PROJECT_ID')
+BigQuery_id = os.getenv('PROJECT_ID')
+BigQuery_database = os.getenv('DATASET_ID') 
 BigQuery_table = os.getenv('BIGQUERY_TABLE')
 
 
@@ -1860,86 +1860,79 @@ def file_sha256(files: List[UploadFile] ) -> str:
 
 
 
-@app.post("/return_excel")
-async def return_excel(collection_names: List[str]=Body(...)):
-    all_frames: Dict[str, pd.DataFrame] = {}
+# @app.post("/return_excel")
+# async def return_excel(collection_names: List[str]=Body(...)):
+#     all_frames: Dict[str, pd.DataFrame] = {}
 
-    for sheet_name, class_list in group_fields.items():
-        cols = [cls.__name__ for cls in class_list]
-        tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-        all_results = await asyncio.gather(*tasks)
-        df = pd.DataFrame(all_results, columns=cols, index=collection_names)
+#     for sheet_name, class_list in group_fields.items():
+#         cols = [cls.__name__ for cls in class_list]
+#         tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
+#         all_results = await asyncio.gather(*tasks)
+#         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
 
-        all_frames[sheet_name] = df.copy()
+#         all_frames[sheet_name] = df.copy()
         
 
-    buf = io.BytesIO()
-    with pd.ExcelWriter(buf, engine="openpyxl") as w:
-        for sheet, df in all_frames.items():
-            wsheet = sheet[:31]
-            df_safe = make_df_excel_safe(df)
-            df_safe.to_excel(w, sheet_name=wsheet)
-    buf.seek(0)
+#     buf = io.BytesIO()
+#     with pd.ExcelWriter(buf, engine="openpyxl") as w:
+#         for sheet, df in all_frames.items():
+#             wsheet = sheet[:31]
+#             df_safe = make_df_excel_safe(df)
+#             df_safe.to_excel(w, sheet_name=wsheet)
+#     buf.seek(0)
 
-    if len(collection_names) == 1:
-        file_name = f"{collection_names[0]}.xlsx"
-    else:
-        joined = "_".join(collection_names)
-        file_name = f"report_{joined}.xlsx"
-
-    return StreamingResponse(
-        io.BytesIO(buf.read()),
-        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
-    )
-
-
-
-
-
-
-
-
-
-
-
-
-# @app.post("/return_excel")
-# async def return_excel(collection_names: List[str]=Body(...), files: List[UploadFile] = File(...)):
-#     all_frames: Dict[str, pd.DataFrame] = {}
-    
-#     file_hash = file_sha256(files)
-    
-#     if bq_hash(file_hash):
-#         pass
+#     if len(collection_names) == 1:
+#         file_name = f"{collection_names[0]}.xlsx"
 #     else:
-#         for sheet_name, class_list in group_fields.items():
-#             cols = [cls.__name__ for cls in class_list]
-#             tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-#             all_results = await asyncio.gather(*tasks)
-#             df = pd.DataFrame(all_results, columns=cols, index=collection_names)
+#         joined = "_".join(collection_names)
+#         file_name = f"report_{joined}.xlsx"
 
-#             all_frames[sheet_name] = df.copy()
-#             df["Hash"] = file_hash
-#             client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{sheet_name}", dataframe=df)
+#     return StreamingResponse(
+#         io.BytesIO(buf.read()),
+#         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+#         headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
+#     )
+
+
+
+
+
+@app.post("/return_excel")
+async def return_excel(collection_names: List[str]=Body(...), files: List[UploadFile] = File(...)):
+    all_frames: Dict[str, pd.DataFrame] = {}
+    
+    file_hash = file_sha256(files)
+    
+    if bq_hash(file_hash):
+        pass
+    else:
+        for sheet_name, class_list in group_fields.items():
+            cols = [cls.__name__ for cls in class_list]
+            tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
+            all_results = await asyncio.gather(*tasks)
+            df = pd.DataFrame(all_results, columns=cols, index=collection_names)
+
+            all_frames[sheet_name] = df.copy()
+            df["Hash"] = file_hash
+            client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{sheet_name}", dataframe=df)
             
 
-#         buf = io.BytesIO()
-#         with pd.ExcelWriter(buf, engine="openpyxl") as w:
-#             for sheet, df in all_frames.items():
-#                 wsheet = sheet[:31]
-#                 df_safe = make_df_excel_safe(df)
-#                 df_safe.to_excel(w, sheet_name=wsheet)
-#         buf.seek(0)
+        buf = io.BytesIO()
+        with pd.ExcelWriter(buf, engine="openpyxl") as w:
+            for sheet, df in all_frames.items():
+                wsheet = sheet[:31]
+                df_safe = make_df_excel_safe(df)
+                df_safe.to_excel(w, sheet_name=wsheet)
+        buf.seek(0)
 
-#         if len(collection_names) == 1:
-#             file_name = f"{collection_names[0]}.xlsx"
-#         else:
-#             joined = "_".join(collection_names)
-#             file_name = f"report_{joined}.xlsx"
+        if len(collection_names) == 1:
+            file_name = f"{collection_names[0]}.xlsx"
+        else:
+            joined = "_".join(collection_names)
+            file_name = f"report_{joined}.xlsx"
 
-#         return StreamingResponse(
-#             io.BytesIO(buf.read()),
-#             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#             headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
-#         )
+        return StreamingResponse(
+            io.BytesIO(buf.read()),
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
+        )

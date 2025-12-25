@@ -78,6 +78,7 @@ def generate_excel_client(selected_collections):
     resp = requests.post(
         f"{API_URL}/return_excel",
         json=collection_names,
+        files=[("files", ("dummy.txt", b"1", "text/plain"))],
         timeout=2000,
     )
     if len(collection_names) == 1:
