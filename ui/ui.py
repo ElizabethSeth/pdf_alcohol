@@ -7,10 +7,10 @@ import os, re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 
-#API_URL = "http://api:8003"
+API_URL = "http://api:8003"
 
 
-API_URL = "https://generate-reports.api.elsth.com"
+#API_URL = "https://generate-reports.api.elsth.com"
 
 def upload_pdfs_client(files, collection_name):
     if not files:
@@ -64,19 +64,15 @@ def fetch_collections_client():
         return gr.update(choices=[], value=None), f"❌ Error: {resp.text}"
 
 
-
-
 def generate_excel_client(selected_collections, pdf_files):
    
     if not selected_collections:
         return None, "⚠️ Please select at least one collection"
 
-    if isinstance(selected_collections, str):
-        collection_names = [selected_collections]
-    else:
-        collection_names = selected_collections
+    collection_names = selected_collections
 
     files_to_hash = []
+    
     for file in pdf_files:
         file_path = file if isinstance(file, str) else file.name
         files_to_hash.append(
@@ -85,9 +81,10 @@ def generate_excel_client(selected_collections, pdf_files):
                 (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
             )
         )
+
     resp = requests.post(
         f"{API_URL}/return_excel",
-        json=collection_names,  #instead of collection_names
+        data={"collection_names": collection_names},  #instead of collection_names
         files=files_to_hash,
         timeout=2000,
     )

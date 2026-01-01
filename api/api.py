@@ -1897,7 +1897,7 @@ def file_sha256(files: List[UploadFile] ) -> str:
 
 
 @app.post("/return_excel")
-async def return_excel(collection_names: List[str]=Body(...), files: List[UploadFile] = File(...)):
+async def return_excel(collection_names: str=Form(...), files: List[UploadFile] = File(...)):
     all_frames: Dict[str, pd.DataFrame] = {}
     
     file_hash = file_sha256(files)
