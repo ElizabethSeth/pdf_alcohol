@@ -1662,6 +1662,40 @@ group_fields = {
     "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
 }
 
+from login_endpoint import router as login_router
+app.include_router(login_router)
+
+from datetime import datetime, timedelta, timezone
+from secrets import token_urlsafe
+
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel, EmailStr
+
+LOGIN_SESSIONS = {}
+
+class LoginIn(BaseModel):
+    email: EmailStr
+    consent: bool
+
+@app.post("/login")
+def login(payload: LoginIn):
+    if not payload.consent:
+        raise HTTPException(status_code=400, detail="Consent required")
+
+    now = datetime.now(timezone.utc)
+    expires_at = now + timedelta(days=20)
+
+    token = token_urlsafe(32)
+
+    LOGIN_SESSIONS[token] = {
+        "email": payload.email.lower(),
+        "expires_at": expires_at,
+    }
+
+    return {
+        "token": token,
+        "expires_at": expires_at.isoformat(),
+    }
 
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
