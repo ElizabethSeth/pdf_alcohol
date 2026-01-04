@@ -1694,7 +1694,6 @@ def login(payload: LoginIn):
         "expires_at": expires_at.isoformat(),
     }
 
-
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     try:
         pdf_reader = PdfReader(io.BytesIO(pdf_bytes))
@@ -1783,7 +1782,6 @@ async def process_collection_for_sheet(coll: str, class_list: List):
     results = await asyncio.gather(*tasks)
     
     return results
-
 
 @app.get("/all_collections")
 async def all_collections():
