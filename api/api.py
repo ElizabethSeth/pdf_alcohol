@@ -1662,9 +1662,6 @@ group_fields = {
     "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
 }
 
-from login_endpoint import router as login_router
-app.include_router(login_router)
-
 from datetime import datetime, timedelta, timezone
 from secrets import token_urlsafe
 
