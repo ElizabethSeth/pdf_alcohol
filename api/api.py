@@ -1662,35 +1662,56 @@ group_fields = {
     "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
 }
 
-from datetime import datetime, timedelta, timezone
-from secrets import token_urlsafe
-from pydantic import BaseModel, EmailStr
+from sqlalchemy import Column, String , Integer, DateTime
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import create_engine
+from typing import Generator, Optional
+from datetime import datetime, timezone
+from sqlalchemy import create_engine, String, Integer, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, Session
 
-LOGIN_SESSIONS = {}
+DATABASE_URL = "postgresql+psycopg://user_ps:1234@35.202.127.228:5432/postgress_db"
 
-class LoginIn(BaseModel):
-    email: EmailStr
+# Engine = DB connection pool
+engine = create_engine(
+    DATABASE_URL,
+    echo=False,      # set True to see SQL logs
+    pool_pre_ping=True,
+)
+
+# Session factory
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+class Base(DeclarativeBase):
+    pass
+
+class User(Base):
+    __tablename__ = "private_data"
+    __table_args__ = {'schema': 'data'}
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    password: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    login_time: Mapped[Optional[datetime]] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    consent: Mapped[Optional[bool]] = mapped_column(Integer, default=0)
+
+class LoginRequest(BaseModel):
+    email: str
     password: str
-
-@app.post("/login")
-
+    consent: bool | None = None
 
 
 
-    #now = datetime.now(timezone.utc)
-    # expires_at = timedelta(days=20)
+# @app.post("/login")
+# def login(payload: LoginRequest):
+#     db = SessionLocal()
+#     lines = User(email=payload.email, password=payload.password, consent=payload.consent)
 
-    # token = token_urlsafe(32)
-
-    # LOGIN_SESSIONS[token] = {
-    #     "email": payload.email.lower(),
-    #     "expires_at": expires_at,
-    # }
-
-    # return {
-    #     "token": token,
-    #     "expires_at": expires_at.isoformat(),
-    # }
+#     db.add(lines)
+#     #db.commit()
+#     db.refresh(lines)
+#     db.close()
+#     return {"status": "success", "message": "Login data stored successfully."}
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     try:

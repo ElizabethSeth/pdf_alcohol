@@ -15,7 +15,7 @@ API_URL = "http://api:8003"
 
 def login(email:str, password:str):
     response = requests.post(
-        API_URL, 
+        f"{API_URL}/login", 
         json={"email": email, "password": password}
     )
 

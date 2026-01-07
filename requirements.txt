@@ -12,3 +12,5 @@ docx
 langchain_community
 gradio
 urllib3
+sqlalchemy
+psycopg[binary]
