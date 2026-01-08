@@ -1941,9 +1941,6 @@ def file_sha256(files: List[UploadFile] ) -> str:
 #         headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
 #     )
 
-
-
-
 @app.post("/return_excel")
 async def return_excel(collection_names: str=Form(...), files: List[UploadFile] = File(...)):
     all_frames: Dict[str, pd.DataFrame] = {}
