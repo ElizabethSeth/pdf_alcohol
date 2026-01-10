@@ -11,13 +11,13 @@ from ast import Load
 
 #API_URL = "http://api:8003"
 
-LOGIN_HTML = """
-<div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
-  <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
-</div>
-<div style="opacity:0.8;margin-bottom:8px;">
-  Use your account to access the app.
-</div>"""
+# LOGIN_HTML = """
+# <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
+#   <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
+# </div>
+# <div style="opacity:0.8;margin-bottom:8px;">
+#   Use your account to access the app.
+# </div>"""
 
 API_URL = "https://generate-reports.api.elsth.com"
 
