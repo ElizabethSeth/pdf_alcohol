@@ -109,8 +109,7 @@ def generate_excel_client(selected_collections, pdf_files):
         json=collection_names,
         timeout=2000,
     )
-
-
+    
     # resp = requests.post(
     #     f"{API_URL}/return_excel",
     #     data={"collection_names": collection_names},  #instead of collection_names
