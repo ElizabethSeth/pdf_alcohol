@@ -2550,4 +2550,3 @@ async def return_excel(collection_names: List[str]=Body(...)):
 #             io.BytesIO(buf.read()),
 #             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 #             headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
-        )
