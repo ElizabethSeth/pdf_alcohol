@@ -103,13 +103,20 @@ def generate_excel_client(selected_collections, pdf_files):
                 (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
             )
         )
-
+    
     resp = requests.post(
         f"{API_URL}/return_excel",
-        data={"collection_names": collection_names},  #instead of collection_names
-        files=files_to_hash,
+        json=collection_names,
         timeout=2000,
     )
+
+
+    # resp = requests.post(
+    #     f"{API_URL}/return_excel",
+    #     data={"collection_names": collection_names},  #instead of collection_names
+    #     files=files_to_hash,
+    #     timeout=2000,
+    # )
 
     if len(collection_names) == 1:
         file_name = f"{collection_names[0]}.xlsx"

@@ -2224,9 +2224,7 @@ group_fields = {
     WS_Volume_other_spirits_million_bottles, WS_Volume_still_sparkling_wines_million_bottles,
     WS_Sales_share_US_pct, WS_Sales_share_Asia_ex_Japan_pct, WS_Sales_share_Europe_ex_France_pct, WS_Sales_share_France_pct,
     WS_Purchase_commitments_grapes_wines_eauxdevie_total, WS_Purchase_commitments_grapes_wines_eauxdevie_lt1y,
-    WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y, WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y,
-    WS_Purchase_commitments_methodology,
-    WS_New_products_partnerships
+    WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y, WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y, WS_Purchase_commitments_methodology, WS_New_products_partnerships
 ],
 }
 
