@@ -56,7 +56,7 @@ def upload_pdfs_client(files, collection_name):
         resp = requests.post(
             f"{API_URL}/upload_pdfs",
             data=data,
-            #files=files_to_send,
+            files=files_to_send,
             timeout=1800,
         )
 
