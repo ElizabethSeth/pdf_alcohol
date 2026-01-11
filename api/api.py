@@ -2242,15 +2242,15 @@ from sqlalchemy import create_engine, String, Integer, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, Session
 
 
-# Engine = DB connection pool
-engine = create_engine(
-    DATABASE_URL,
-    echo=False,      # set True to see SQL logs
-    pool_pre_ping=True,
-)
+# # Engine = DB connection pool
+# engine = create_engine(
+#     DATABASE_URL,
+#     echo=False,      # set True to see SQL logs
+#     pool_pre_ping=True,
+# )
 
 # Session factory
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+# SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 class Base(DeclarativeBase):
     pass
@@ -2405,30 +2405,30 @@ async def add_collection(
 
 
 
-def bq_insert(col_name:str, file_name:str, file_hash:str):
-    rows = [
-        {   
-            "collection_name": col_name,
-            "file_name": file_name,
-            "file_hash": file_hash,
-            "processed_at": datetime.now(timezone.utc).isoformat(),
-        }
-    ]
-    client.insert_rows_json(table=f"{BigQuery_database}.{BigQuery_table}", json_rows=rows)
+# def bq_insert(col_name:str, file_name:str, file_hash:str):
+#     rows = [
+#         {   
+#             "collection_name": col_name,
+#             "file_name": file_name,
+#             "file_hash": file_hash,
+#             "processed_at": datetime.now(timezone.utc).isoformat(),
+#         }
+#     ]
+#     client.insert_rows_json(table=f"{BigQuery_database}.{BigQuery_table}", json_rows=rows)
 
 
 
 
 
 
-def bq_hash(file_hash):
+# def bq_hash(file_hash):
 
-    query = f'''
-    Select *
-    from "{BigQuery_database}.{BigQuery_table}"
-    where file_hash = "{file_hash}"
-    '''
-    return len(list(client.query(query).result())) > 0
+#     query = f'''
+#     Select *
+#     from "{BigQuery_database}.{BigQuery_table}"
+#     where file_hash = "{file_hash}"
+#     '''
+#     return len(list(client.query(query).result())) > 0
 
 
 
