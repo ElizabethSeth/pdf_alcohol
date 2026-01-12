@@ -1662,11 +1662,6 @@ class Period_end(BaseModel):
 #     "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
 # }
 
-from pydantic import BaseModel, Field
-
-# -----------------------------
-# 1) Period / scope (report-level, but used for the segment extraction)
-# -----------------------------
 class WS_FiscalYearEnd(BaseModel):
     question: str = Field(
         "Unknown",
@@ -1694,36 +1689,51 @@ class WS_Currency(BaseModel):
 
 # -----------------------------
 # 2) Wines & Spirits - Net sales (segment)
-# Source: Vins et Spiritueux table (sales 2024/2023/2022) + variation table
+# Source: Vins et Spiritueux table (3-year sales) + variation table
 # -----------------------------
-class WS_NetSales_2024(BaseModel):
+class WS_NetSales_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits net sales for 2024 (Ventes, en millions d’euros). Return full number in EUR (e.g., 5862000000). If not found, -1."
+        description=(
+            "Wines & Spirits net sales for the LATEST fiscal year (segment level, 'Ventes', typically in millions). "
+            "Return full number in reporting currency (convert millions to full number). If not found, -1."
+        )
     )
 
-class WS_NetSales_2023(BaseModel):
+class WS_NetSales_Prior(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits net sales for 2023 (Ventes). Return full number in EUR. If not found, -1."
+        description=(
+            "Wines & Spirits net sales for the PRIOR fiscal year (one year before the latest). "
+            "Return full number in reporting currency (convert millions to full number). If not found, -1."
+        )
     )
 
-class WS_NetSales_2022(BaseModel):
+class WS_NetSales_TwoYearsAgo(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits net sales for 2022 (Ventes). Return full number in EUR. If not found, -1."
+        description=(
+            "Wines & Spirits net sales for the fiscal year TWO YEARS BEFORE the latest. "
+            "Return full number in reporting currency (convert millions to full number). If not found, -1."
+        )
     )
 
-class WS_NetSales_ReportedChangePct_2024vs2023(BaseModel):
+class WS_NetSales_ReportedChangePct_LatestVsPrior(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits net sales REPORTED change % for 2024 vs 2023 (Variation Publiée). Return numeric value without % sign (e.g., -11). If not found, -1."
+        description=(
+            "Wines & Spirits net sales REPORTED change percentage for the LATEST fiscal year versus the PRIOR fiscal year "
+            "(e.g., 'Variation publiée'). Return numeric value without % sign, including sign if negative. If not found, -1."
+        )
     )
 
-class WS_NetSales_OrganicChangePct_2024vs2023(BaseModel):
+class WS_NetSales_OrganicChangePct_LatestVsPrior(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits net sales ORGANIC change % for 2024 vs 2023 (Variation Organique). Return numeric value without % sign (e.g., -8). If not found, -1."
+        description=(
+            "Wines & Spirits net sales ORGANIC change percentage for the LATEST fiscal year versus the PRIOR fiscal year "
+            "(e.g., 'Variation organique'). Return numeric value without % sign, including sign if negative. If not found, -1."
+        )
     )
 
 
@@ -1731,16 +1741,22 @@ class WS_NetSales_OrganicChangePct_2024vs2023(BaseModel):
 # 3) Wines & Spirits - Mix (sub-categories)
 # Source: “Dont : Champagne et vins / Cognac et spiritueux”
 # -----------------------------
-class WS_Sales_ChampagneAndWines_2024(BaseModel):
+class WS_Sales_ChampagneAndWines_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits sales for 'Champagne et vins' in 2024 (in EUR). Convert from millions to full number. If not found, -1."
+        description=(
+            "Wines & Spirits segment sales for 'Champagne et vins' in the LATEST fiscal year "
+            "(typically in millions). Convert to full number. If not found, -1."
+        )
     )
 
-class WS_Sales_CognacAndSpirits_2024(BaseModel):
+class WS_Sales_CognacAndSpirits_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits sales for 'Cognac et spiritueux' in 2024 (in EUR). Convert from millions to full number. If not found, -1."
+        description=(
+            "Wines & Spirits segment sales for 'Cognac et spiritueux' in the LATEST fiscal year "
+            "(typically in millions). Convert to full number. If not found, -1."
+        )
     )
 
 
@@ -1748,28 +1764,28 @@ class WS_Sales_CognacAndSpirits_2024(BaseModel):
 # 4) Wines & Spirits - Volume KPIs (millions of bottles)
 # Source: Ventes en volume table
 # -----------------------------
-class WS_Volume_Champagne_mBottles_2024(BaseModel):
+class WS_Volume_Champagne_mBottles_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Champagne volume sold in 2024 (millions of bottles). Return numeric value (e.g., 61.7). If not found, -1."
+        description="Champagne volume sold in the LATEST fiscal year (millions of bottles). Return numeric value only. If not found, -1."
     )
 
-class WS_Volume_Cognac_mBottles_2024(BaseModel):
+class WS_Volume_Cognac_mBottles_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Cognac volume sold in 2024 (millions of bottles). Return numeric value (e.g., 80.8). If not found, -1."
+        description="Cognac volume sold in the LATEST fiscal year (millions of bottles). Return numeric value only. If not found, -1."
     )
 
-class WS_Volume_OtherSpirits_mBottles_2024(BaseModel):
+class WS_Volume_OtherSpirits_mBottles_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Other spirits volume sold in 2024 (millions of bottles). Return numeric value. If not found, -1."
+        description="Other spirits volume sold in the LATEST fiscal year (millions of bottles). Return numeric value only. If not found, -1."
     )
 
-class WS_Volume_StillAndSparklingWines_mBottles_2024(BaseModel):
+class WS_Volume_StillAndSparklingWines_mBottles_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Still & sparkling wines volume sold in 2024 (millions of bottles). Return numeric value. If not found, -1."
+        description="Still & sparkling wines volume sold in the LATEST fiscal year (millions of bottles). Return numeric value only. If not found, -1."
     )
 
 
@@ -1777,174 +1793,207 @@ class WS_Volume_StillAndSparklingWines_mBottles_2024(BaseModel):
 # 5) Wines & Spirits - Geographic destination mix (%)
 # Source: Ventes par zone géographique de destination (en %)
 # -----------------------------
-class WS_GeoShare_USA_pct_2024(BaseModel):
+class WS_GeoShare_USA_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits share of sales to the United States in 2024 (%, destination). Return numeric without % sign (e.g., 34). If not found, -1."
+        description="Wines & Spirits share of sales to the United States in the LATEST fiscal year (%, destination). Return numeric without % sign. If not found, -1."
     )
 
-class WS_GeoShare_AsiaExJapan_pct_2024(BaseModel):
+class WS_GeoShare_AsiaExJapan_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits share of sales to Asia (excluding Japan) in 2024 (%). Return numeric without % sign. If not found, -1."
+        description="Wines & Spirits share of sales to Asia (excluding Japan) in the LATEST fiscal year (%). Return numeric without % sign. If not found, -1."
     )
 
-class WS_GeoShare_EuropeExFrance_pct_2024(BaseModel):
+class WS_GeoShare_EuropeExFrance_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits share of sales to Europe (excluding France) in 2024 (%). Return numeric without % sign. If not found, -1."
+        description="Wines & Spirits share of sales to Europe (excluding France) in the LATEST fiscal year (%). Return numeric without % sign. If not found, -1."
     )
 
-class WS_GeoShare_France_pct_2024(BaseModel):
+class WS_GeoShare_France_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits share of sales to France in 2024 (%). Return numeric without % sign. If not found, -1."
+        description="Wines & Spirits share of sales to France in the LATEST fiscal year (%). Return numeric without % sign. If not found, -1."
     )
 
-class WS_GeoShare_Japan_pct_2024(BaseModel):
+class WS_GeoShare_Japan_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits share of sales to Japan in 2024 (%). Return numeric without % sign. If not found, -1."
+        description="Wines & Spirits share of sales to Japan in the LATEST fiscal year (%). Return numeric without % sign. If not found, -1."
     )
 
-class WS_GeoShare_OtherMarkets_pct_2024(BaseModel):
+class WS_GeoShare_OtherMarkets_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits share of sales to 'Autres marchés' in 2024 (%). Return numeric without % sign. If not found, -1."
+        description="Wines & Spirits share of sales to 'Other markets/Autres marchés' in the LATEST fiscal year (%). Return numeric without % sign. If not found, -1."
     )
 
-class WS_Largest_GeoShare_pct_2024(BaseModel):
+class WS_Largest_GeoShare_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Among Wines & Spirits destination shares in 2024, return the LARGEST percentage value only (numeric, no % sign). If not found, -1."
+        description="Among Wines & Spirits destination shares in the LATEST fiscal year, return the LARGEST percentage value only (numeric, no % sign). If not found, -1."
     )
 
 
 # -----------------------------
 # 6) Wines & Spirits - Profitability (segment operating profit / margin)
-# Sources: segment table + ROC narrative with split
+# Sources: segment table + ROC narrative with split (if disclosed)
 # -----------------------------
-class WS_OperatingProfit_2024(BaseModel):
+class WS_OperatingProfit_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Résultat opérationnel courant' for 2024 (in EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits 'Résultat opérationnel courant' for the LATEST fiscal year (in reporting currency). Convert from millions to full number. If not found, -1."
     )
 
-class WS_OperatingProfit_2023(BaseModel):
+class WS_OperatingProfit_Prior(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits operating profit (ROC) for 2023 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits operating profit (ROC) for the PRIOR fiscal year. Convert from millions to full number. If not found, -1."
     )
 
-class WS_OperatingMargin_pct_2024(BaseModel):
+class WS_OperatingMargin_pct_Latest(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits operating margin % for 2024. Return numeric without % sign (e.g., 23.1). If not found, -1."
+        description="Wines & Spirits operating margin (%) for the LATEST fiscal year. Return numeric without % sign. If not found, -1."
     )
 
-class WS_OperatingProfit_ChangePct_2024vs2023(BaseModel):
+class WS_OperatingProfit_ChangePct_LatestVsPrior(BaseModel):
     question: float = Field(
         -1,
-        description="Wines & Spirits operating profit (ROC) % change vs 2023 as stated in text (e.g., 'en baisse de 36%'). Return numeric with sign (e.g., -36). If not found, -1."
+        description=(
+            "Wines & Spirits operating profit (ROC) percentage change for the LATEST fiscal year versus the PRIOR year "
+            "as stated in the narrative text. Return numeric with sign. If not found, -1."
+        )
     )
 
-class WS_OperatingProfitSplit_ChampagneWines_2024(BaseModel):
+class WS_OperatingProfitSplit_ChampagneWines_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Operating profit split: amount attributed to 'champagnes et vins' for Wines & Spirits in 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description=(
+            "If disclosed, operating profit split: amount attributed to 'champagnes et vins' for Wines & Spirits "
+            "in the LATEST fiscal year. Convert from millions to full number. If not found, -1."
+        )
     )
 
-class WS_OperatingProfitSplit_CognacSpirits_2024(BaseModel):
+class WS_OperatingProfitSplit_CognacSpirits_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Operating profit split: amount attributed to 'cognac et spiritueux' for Wines & Spirits in 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description=(
+            "If disclosed, operating profit split: amount attributed to 'cognac et spiritueux' for Wines & Spirits "
+            "in the LATEST fiscal year. Convert from millions to full number. If not found, -1."
+        )
     )
 
 
 # -----------------------------
 # 7) Wines & Spirits - Segment balance sheet & capex (sector information note)
-# Source: Note 24.1 "Informations par groupe d’activités"
+# Source: Note 24.1 "Informations par groupe d’activités" (if present in report)
 # -----------------------------
-class WS_TotalAssets_2024(BaseModel):
+class WS_TotalAssets_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Total actif' for 2024 from sector information table (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits 'Total actif' for the LATEST fiscal year from sector information table. Convert from millions to full number. If not found, -1."
     )
 
-class WS_IntangiblesAndGoodwill_2024(BaseModel):
+class WS_IntangiblesAndGoodwill_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Immo. incorporelles et écarts d’acquisition' for 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits 'Immo. incorporelles et écarts d’acquisition' for the LATEST fiscal year. Convert from millions to full number. If not found, -1."
     )
 
-class WS_PPE_2024(BaseModel):
+class WS_PPE_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Immobilisations corporelles' for 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits 'Immobilisations corporelles' for the LATEST fiscal year. Convert from millions to full number. If not found, -1."
     )
 
-class WS_Inventory_2024(BaseModel):
+class WS_Inventory_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Stocks et en-cours' for 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits 'Stocks et en-cours' for the LATEST fiscal year. Convert from millions to full number. If not found, -1."
     )
 
-class WS_OperatingCapex_2024(BaseModel):
+class WS_OperatingCapex_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Investissements d’exploitation' for 2024 (EUR). Convert from millions to full number. Keep sign as shown. If not found, -1."
+        description="Wines & Spirits 'Investissements d’exploitation' for the LATEST fiscal year. Convert from millions to full number. Keep sign as shown. If not found, -1."
     )
 
-class WS_SalesOutsideGroup_2024(BaseModel):
+class WS_SalesOutsideGroup_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Ventes hors Groupe' for 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits 'Ventes hors Groupe' for the LATEST fiscal year. Convert from millions to full number. If not found, -1."
     )
 
-class WS_IntraGroupSales_2024(BaseModel):
+class WS_IntraGroupSales_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits 'Ventes intra-Groupe' for 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits 'Ventes intra-Groupe' for the LATEST fiscal year. Convert from millions to full number. If not found, -1."
     )
 
 
 # -----------------------------
 # 8) Wines & Spirits - Quarterly sales (segment)
-# Source: Note 24.3 "Informations trimestrielles"
+# Source: Note 24.3 "Informations trimestrielles" (if present in report)
 # -----------------------------
-class WS_Sales_Q1_2024(BaseModel):
+class WS_Sales_Q1_LatestFY(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits sales in Q1 2024 (EUR) from quarterly table. Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits sales in Q1 of the LATEST fiscal year (EUR). From quarterly table. Convert from millions to full number. If not found, -1."
     )
 
-class WS_Sales_Q2_2024(BaseModel):
+class WS_Sales_Q2_LatestFY(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits sales in Q2 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits sales in Q2 of the LATEST fiscal year (EUR). Convert from millions to full number. If not found, -1."
     )
 
-class WS_Sales_Q3_2024(BaseModel):
+class WS_Sales_Q3_LatestFY(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits sales in Q3 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits sales in Q3 of the LATEST fiscal year (EUR). Convert from millions to full number. If not found, -1."
     )
 
-class WS_Sales_Q4_2024(BaseModel):
+class WS_Sales_Q4_LatestFY(BaseModel):
     question: int = Field(
         -1,
-        description="Wines & Spirits sales in Q4 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Wines & Spirits sales in Q4 of the LATEST fiscal year (EUR). Convert from millions to full number. If not found, -1."
     )
 
 
 # -----------------------------
 # 9) Wines & Spirits - Supply chain / commitments (segment-relevant off-balance sheet)
-# Source: Note 30.1 commitments - grapes/wines/eaux-de-vie
+# Source: Commitments note (e.g., Note 30.1) - grapes/wines/eaux-de-vie
 # -----------------------------
-class WS_PurchaseCommitments_GrapesWinesEauxdevie_2024(BaseModel):
+class WS_PurchaseCommitments_GrapesWinesEauxdevie_Latest(BaseModel):
     question: int = Field(
         -1,
-        description="Amount of purchase commitments for 'Raisins, vins et eaux-de-vie' at 31 Dec 2024 (EUR). Convert from millions to full number. If not found, -1."
+        description="Amount of purchase commitments for 'Raisins, vins et eaux-de-vie' at year-end of the LATEST fiscal year. Convert from millions to full number. If not found, -1."
+    )
+
+class WS_PurchaseCommitments_GrapesWinesEauxdevie_lt1y_Latest(BaseModel):
+    question: int = Field(
+        -1,
+        description="Portion of 'Raisins, vins et eaux-de-vie' purchase commitments due in less than 1 year at year-end of the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_PurchaseCommitments_GrapesWinesEauxdevie_1to5y_Latest(BaseModel):
+    question: int = Field(
+        -1,
+        description="Portion due in 1 to 5 years for 'Raisins, vins et eaux-de-vie' commitments at year-end of the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_PurchaseCommitments_GrapesWinesEauxdevie_gt5y_Latest(BaseModel):
+    question: int = Field(
+        -1,
+        description="Portion due beyond 5 years for 'Raisins, vins et eaux-de-vie' commitments at year-end of the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_PurchaseCommitments_Methodology(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description="How Wines & Spirits purchase commitments are valued/estimated (contract terms vs known prices and estimated yields), as described in the notes. Provide a short summary. If not found, 'Unknown'."
     )
 
 
@@ -1957,7 +2006,7 @@ class WS_ESG_Biodiversity_Initiatives(BaseModel):
         "Unknown",
         description=(
             "Summarize biodiversity-related initiatives explicitly mentioned for Wines & Spirits "
-            "(e.g., Essentia conservatory, Living Landscapes, eco-responsible vineyards, World Living Soils Forum). "
+            "(e.g., named conservatories, sustainable viticulture programs, eco-responsible vineyards, soil forums). "
             "Return a concise summary; if not found, 'Unknown'."
         ),
     )
@@ -1967,7 +2016,7 @@ class WS_ESG_WaterManagement_Initiatives(BaseModel):
         "Unknown",
         description=(
             "Summarize Wines & Spirits water stewardship initiatives explicitly mentioned "
-            "(e.g., ISO 46001 certification, water management actions). "
+            "(e.g., ISO water certification, water management actions). "
             "Return a concise summary; if not found, 'Unknown'."
         ),
     )
@@ -1977,7 +2026,7 @@ class WS_ESG_CarbonCommitments(BaseModel):
         "Unknown",
         description=(
             "Extract and summarize statements explicitly linking Wines & Spirits to carbon footprint reduction "
-            "(e.g., 'réduire leur empreinte carbone' in Wines & Spirits outlook). "
+            "(e.g., roadmap/commitments in the Wines & Spirits outlook). "
             "Return concise summary; if not found, 'Unknown'."
         ),
     )
@@ -1987,247 +2036,191 @@ class WS_ESG_CarbonCommitments(BaseModel):
 # 11) Wines & Spirits - Market context / risks / strategy (segment narrative)
 # Sources: 'Faits marquants' and 'Perspectives'
 # -----------------------------
-class WS_KeyHeadwinds_2024(BaseModel):
+class WS_KeyHeadwinds_LatestFY(BaseModel):
     question: str = Field(
         "Unknown",
         description=(
-            "Summarize the key headwinds specifically described for Wines & Spirits in 2024 "
-            "(e.g., demand normalization, China context, US context, Champagne harvest). "
+            "Summarize the key headwinds specifically described for Wines & Spirits in the LATEST fiscal year "
+            "(e.g., demand normalization, China/US context, harvest effects, inventory). "
             "Return concise summary; if not found, 'Unknown'."
         ),
     )
 
-class WS_Outlook_2025_Strategy(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "Extract Wines & Spirits 2025 outlook / strategy points (vigilance, cost discipline, market share gains, "
-            "experiences, partnerships like F1, sustainability roadmap). Return concise summary; if not found, 'Unknown'."
-        ),
-    )
 
-
-
-class WS_Net_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Wines & Spirits segment net sales (Ventes) for the latest fiscal year. "
-            "Use the Vins et Spiritueux section. "
-            "Return full number in EUR (convert millions to full number). If not found, -1."
-        )
-    )
-
-class WS_ROC(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Wines & Spirits segment 'Résultat opérationnel courant' (recurring operating profit) "
-            "for the latest fiscal year. Convert millions to full number. If not found, -1."
-        )
-    )
-
-class WS_Operating_margin_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Wines & Spirits segment operating margin (%) for the latest fiscal year, "
-            "from the Vins et Spiritueux section. Return numeric only (no %). If not found, -1."
-        )
-    )
-
-class WS_Champagne_wines_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Wines & Spirits segment sales for 'Champagne et vins' in the latest fiscal year. "
-            "Convert millions to full number. If not found, -1."
-        )
-    )
-
-class WS_Cognac_spirits_sales(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Wines & Spirits segment sales for 'Cognac et spiritueux' in the latest fiscal year. "
-            "Convert millions to full number. If not found, -1."
-        )
-    )
-
-class WS_Volume_champagne_million_bottles(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Champagne volumes in the latest fiscal year (in million bottles) "
-            "from Wines & Spirits section. Numeric only. If not found, -1."
-        )
-    )
-
-class WS_Volume_cognac_million_bottles(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Cognac volumes in the latest fiscal year (in million bottles). "
-            "Numeric only. If not found, -1."
-        )
-    )
-
-class WS_Volume_other_spirits_million_bottles(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Other spirits volumes in the latest fiscal year (in million bottles). "
-            "Numeric only. If not found, -1."
-        )
-    )
-
-class WS_Volume_still_sparkling_wines_million_bottles(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Still & sparkling wines volumes in the latest fiscal year (in million bottles). "
-            "Numeric only. If not found, -1."
-        )
-    )
-class WS_Sales_share_US_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Wines & Spirits sales share in the United States (%) for latest fiscal year "
-            "from 'Ventes par zone géographique de destination (en %)'. "
-            "Return numeric only. If not found, -1."
-        )
-    )
-
-class WS_Sales_share_Asia_ex_Japan_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Wines & Spirits sales share in Asia excluding Japan (%) for latest fiscal year. "
-            "Numeric only. If not found, -1."
-        )
-    )
-
-class WS_Sales_share_Europe_ex_France_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Wines & Spirits sales share in Europe excluding France (%) for latest fiscal year. "
-            "Numeric only. If not found, -1."
-        )
-    )
-
-class WS_Sales_share_France_pct(BaseModel):
-    question: float = Field(
-        -1,
-        description=(
-            "Wines & Spirits sales share in France (%) for latest fiscal year. "
-            "Numeric only. If not found, -1."
-        )
-    )
-
-class WS_Purchase_commitments_grapes_wines_eauxdevie_total(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Total off-balance-sheet purchase commitments for 'Raisins, vins et eaux-de-vie' "
-            "at year-end (latest fiscal year), in EUR. Convert millions to full number. If not found, -1."
-        )
-    )
-
-class WS_Purchase_commitments_grapes_wines_eauxdevie_lt1y(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Portion of 'Raisins, vins et eaux-de-vie' purchase commitments due in less than 1 year. "
-            "Convert millions to full number. If not found, -1."
-        )
-    )
-
-class WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Portion due in 1 to 5 years for 'Raisins, vins et eaux-de-vie' commitments. "
-            "Convert millions to full number. If not found, -1."
-        )
-    )
-
-class WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y(BaseModel):
-    question: int = Field(
-        -1,
-        description=(
-            "Portion due beyond 5 years for 'Raisins, vins et eaux-de-vie' commitments. "
-            "Convert millions to full number. If not found, -1."
-        )
-    )
-
-class WS_Purchase_commitments_methodology(BaseModel):
-    question: str = Field(
-        "Unknown",
-        description=(
-            "How Wines & Spirits purchase commitments are valued/estimated (contract terms vs known prices "
-            "and estimated yields), as described in the notes. Provide a short summary. If not found, 'Unknown'."
-        )
-    )
-
-
-
+# -----------------------------
+# 12) Wines & Spirits - New products / partnerships (segment narrative)
+# -----------------------------
 class WS_New_products_partnerships(BaseModel):
     question: str = Field(
         "Unknown",
         description=(
             "New products, launches, or partnerships mentioned for Wines & Spirits in the period "
-            "(e.g., new whisky brand, non-alcoholic sparkling wine brand partnership). "
+            "(e.g., new whisky, non-alcoholic partnership, major sponsorship/experience platform). "
             "Return concise comma-separated items. If not found, 'Unknown'."
         )
     )
 
 
 # -----------------------------
-# Suggested grouping for Wines & Spirits extraction
+# Optional: compact generic segment fields (keep if you still want them)
+# -----------------------------
+class WS_Net_sales(BaseModel):
+    question: int = Field(
+        -1,
+        description="Wines & Spirits segment net sales (Ventes) for the LATEST fiscal year. Return full number (convert millions). If not found, -1."
+    )
+
+class WS_ROC(BaseModel):
+    question: int = Field(
+        -1,
+        description="Wines & Spirits segment 'Résultat opérationnel courant' (ROC) for the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_Operating_margin_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description="Wines & Spirits segment operating margin (%) for the LATEST fiscal year. Numeric only (no %). If not found, -1."
+    )
+
+class WS_Champagne_wines_sales(BaseModel):
+    question: int = Field(
+        -1,
+        description="Wines & Spirits segment sales for 'Champagne et vins' in the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_Cognac_spirits_sales(BaseModel):
+    question: int = Field(
+        -1,
+        description="Wines & Spirits segment sales for 'Cognac et spiritueux' in the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_Volume_champagne_million_bottles(BaseModel):
+    question: float = Field(
+        -1,
+        description="Champagne volumes in the LATEST fiscal year (million bottles). Numeric only. If not found, -1."
+    )
+
+class WS_Volume_cognac_million_bottles(BaseModel):
+    question: float = Field(
+        -1,
+        description="Cognac volumes in the LATEST fiscal year (million bottles). Numeric only. If not found, -1."
+    )
+
+class WS_Volume_other_spirits_million_bottles(BaseModel):
+    question: float = Field(
+        -1,
+        description="Other spirits volumes in the LATEST fiscal year (million bottles). Numeric only. If not found, -1."
+    )
+
+class WS_Volume_still_sparkling_wines_million_bottles(BaseModel):
+    question: float = Field(
+        -1,
+        description="Still & sparkling wines volumes in the LATEST fiscal year (million bottles). Numeric only. If not found, -1."
+    )
+
+class WS_Sales_share_US_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description="Wines & Spirits sales share in the United States (%) for the LATEST fiscal year. Numeric only. If not found, -1."
+    )
+
+class WS_Sales_share_Asia_ex_Japan_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description="Wines & Spirits sales share in Asia excluding Japan (%) for the LATEST fiscal year. Numeric only. If not found, -1."
+    )
+
+class WS_Sales_share_Europe_ex_France_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description="Wines & Spirits sales share in Europe excluding France (%) for the LATEST fiscal year. Numeric only. If not found, -1."
+    )
+
+class WS_Sales_share_France_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description="Wines & Spirits sales share in France (%) for the LATEST fiscal year. Numeric only. If not found, -1."
+    )
+
+class WS_Purchase_commitments_grapes_wines_eauxdevie_total(BaseModel):
+    question: int = Field(
+        -1,
+        description="Total purchase commitments for 'Raisins, vins et eaux-de-vie' at year-end of the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_Purchase_commitments_grapes_wines_eauxdevie_lt1y(BaseModel):
+    question: int = Field(
+        -1,
+        description="Portion due in less than 1 year for 'Raisins, vins et eaux-de-vie' commitments at year-end of the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y(BaseModel):
+    question: int = Field(
+        -1,
+        description="Portion due in 1 to 5 years for 'Raisins, vins et eaux-de-vie' commitments at year-end of the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y(BaseModel):
+    question: int = Field(
+        -1,
+        description="Portion due beyond 5 years for 'Raisins, vins et eaux-de-vie' commitments at year-end of the LATEST fiscal year. Convert millions to full number. If not found, -1."
+    )
+
+class WS_Purchase_commitments_methodology(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description="How Wines & Spirits purchase commitments are valued/estimated (contract terms vs known prices and estimated yields). Provide a short summary. If not found, 'Unknown'."
+    )
+
+
+# -----------------------------
+# Suggested grouping for Wines & Spirits extraction (year-agnostic)
 # -----------------------------
 group_fields = {
     "Period": [WS_FiscalYearEnd, WS_PeriodStart, WS_PeriodEnd, WS_Currency],
     "NetSales": [
-        WS_NetSales_2024, WS_NetSales_2023, WS_NetSales_2022,
-        WS_NetSales_ReportedChangePct_2024vs2023, WS_NetSales_OrganicChangePct_2024vs2023
+        WS_NetSales_Latest, WS_NetSales_Prior, WS_NetSales_TwoYearsAgo,
+        WS_NetSales_ReportedChangePct_LatestVsPrior, WS_NetSales_OrganicChangePct_LatestVsPrior
     ],
-    "Mix": [WS_Sales_ChampagneAndWines_2024, WS_Sales_CognacAndSpirits_2024],
+    "Mix": [WS_Sales_ChampagneAndWines_Latest, WS_Sales_CognacAndSpirits_Latest],
     "Volumes": [
-        WS_Volume_Champagne_mBottles_2024, WS_Volume_Cognac_mBottles_2024,
-        WS_Volume_OtherSpirits_mBottles_2024, WS_Volume_StillAndSparklingWines_mBottles_2024
+        WS_Volume_Champagne_mBottles_Latest, WS_Volume_Cognac_mBottles_Latest,
+        WS_Volume_OtherSpirits_mBottles_Latest, WS_Volume_StillAndSparklingWines_mBottles_Latest
     ],
     "GeoMix": [
-        WS_GeoShare_USA_pct_2024, WS_GeoShare_AsiaExJapan_pct_2024, WS_GeoShare_EuropeExFrance_pct_2024,
-        WS_GeoShare_France_pct_2024, WS_GeoShare_Japan_pct_2024, WS_GeoShare_OtherMarkets_pct_2024,
-        WS_Largest_GeoShare_pct_2024
+        WS_GeoShare_USA_pct_Latest, WS_GeoShare_AsiaExJapan_pct_Latest, WS_GeoShare_EuropeExFrance_pct_Latest,
+        WS_GeoShare_France_pct_Latest, WS_GeoShare_Japan_pct_Latest, WS_GeoShare_OtherMarkets_pct_Latest,
+        WS_Largest_GeoShare_pct_Latest
     ],
     "Profitability": [
-        WS_OperatingProfit_2024, WS_OperatingProfit_2023,
-        WS_OperatingMargin_pct_2024, WS_OperatingProfit_ChangePct_2024vs2023,
-        WS_OperatingProfitSplit_ChampagneWines_2024, WS_OperatingProfitSplit_CognacSpirits_2024
+        WS_OperatingProfit_Latest, WS_OperatingProfit_Prior,
+        WS_OperatingMargin_pct_Latest, WS_OperatingProfit_ChangePct_LatestVsPrior,
+        WS_OperatingProfitSplit_ChampagneWines_Latest, WS_OperatingProfitSplit_CognacSpirits_Latest
     ],
     "SegmentBalanceSheet_Capex": [
-        WS_TotalAssets_2024, WS_IntangiblesAndGoodwill_2024, WS_PPE_2024, WS_Inventory_2024,
-        WS_OperatingCapex_2024, WS_SalesOutsideGroup_2024, WS_IntraGroupSales_2024
+        WS_TotalAssets_Latest, WS_IntangiblesAndGoodwill_Latest, WS_PPE_Latest, WS_Inventory_Latest,
+        WS_OperatingCapex_Latest, WS_SalesOutsideGroup_Latest, WS_IntraGroupSales_Latest
     ],
-    "Quarterly": [WS_Sales_Q1_2024, WS_Sales_Q2_2024, WS_Sales_Q3_2024, WS_Sales_Q4_2024],
-    "Commitments": [WS_PurchaseCommitments_GrapesWinesEauxdevie_2024],
+    "Quarterly": [WS_Sales_Q1_LatestFY, WS_Sales_Q2_LatestFY, WS_Sales_Q3_LatestFY, WS_Sales_Q4_LatestFY],
+    "Commitments": [
+        WS_PurchaseCommitments_GrapesWinesEauxdevie_Latest,
+        WS_PurchaseCommitments_GrapesWinesEauxdevie_lt1y_Latest,
+        WS_PurchaseCommitments_GrapesWinesEauxdevie_1to5y_Latest,
+        WS_PurchaseCommitments_GrapesWinesEauxdevie_gt5y_Latest,
+        WS_PurchaseCommitments_Methodology
+    ],
     "ESG": [WS_ESG_Biodiversity_Initiatives, WS_ESG_WaterManagement_Initiatives, WS_ESG_CarbonCommitments],
-    "Narrative": [WS_KeyHeadwinds_2024, WS_Outlook_2025_Strategy],
-
-    "WinesSpirits_Segment" : [
-    WS_Net_sales, WS_Champagne_wines_sales, WS_Cognac_spirits_sales,
-    WS_ROC, WS_Operating_margin_pct,
-    WS_Volume_champagne_million_bottles, WS_Volume_cognac_million_bottles,
-    WS_Volume_other_spirits_million_bottles, WS_Volume_still_sparkling_wines_million_bottles,
-    WS_Sales_share_US_pct, WS_Sales_share_Asia_ex_Japan_pct, WS_Sales_share_Europe_ex_France_pct, WS_Sales_share_France_pct,
-    WS_Purchase_commitments_grapes_wines_eauxdevie_total, WS_Purchase_commitments_grapes_wines_eauxdevie_lt1y,
-    WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y, WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y, WS_Purchase_commitments_methodology, WS_New_products_partnerships
-],
+    "WinesSpirits_Segment": [
+        WS_Net_sales, WS_Champagne_wines_sales, WS_Cognac_spirits_sales,
+        WS_ROC, WS_Operating_margin_pct,
+        WS_Volume_champagne_million_bottles, WS_Volume_cognac_million_bottles,
+        WS_Volume_other_spirits_million_bottles, WS_Volume_still_sparkling_wines_million_bottles,
+        WS_Sales_share_US_pct, WS_Sales_share_Asia_ex_Japan_pct, WS_Sales_share_Europe_ex_France_pct, WS_Sales_share_France_pct,
+        WS_Purchase_commitments_grapes_wines_eauxdevie_total, WS_Purchase_commitments_grapes_wines_eauxdevie_lt1y,
+        WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y, WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y,
+        WS_Purchase_commitments_methodology, WS_New_products_partnerships
+    ],
 }
-
 
 
 
