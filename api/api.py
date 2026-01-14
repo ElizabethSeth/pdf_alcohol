@@ -1,6 +1,7 @@
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import io
+from fastapi.params import Depends
 from fastapi.responses import StreamingResponse
 from fastapi import Body
 from langchain_ollama import OllamaEmbeddings
@@ -60,6 +61,7 @@ from datetime import datetime, timezone
 
 
 app = FastAPI()
+
 from google.cloud import bigquery
 load_dotenv()
 #QDRANT_URL = os.getenv("QDRANT_URL")
@@ -827,24 +829,25 @@ group_fields = {
         Board_of_directors_examples, Board_of_directors_quantity, Independent_directors_quantity,Board_committees_list, Audit_committee_members, Compensation_committee_members, Governance_committee_members,
         ESG_board_oversight_summary, Risk_oversight_summary, Code_of_conduct_mentioned, Political_contributions_policy_summary, Voting_standard_directors, Independent_auditor_name, Auditor_fees_total
     ],
-    "Social_DEI": [
-        DEI_strategy_summary, Workforce_DEI_metrics_present, Board_diversity_description],
+    "Social_DEI": [DEI_strategy_summary, Workforce_DEI_metrics_present, Board_diversity_description],
     "Results_Drinks": [ CEO_pay_ratio,Pay_for_performance_metrics, Incentive_plan_types, Clawback_policy_summary, Recordable_injury_rate_per100, Work_related_fatalities_count],
-    "Governance": [
-        CEO_pay_ratio,Board_women_count,Board_women_pct,Ethics_hotline_reports_count],
+    "Governance": [CEO_pay_ratio,Board_women_count,Board_women_pct,Ethics_hotline_reports_count],
 }
 
+# LOG DATABASE SETUP
+#DATABASE_URL = os.getenv("DATABASE_URL")
 
+DATABASE_URL = "postgresql+psycopg://user_ps:1234@35.202.127.228:5432/postgress_db"
 
-# # Engine = DB connection pool
-# engine = create_engine(
-#     DATABASE_URL,
-#     echo=False,      # set True to see SQL logs
-#     pool_pre_ping=True,
-# )
+# Engine = DB connection pool
+engine = create_engine(
+    DATABASE_URL,
+    echo=False,      # set True to see SQL logs
+    pool_pre_ping=True,
+)
 
-# Session factory
-# SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
 
 class Base(DeclarativeBase):
     pass
@@ -853,16 +856,40 @@ class User(Base):
     __tablename__ = "private_data"
     __table_args__ = {'schema': 'data'}
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id_key: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
-    password: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    password_unique: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     login_time: Mapped[Optional[datetime]] = mapped_column(DateTime, default=datetime.now(timezone.utc))
-    consent: Mapped[Optional[bool]] = mapped_column(Integer, default=0)
 
 class LoginRequest(BaseModel):
     email: str
     password: str
     consent: bool | None = None
+
+def init_db() -> None:
+    Base.metadata.create_all(bind=engine)
+
+def get_db() -> Generator[Session, None, None]:
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    init_db()
+
+def get_user_by_email(db: Session, email: str, password_unique: str):
+    stmt = select(User).where(User.email == email, User.password_unique == password_unique)
+    return db.execute(stmt).scalar_one_or_none() is not None
+
+
+
+@app.post("/login")
+def login(payload: LoginRequest, db: Session = Depends(get_db)):
+    return get_user_by_email(db=db, email=payload.email, password_unique=payload.password)
+
+
 
 
 
@@ -877,6 +904,56 @@ class LoginRequest(BaseModel):
 #     db.close()
 #     return {"status": "success", "message": "Login data stored successfully."}
 
+
+# ============================================================
+
+
+def bq_client():
+    return bigquery.Client(project=BigQuery_id)
+
+@app.get("/big_query_collections")
+def big_query_collections() ->List[Dict[str, str]]:
+    client = bq_client()
+    datasets = client.list_datasets(BigQuery_id)
+    lst = [{"id": ds.dataset_id, "name": ds.dataset_id} for ds in datasets]
+    return lst
+
+@app.get("/download_tables/{dataset_id}")
+def download_tables(dataset_id: str):
+    client = bq_client()
+    ds_reference = bigquery.DatasetReference(BigQuery_id, dataset_id)
+    tables = list(client.list_tables(ds_reference))
+
+    buffer = io.BytesIO()
+    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+        for tab in tables:
+            tables_ref = bigquery.TableReference(ds_reference, tab.table_id)
+            df = client.list_rows(tables_ref).to_dataframe()
+            df.to_excel(writer, 
+                        sheet_name=tab.table_id[:31],
+                          index=False)
+
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f"attachment; filename={dataset_id}_tables.xlsx"},
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+#MAIN PIPLINE FUNCTIONS
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     try:
         pdf_reader = PdfReader(io.BytesIO(pdf_bytes))

@@ -11,27 +11,62 @@ from ast import Load
 
 API_URL = "http://api:8003"
 
-# LOGIN_HTML = """
-# <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
-#   <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
-# </div>
-# <div style="opacity:0.8;margin-bottom:8px;">
-#   Use your account to access the app.
-# </div>"""
+LOGIN_HTML = """
+<div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
+  <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
+</div>
+<div style="opacity:0.8;margin-bottom:8px;">
+  Use your account to access the app.
+</div>"""
 
 #API_URL = "https://generate-reports.api.elsth.com"
 
-# def check_login(login, password):
-#     response = requests.post(
-#         f"{API_URL}/login", 
-#         json={"email": login, "password": password, "consent": True}
-#     )
-#     if login == "admin" and password == "1234":
-#         return True
-#     else:
-#         return False
+def check_login(login, password):
+    response = requests.post(
+        f"{API_URL}/login", 
+        json={"email": login, "password": password}
+    )
+    return response.json()
+
+    # if login == "admin" and password == "1234":
+    #     return True
+    # else:
+    #     return False
+
+ 
+
+#### Loading all tables from BigQuery datasets ####
 
 
+def fetch_bq_collections_client():
+    resp = requests.get(f"{API_URL}/big_query_collections", timeout=20)
+    data = resp.json()
+    names = []
+    for item in data:
+        if "id" in item:
+            names.append(item["id"])
+        elif "dataset_id" in item:
+            names.append(item["dataset_id"])
+
+    return gr.update(choices=names, value=names[0]), "✅ BigQuery datasets loaded"
+
+
+
+def download_bq_dataset_client(dataset_id: str):
+    resp = requests.get(f"{API_URL}/download_tables/{dataset_id}", timeout=2000)
+    file_name = f"{dataset_id}.xlsx"
+    output_path = file_name
+
+    with open(output_path, "wb") as f:
+        f.write(resp.content)
+
+    return output_path, f"✅ Downloaded {file_name}"
+
+
+
+
+
+### standart version
 
 
 def upload_pdfs_client(files, collection_name):
@@ -353,6 +388,32 @@ with gr.Blocks(title="SR-KES") as app:
                     lines=2,
                 )
 
+        with gr.Column(scale=1):
+            with gr.Group(elem_classes=["app-card"]):
+                gr.HTML('<div class="section-header">Download BigQuery Dataset</div>')
+
+                bq_dropdown = gr.Dropdown(
+                    label="BigQuery datasets",
+                    choices=[],
+                    multiselect=False,
+                    info="Click 'Show BigQuery collections' then select a dataset to download.",
+                )
+
+                with gr.Row():
+                    bq_refresh_btn = gr.Button("📚 Show BigQuery collections", variant="secondary")
+                    bq_download_btn = gr.Button("⬇️ Download selected dataset", variant="primary")
+
+                bq_excel_output = gr.File(
+                    label="📥 Download BigQuery Excel",
+                    interactive=False,
+                )
+
+                bq_status = gr.Textbox(
+                    label="BigQuery Status",
+                    placeholder="BigQuery download status will appear here...",
+                    lines=2,
+                )
+
     gr.HTML(
         """
 <div class="info-text">
@@ -382,6 +443,17 @@ with gr.Blocks(title="SR-KES") as app:
         outputs=[excel_output, report_status],
     )
 
+    bq_refresh_btn.click(
+        fn=fetch_bq_collections_client,
+        inputs=[],
+        outputs=[bq_dropdown, bq_status],
+    )
+
+    bq_download_btn.click(
+        fn=download_bq_dataset_client,
+        inputs=[bq_dropdown],
+        outputs=[bq_excel_output, bq_status],
+    )
+
 if __name__ == "__main__":
-    app.launch(server_name="0.0.0.0", server_port=8001)
-#auth=check_login, auth_message=LOGIN_HTML
+    app.launch(server_name="0.0.0.0", server_port=8001, auth=check_login, auth_message=LOGIN_HTML)
