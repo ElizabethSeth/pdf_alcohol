@@ -929,6 +929,10 @@ def download_tables(dataset_id: str):
         for tab in tables:
             tables_ref = bigquery.TableReference(ds_reference, tab.table_id)
             df = client.list_rows(tables_ref).to_dataframe()
+            for col in df.columns:
+                if pd.api.types.is_datetime64tz_dtype(df[col]):
+                    df[col] = df[col].dt.tz_convert(None)
+
             df.to_excel(writer, 
                         sheet_name=tab.table_id[:31],
                           index=False)
@@ -938,7 +942,7 @@ def download_tables(dataset_id: str):
     return StreamingResponse(
         buffer,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        headers={"Content-Disposition": f"attachment; filename={dataset_id}_tables.xlsx"},
+        headers={"Content-Disposition": f'attachment; filename="{dataset_id}_tables.xlsx"'},
     )
 
 
