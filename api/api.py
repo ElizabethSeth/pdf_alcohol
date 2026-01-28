@@ -1007,7 +1007,7 @@ def prompt_question(qvs, model_cls):
         {
             "role": "user",
             "content": (
-                "You extract ONE field from an ESG/annual/CSR report.\n"
+                "You extract ONE field from an  report.\n"
                 "Use ONLY the given context.\n"
                 "If the value is not present in the context, use the default "
                 "from the schema (-1 for numbers, 'Unknown' for strings).\n\n"

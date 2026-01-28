@@ -21,19 +21,19 @@ LOGIN_HTML = """
 
 API_URL = "https://generate-reports.api.elsth.com"
 
-def check_login(login, password):
-    response = requests.post(
-        f"{API_URL}/login", 
-        json={"email": login, "password": password}
-    )
-    return response.json()
+# def check_login(login, password):
+#     response = requests.post(
+#         f"{API_URL}/login", 
+#         json={"email": login, "password": password}
+#     )
+#     #return response.json()
 
-    # if login == "admin" and password == "1234":
-    #     return True
-    # else:
-    #     return False
+#     if login == "admin" and password == "1234":
+       
+#        return True
+#     else:
+#          return False
 
- 
 
 #### Loading all tables from BigQuery datasets ####
 
@@ -456,4 +456,6 @@ with gr.Blocks(title="SR-KES") as app:
     )
 
 if __name__ == "__main__":
-    app.launch(server_name="0.0.0.0", server_port=8001, auth=check_login, auth_message=LOGIN_HTML)
+    app.launch(server_name="0.0.0.0", server_port=8001)
+
+#, auth=check_login, auth_message=LOGIN_HTML
