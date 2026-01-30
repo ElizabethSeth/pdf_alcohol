@@ -2141,3 +2141,753 @@ group_fields = {
     "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
 }
 
+
+
+
+
+
+
+
+
+
+
+### Brown Forman
+
+# ============================================================
+# PEOPLE / HUMAN CAPITAL (year-agnostic, numeric-focused)
+# Designed to work in US 10-K / Integrated reports and Proxy statements.
+# ============================================================
+
+# -----------------------------
+# A) Total workforce size
+# -----------------------------
+
+
+class Total_employees(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Total number of employees (headcount) as disclosed in the report. "
+            "Look in sections titled 'Employees', 'Human Capital', 'Our People', or similar. "
+            "Extract ONLY the numeric value (e.g., '5,400' -> 5400). "
+            "If multiple numbers exist (full-time, part-time), return total employees if explicitly stated; "
+            "otherwise return the largest clearly-labeled overall company headcount. "
+            "If not found, return -1."
+        ),
+    )
+
+class Total_full_time_employees(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of full-time employees, if explicitly disclosed. "
+            "Extract numeric only. If not found, return -1."
+        ),
+    )
+
+class Total_part_time_employees(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of part-time employees, if explicitly disclosed. "
+            "Extract numeric only. If not found, return -1."
+        ),
+    )
+
+# -----------------------------
+# B) Workforce geography (if company provides split)
+# -----------------------------
+class Employees_US_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage of employees located in the United States, if disclosed. "
+            "Extract ONLY numeric percentage (no % sign). If not found, return -1."
+        ),
+    )
+
+class Employees_International_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage of employees located outside the United States / international, if disclosed. "
+            "Extract numeric percentage only. If not found, return -1."
+        ),
+    )
+
+# -----------------------------
+# C) Gender / representation metrics (common in Proxy and sometimes 10-K narrative)
+# -----------------------------
+class Women_in_workforce_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage of women in the total workforce, if disclosed. "
+            "Extract ONLY numeric percentage (no % sign). If not found, return -1."
+        ),
+    )
+
+class Women_in_management_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage of women in management/leadership roles, if disclosed. "
+            "Accept wording like 'women in leadership', 'women in management', 'female leaders'. "
+            "Extract numeric percentage only. If not found, return -1."
+        ),
+    )
+
+class Underrepresented_groups_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage of employees identified as underrepresented groups / diverse / minority (as defined by the report), "
+            "if disclosed as a workforce percentage. Extract numeric percentage only. If not found, return -1."
+        ),
+    )
+
+class Underrepresented_leadership_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage of leadership/management identified as underrepresented groups / diverse / minority (as defined), "
+            "if disclosed. Extract numeric percentage only. If not found, return -1."
+        ),
+    )
+
+# -----------------------------
+# D) Safety metrics (often disclosed as rates or counts)
+# -----------------------------
+class Recordable_injury_rate_per100(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Recordable injury rate (or TRIR) per 100 employees (or similar rate metric) for the latest disclosed period. "
+            "Extract numeric value only. If not found, return -1."
+        ),
+    )
+
+class Work_related_fatalities_count(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of work-related fatalities disclosed for the latest period. "
+            "Extract integer only. If not found, return -1."
+        ),
+    )
+
+# -----------------------------
+# E) Training / engagement metrics (if disclosed numerically)
+# -----------------------------
+class Training_hours_total(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Total training hours completed (company-wide) for the latest disclosed period, if stated. "
+            "Extract numeric only; convert thousands/millions to full number. If not found, return -1."
+        ),
+    )
+
+class Training_hours_per_employee(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Average training hours per employee for the latest disclosed period, if stated. "
+            "Extract numeric only. If not found, return -1."
+        ),
+    )
+
+class Employee_engagement_score(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Employee engagement score (or survey score), if disclosed numerically. "
+            "Extract numeric value only (could be % favorable or index). If not found, return -1."
+        ),
+    )
+
+class Employee_turnover_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Employee turnover rate (%) for the latest disclosed period, if stated. "
+            "Extract numeric percentage only (no % sign). If not found, return -1."
+        ),
+    )
+
+# -----------------------------
+# F) DEI infrastructure counts (Proxy/ESG booklet sometimes has counts)
+# -----------------------------
+class ERG_count(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of Employee Resource Groups (ERGs) if stated. "
+            "Extract integer only. If not found, return -1."
+        ),
+    )
+
+class Ethics_hotline_reports_count(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of ethics/speak-up/hotline reports (or cases) if disclosed as a count. "
+            "Extract integer only. If not found, return -1."
+        ),
+    )
+
+# -----------------------------
+# G) Proxy-specific numeric people items (often present)
+# -----------------------------
+class CEO_pay_ratio(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "CEO pay ratio vs median employee as disclosed (e.g., '219 to 1'). "
+            "Return exactly as written (or normalized like '219-to-1'). If not found, 'Unknown'."
+        ),
+    )
+
+class Board_women_count(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of women directors on the Board, if the Proxy provides it explicitly or via a director matrix. "
+            "Extract integer only. If not found, return -1."
+        ),
+    )
+
+class Board_women_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage of women on the Board, if disclosed. Extract numeric only (no % sign). "
+            "If not found, return -1."
+        ),
+    )
+
+from pydantic import BaseModel, Field
+
+# -----------------------------
+# 1) Period (if explicitly stated in the document)
+# -----------------------------
+class FiscalYearEnd(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Fiscal year end date explicitly referenced in the document. "
+            "Return date in format DD/MM/YYYY. Otherwise return 'Unknown'."
+        ),
+    )
+
+class PeriodStart(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Period start date explicitly referenced in the document. "
+            "Return date in format DD/MM/YYYY. Otherwise return 'Unknown'."
+        ),
+    )
+
+class PeriodEnd(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Period end date explicitly referenced in the document. "
+            "Return date in format DD/MM/YYYY. Otherwise return 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 2) ESG / Sustainability Strategy (high-confidence narrative items)
+# -----------------------------
+class ESG_SustainabilityStrategy_Updated(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Does the company state it revised/updated its Sustainability Strategy (e.g., 2030 strategy)? "
+            "Return a concise statement of what was updated and why (1–2 sentences). "
+            "If not mentioned, return 'Unknown'."
+        ),
+    )
+
+class ESG_Strategy_Scope_Extension(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "How does the company describe the scope of its sustainability strategy (e.g., beyond operations to supply chain)? "
+            "Return concise summary. If not found, 'Unknown'."
+        ),
+    )
+
+class ESG_Roadmap_TimeHorizon(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Extract any explicit statement about having a sustainability roadmap and its time horizon "
+            "(e.g., 'next quarter-century'). Return the time horizon text if present, otherwise 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 3) Climate / Energy Initiatives (actionable projects mentioned)
+# -----------------------------
+class ESG_RenewableElectricity_Project(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Describe the renewable electricity initiative/project mentioned (e.g., rooftop solar installation), "
+            "including the site/location and any partner name if explicitly stated. "
+            "Return concise summary. If not found, 'Unknown'."
+        ),
+    )
+
+class ESG_ByproductsToEnergy_Project(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Describe the 'byproducts to energy' initiative (e.g., anaerobic digester project), "
+            "including facility/site and what it converts byproducts into. "
+            "Include expected operational timing if explicitly stated. "
+            "Return concise summary; if not found, 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 4) Water Stewardship (partners, approach, expansion)
+# -----------------------------
+class ESG_WaterStewardship_Partner(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Name the partner organization used for water risk/water stewardship work (if stated). "
+            "Return partner name only. If not found, 'Unknown'."
+        ),
+    )
+
+class ESG_WaterStewardship_Actions(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize water stewardship actions described (e.g., measuring water-related risk, identifying water efficiency/reuse opportunities), "
+            "including facilities/sites mentioned if explicitly stated. "
+            "Return concise summary; if not found, 'Unknown'."
+        ),
+    )
+
+class ESG_WaterStewardship_Expansion(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Does the company state it will expand water-risk measurement/efforts to the supply chain in a future period? "
+            "Return the stated expansion plan concisely; if not found, 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 5) Sustainable Agriculture / Forestry (targets, commitments, partners)
+# -----------------------------
+class ESG_RegenerativeAg_Target_Achievement(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Extract any statement that a target related to engaging direct farmers on regenerative practices was achieved. "
+            "Return concise summary (what target and achievement). If not found, 'Unknown'."
+        ),
+    )
+
+class ESG_Agriculture_Program_Commitment(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Describe any explicit sustainable agriculture commitment/program (e.g., multi-year purchase commitment, crop research), "
+            "including brand/site and external institution if stated. Return concise summary. If not found, 'Unknown'."
+        ),
+    )
+
+class ESG_Forestry_Initiatives(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize forestry-related initiatives mentioned (e.g., seed orchard, university relationships, grants, forest landowner engagement). "
+            "Return concise summary; if not found, 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 6) Community / Foundation (focus areas, structure)
+# -----------------------------
+class Community_Approach_Summary(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize how the company describes its community investment/engagement approach (volunteering, nonprofit board service, local office empowerment, etc.). "
+            "Return concise summary; if not found, 'Unknown'."
+        ),
+    )
+
+class Community_Foundation_Existence(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Does the document mention a corporate foundation? If yes, return its name exactly as written; otherwise 'Unknown'."
+        ),
+    )
+
+class Community_Foundation_FocusAreas(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "List the foundation/community focus areas exactly as described (e.g., arts & culture, lifelong learning, community). "
+            "Return comma-separated items only. If not found, 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 7) People / DEI / Culture (ERGs, ethics program)
+# -----------------------------
+class Social_ERG_Count(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of Employee Resource Groups (ERGs) stated in the document. "
+            "Return integer only. If not found, return -1."
+        ),
+    )
+
+class Social_ERG_Purpose_Summary(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize what ERGs are said to contribute to (e.g., culture, engagement, consumer connection, allyship). "
+            "Return concise summary; if not found, 'Unknown'."
+        ),
+    )
+
+class Governance_EthicsTheme(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Extract the key named theme/slogan of the ethics & compliance program if explicitly stated "
+            "(e.g., a quoted phrase). Return the theme text only; if not found, 'Unknown'."
+        ),
+    )
+
+
+
+class Governance_CodeOfConduct_LanguagesCount(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "How many languages the Code of Conduct is available in (if stated). "
+            "Return integer only. If not found, return -1."
+        ),
+    )
+
+from pydantic import BaseModel, Field
+
+# ============================================================
+# Brown-Forman Proxy Statement (year-agnostic, response-safe)
+# IMPORTANT: This Proxy does NOT contain segment net sales/volumes/quarterly/etc.
+# It DOES contain governance, board, compensation, DEI framing, meeting/voting items.
+# ============================================================
+
+
+# -----------------------------
+# 1) Period / Proxy context
+# -----------------------------
+class Year(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Fiscal year end date for the period covered by this Proxy/compensation discussion. "
+            "Return date in format DD/MM/YYYY. If not found, return 'Unknown'."
+        ),
+    )
+
+class Period_start(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Period start date for the reporting/compensation fiscal year covered. "
+            "Return date in format DD/MM/YYYY. If not found, return 'Unknown'."
+        ),
+    )
+
+class Period_end(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Period end date for the reporting/compensation fiscal year covered. "
+            "Return date in format DD/MM/YYYY. If not found, return 'Unknown'."
+        ),
+    )
+
+
+class Headquarters(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Company headquarters location as stated in the Proxy (city/state/country). "
+            "Return exactly as written. If not found, return 'Unknown'."
+        ),
+    )
+
+
+
+class Controlling_shareholder_description(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Describe who controls the company and how (e.g., family voting control, class shares, voting power). "
+            "Return a concise summary. If not found, return 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 3) Board of Directors / governance structure
+# -----------------------------
+class Board_of_directors_examples(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "List ALL director nominees / Board members named in the Proxy. "
+            "Return ONLY the names, separated by commas, in the same order as shown. "
+            "If not found, return 'Unknown'."
+        ),
+    )
+
+class Board_of_directors_quantity(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Total number of director nominees / Board members listed. "
+            "Count distinct individuals. If not found, return -1."
+        ),
+    )
+
+class Independent_directors_quantity(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Number of directors identified as independent by the Board. "
+            "If not found, return -1."
+        ),
+    )
+
+class Board_chair_role_separation(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Describe whether the Chair and CEO roles are separated or combined, "
+            "and any stated rationale. If not found, return 'Unknown'."
+        ),
+    )
+
+
+class Lead_independent_director_name(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Name of the Lead Independent Director (or equivalent), if stated. "
+            "Return only the name. If not found, return 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 4) Committees (audit/comp/governance) + ESG oversight
+# -----------------------------
+class Board_committees_list(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "List the Board committees named in the Proxy (e.g., Audit, Compensation, Governance). "
+            "Return committee names only, comma-separated. If not found, return 'Unknown'."
+        ),
+    )
+
+class Audit_committee_members(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Names of Audit Committee members. Return names only, comma-separated, in listed order. "
+            "If not found, return -1."
+        ),
+    )
+
+class Compensation_committee_members(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Names of Compensation Committee members. Return names only, comma-separated. "
+            "If not found, return -1."
+        ),
+    )
+
+class Governance_committee_members(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Names of Governance/Nominating/Corporate Governance committee members (use actual committee name). "
+            "Return names only, comma-separated. If not found, return -1."
+        ),
+    )
+
+class ESG_board_oversight_summary(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize how the Board oversees ESG/sustainability topics (which committee(s), what oversight). "
+            "Return concise summary. If not found, return 'Unknown'."
+        ),
+    )
+
+class Risk_oversight_summary(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize the Board’s approach to enterprise risk oversight as described in the Proxy. "
+            "Return concise summary. If not found, return 'Unknown'."
+        ),
+    )
+
+
+class Voting_standard_directors(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Voting standard for election of directors (e.g., majority of votes cast, plurality). "
+            "Return exactly as described. If not found, return 'Unknown'."
+        ),
+    )
+
+
+class Independent_auditor_name(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Name of the independent registered public accounting firm proposed/serving as auditor. "
+            "Return only the firm name. If not found, return 'Unknown'."
+        ),
+    )
+
+class Auditor_fees_total(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Total auditor fees disclosed (sum of categories if shown) for the latest disclosed fiscal year. "
+            "Extract ONLY the numeric amount, ignore currency symbols, convert thousands/millions to full number. "
+            "If not found, return -1."
+        ),
+    )
+
+
+class Pay_for_performance_metrics(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "List the key performance metrics used in annual/long-term incentive plans (as described). "
+            "Return metric names only, comma-separated (e.g., net sales, operating income, EPS, TSR, ROIC, etc.). "
+            "If not found, return 'Unknown'."
+        ),
+    )
+
+class Incentive_plan_types(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "List incentive plan types described (e.g., annual bonus, long-term incentive, PSU/RSU/stock options). "
+            "Return plan names only, comma-separated. If not found, return 'Unknown'."
+        ),
+    )
+
+class Clawback_policy_summary(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize any clawback/recoupment policy described. Return concise summary. "
+            "If not found, return 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 8) Social / DEI (Proxy-level statements)
+# -----------------------------
+class DEI_strategy_summary(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize DEI / inclusion approach described in the Proxy (high-level framing). "
+            "Return concise summary. If not found, return 'Unknown'."
+        ),
+    )
+
+class Workforce_DEI_metrics_present(BaseModel):
+    question: bool = Field(
+        False,
+        description=(
+            "Does the Proxy include workforce diversity metrics (percentages or breakdowns) explicitly? "
+            "Return True/False."
+        ),
+    )
+
+class Board_diversity_description(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Describe board diversity statement/approach (skills matrix, diversity considerations, etc.) "
+            "as presented in the Proxy. Return concise summary. If not found, return 'Unknown'."
+        ),
+    )
+
+
+# -----------------------------
+# 9) Ethics / compliance (often present in Proxy)
+# -----------------------------
+class Code_of_conduct_mentioned(BaseModel):
+    question: bool = Field(
+        False,
+        description=(
+            "Does the Proxy reference a Code of Conduct / Code of Ethics / Business Conduct policy? "
+            "Return True/False."
+        ),
+    )
+
+class Political_contributions_policy_summary(BaseModel):
+    question: str = Field(
+        "Unknown",
+        description=(
+            "Summarize any policy/statement on political contributions/lobbying oversight if described. "
+            "Return concise summary. If not found, return 'Unknown'."
+        ),
+    )
+
+group_fields = {
+    "Period": [FiscalYearEnd, PeriodStart, PeriodEnd],
+    "ESG_Strategy": [ESG_SustainabilityStrategy_Updated, ESG_Strategy_Scope_Extension, ESG_Roadmap_TimeHorizon],
+    "ESG_Climate_Energy": [ESG_RenewableElectricity_Project, ESG_ByproductsToEnergy_Project],
+    "ESG_Water": [ESG_WaterStewardship_Partner, ESG_WaterStewardship_Actions, ESG_WaterStewardship_Expansion],
+    "ESG_Agriculture_Forestry": [ESG_RegenerativeAg_Target_Achievement, ESG_Agriculture_Program_Commitment, ESG_Forestry_Initiatives],
+    "Community": [Community_Approach_Summary, Community_Foundation_Existence, Community_Foundation_FocusAreas],
+    "Social_Governance": [Social_ERG_Count, Social_ERG_Purpose_Summary, Governance_EthicsTheme, Governance_CodeOfConduct_LanguagesCount],
+     "Social_DEI": [Total_employees,Total_full_time_employees,Total_part_time_employees,Employees_US_pct,Employees_International_pct,Women_in_workforce_pct,Women_in_management_pct,Underrepresented_groups_pct,Underrepresented_leadership_pct,
+        ERG_count,Employee_turnover_pct,Employee_engagement_score,Training_hours_total,Training_hours_per_employee
+    ],
+    "Corporate_information": [Headquarters, Controlling_shareholder_description,Board_chair_role_separation, Lead_independent_director_name],
+    "Governance": [
+        Board_of_directors_examples, Board_of_directors_quantity, Independent_directors_quantity,Board_committees_list, Audit_committee_members, Compensation_committee_members, Governance_committee_members,
+        ESG_board_oversight_summary, Risk_oversight_summary, Code_of_conduct_mentioned, Political_contributions_policy_summary, Voting_standard_directors, Independent_auditor_name, Auditor_fees_total
+    ],
+    "Social_DEI": [DEI_strategy_summary, Workforce_DEI_metrics_present, Board_diversity_description],
+    "Results_Drinks": [ CEO_pay_ratio,Pay_for_performance_metrics, Incentive_plan_types, Clawback_policy_summary, Recordable_injury_rate_per100, Work_related_fatalities_count],
+    "Governance": [CEO_pay_ratio,Board_women_count,Board_women_pct,Ethics_hotline_reports_count],
+}
