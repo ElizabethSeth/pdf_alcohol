@@ -1662,20 +1662,446 @@ class Responsible_consumption(BaseModel):
         ),
     )
 
+
+from pydantic import BaseModel, Field
+
+# -------------------------
+# ADD: headline movements (reported vs organic) + drivers + margins + shares + FX bridge + TSR/ROIC + ESG deltas
+# -------------------------
+
+class Volume_reported_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Reported volume movement percentage for the period (e.g., '(7)%', '-7%', '+2%'). "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Volume_organic_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Organic volume movement percentage for the period. "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Net_sales_reported_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Reported net sales movement percentage for the period. "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Net_sales_organic_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Organic net sales movement percentage for the period. "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Operating_profit_reported_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Reported operating profit movement percentage for the period. "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Operating_profit_organic_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Organic operating profit movement percentage for the period. "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class EPS_reported_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Reported EPS movement percentage for the period. "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class EPS_before_exceptionals_movement_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "EPS before exceptional items movement percentage (if explicitly stated). "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Dividend_per_share_increase_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Percentage increase/decrease for total recommended dividend per share "
+            "(e.g., 'Increase 5%'). Return ONLY numeric value with sign if shown, "
+            "without the % sign. If not found, -1."
+        ),
+    )
+
+class Price_mix_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Price/mix percentage contribution (e.g., 'price/mix of 0.8%'). "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Volume_growth_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Volume growth percentage (often paired with price/mix). "
+            "Return ONLY numeric value with sign, without the % sign. If not found, -1."
+        ),
+    )
+
+class Price_mix_change_pps(BaseModel):
+    question: float = Field(
+        -1,
+        description=(
+            "Price/mix change in percentage points (pps), if stated (e.g., '4pps' -> 4). "
+            "Return ONLY numeric value with sign, without 'pps'. If not found, -1."
+        ),
+    )
+
+class Operating_profit_margin_reported_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description="Reported operating profit margin percentage. Return ONLY numeric, without % sign. If not found, -1.",
+    )
+
+class Operating_profit_margin_organic_pct(BaseModel):
+    question: float = Field(
+        -1,
+        description="Organic operating profit margin percentage. Return ONLY numeric, without % sign. If not found, -1.",
+    )
+
+class Operating_margin_change_bps(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "Change in operating margin in basis points (bps) (e.g., '+35bps' -> 35, '-40bps' -> -40). "
+            "Return ONLY integer bps. If not found, -1."
+        ),
+    )
+
+# Shares by region
+class Net_sales_share_North_America_pct(BaseModel):
+    question: float = Field(-1, description="Share of reported net sales in North America (%). Numeric only; else -1.")
+
+class Net_sales_share_Europe_pct(BaseModel):
+    question: float = Field(-1, description="Share of reported net sales in Europe (%). Numeric only; else -1.")
+
+class Net_sales_share_Asia_Pacific_pct(BaseModel):
+    question: float = Field(-1, description="Share of reported net sales in Asia Pacific (%). Numeric only; else -1.")
+
+class Net_sales_share_Latin_America_Caribbean_pct(BaseModel):
+    question: float = Field(-1, description="Share of reported net sales in Latin America & Caribbean (%). Numeric only; else -1.")
+
+class Net_sales_share_Africa_pct(BaseModel):
+    question: float = Field(-1, description="Share of reported net sales in Africa (%). Numeric only; else -1.")
+
+# Category shares
+class Category_share_largest_pct(BaseModel):
+    question: float = Field(-1, description="Largest category share of reported net sales (%). Numeric only; else -1.")
+
+class Scotch_share_pct(BaseModel):
+    question: float = Field(-1, description="Scotch share of reported net sales (%). Numeric only; else -1.")
+
+class Beer_share_pct(BaseModel):
+    question: float = Field(-1, description="Beer share of reported net sales (%). Numeric only; else -1.")
+
+class Tequila_share_pct(BaseModel):
+    question: float = Field(-1, description="Tequila share of reported net sales (%). Numeric only; else -1.")
+
+class Vodka_share_pct(BaseModel):
+    question: float = Field(-1, description="Vodka share of reported net sales (%). Numeric only; else -1.")
+
+# Price-tier shares
+class Price_tier_share_Value_pct(BaseModel):
+    question: float = Field(-1, description="Value tier share of reported net sales (%). Numeric only; else -1.")
+
+class Price_tier_share_Standard_pct(BaseModel):
+    question: float = Field(-1, description="Standard tier share of reported net sales (%). Numeric only; else -1.")
+
+class Price_tier_share_Premium_pct(BaseModel):
+    question: float = Field(-1, description="Premium tier share of reported net sales (%). Numeric only; else -1.")
+
+class Price_tier_share_Super_premium_pct(BaseModel):
+    question: float = Field(-1, description="Super-premium tier share of reported net sales (%). Numeric only; else -1.")
+
+class Price_tier_share_Ultra_premium_pct(BaseModel):
+    question: float = Field(-1, description="Ultra-premium tier share of reported net sales (%). Numeric only; else -1.")
+
+class Price_tier_share_Luxury_pct(BaseModel):
+    question: float = Field(-1, description="Luxury tier share of reported net sales (%). Numeric only; else -1.")
+
+# FX / M&A / hyperinflation bridge
+class FX_impact_on_net_sales_amount(BaseModel):
+    question: int = Field(
+        -1,
+        description=(
+            "FX impact on net sales as an absolute amount (signed if stated). "
+            "Return ONLY full number (convert m/bn). If not found, -1."
+        ),
+    )
+
+class FX_impact_on_net_sales_pct(BaseModel):
+    question: float = Field(-1, description="FX impact on net sales as a percentage (signed). Numeric only; else -1.")
+
+class Acquisition_disposal_impact_on_net_sales_amount(BaseModel):
+    question: int = Field(-1, description="Acquisition/disposal impact on net sales amount (signed). Full number only; else -1.")
+
+class Acquisition_disposal_impact_on_net_sales_pct(BaseModel):
+    question: float = Field(-1, description="Acquisition/disposal impact on net sales percentage (signed). Numeric only; else -1.")
+
+class Hyperinflation_impact_on_net_sales_amount(BaseModel):
+    question: int = Field(-1, description="Hyperinflation impact on net sales amount (signed). Full number only; else -1.")
+
+# Shareholder metrics
+class Total_shareholder_return_pct(BaseModel):
+    question: float = Field(-1, description="Total shareholder return (TSR) percentage for the period. Numeric with sign; else -1.")
+
+class ROIC_pct(BaseModel):
+    question: float = Field(-1, description="Return on invested capital (ROIC) percentage. Numeric only; else -1.")
+
+class ROIC_change_bps(BaseModel):
+    question: int = Field(-1, description="ROIC change in basis points (bps), if stated. Integer bps with sign; else -1.")
+
+# ESG baseline deltas (%)
+class Water_efficiency_change_vs_baseline_pct(BaseModel):
+    question: float = Field(-1, description="Water efficiency % change vs stated baseline year. Numeric with sign; else -1.")
+
+class GHG_emissions_change_vs_baseline_pct(BaseModel):
+    question: float = Field(-1, description="Total (Scope 1+2) emissions % change vs stated baseline year. Numeric with sign; else -1.")
+
+class Region_water_efficiency_change_vs_baseline_pct(BaseModel):
+    question: float = Field(-1, description="Region-level water efficiency % change vs baseline. Numeric with sign; else -1.")
+
+class Region_GHG_change_vs_baseline_pct(BaseModel):
+    question: float = Field(-1, description="Region-level GHG emissions % change vs baseline. Numeric with sign; else -1.")
+
+
+
+# =========================
+# UPDATED group_fields (duplicates removed + new classes added)
+# =========================
+
 group_fields = {
-    "FiscalYear": [Year , Period_start , Period_end],
-    "Region": [EMEA_Net_sales ,EMEA_Revenue_growth_pct, APAC_Net_sales , Europe_Net_sales , Global_Net_sales, Rest_of_World_Net_sales],
-    "Financials": [Net_sales_absolute , Revenue_growth , Operating_profit , Operating_margin , Net_income_margin_pct , Net_profit , Eps, Cash_flow , Capex , Opex , Gross_profit , Share_of_sales , Gross_margin , Revenue , Currency , Operating_income , Net_income , Net_income_growth , Net_debt , Net_debt_to_ebitda , Dividend , Pro , Pro_growth ],
-    "FreeCashFlow_Debt": [Free_cash_flow_amount,Net_debt_change_amount,Net_debt_ending_amount,Net_debt_to_ebitda_ratio,Dividend_per_share_proposed],
-    "Brands": [Quantity_key_brands, Key_brands, Brand_companies, Quantity_brand_companies, Strategic_local_brands, Non_alcoholic_brands],
-    "Sales_Drinks": [Fy_group_net_sales_current, Fy_group_net_sales_prior, Fy_group_net_sales_reported_change_pct , Fy_group_net_sales_organic_change_pct,Fy_group_net_sales_perimeter_contrib_pct, Fy_group_net_sales_fx_contrib_pct, Fy_region_net_sales_current, Fy_region_net_sales_prior, Fy_region_net_sales_reported_change_pct, Fy_region_net_sales_organic_change_pct ,
-    Fy_region_net_sales_perimeter_contrib_pct, Fy_region_net_sales_fx_contrib_pct, Fy_region_net_sales_share_of_group_pct, H2_group_net_sales_current, H2_group_net_sales_prior , H2_group_net_sales_reported_change_pct , H2_group_net_sales_organic_change_pct, Q4_region_net_sales_current, Q4_region_net_sales_prior, Q4_region_net_sales_reported_change_pct, Q4_region_net_sales_organic_change_pct, Fx_impact, Perimeter_impact,Americas_growth,Usa_growth,Asia_row_growth,China_growth,India_growth],
-    "Results_Drinks": [Pro_amount,Pro_organic_growth_pct,Gross_margin_expansion_bps,Ap_amount,Ap_pct_of_net_sales,Operating_margin_org_bps,Operating_margin_org_pct,Operating_margin_reported_pct,Fx_impact_amount,Perimeter_effect_amount,Group_share_net_pro_amount,Group_share_net_pro_change_pct,Avg_cost_of_debt_pct,Group_share_net_profit_amount,Group_share_net_profit_change_pct, Eps_amount],
-    "Corporate_information": [Headquarters,Executive_committee_examples,Executive_committee_quantity,Board_of_directors_examples,Board_of_directors_quantity,Affiliate_name,Affiliates,Affiliate_quantity,Avg_age,Qty_nationalities],
-    "Social_DEI": [Total_employees_social, Women_in_workforce_pct, Women_in_management_pct, Ethnically_diverse_leaders_pct, Employees_with_disabilities_pct_social, Lgbtq_inclusion_programs, Community_investment_amount],
-    "Environmental": [Carbon_emissions_total, Carbon_emissions_scope3, Emission_intensity, Renewable_energy_pct, Energy_consumption_total, Water_withdrawal_total, Waste_recycled_pct, Biodiversity_initiatives],
-    "Governance": [Water_efficiency, Energy_consumption, Distillery_water, Responsible_consumption],
+    "FiscalYear": [Year, Period_start, Period_end],
+
+    "Region": [
+        EMEA_Net_sales,
+        EMEA_Revenue_growth_pct,
+        APAC_Net_sales,
+        Europe_Net_sales,
+        Global_Net_sales,
+        Rest_of_World_Net_sales,
+        Net_sales_share_North_America_pct,
+        Net_sales_share_Europe_pct,
+        Net_sales_share_Asia_Pacific_pct,
+        Net_sales_share_Latin_America_Caribbean_pct,
+        Net_sales_share_Africa_pct,
+    ],
+
+    "Financials": [
+        Net_sales_absolute,
+        Revenue_growth,
+        Operating_profit,
+        Operating_margin,
+        Net_income_margin_pct,
+        Net_profit,
+        Eps,
+        Cash_flow,
+        Capex,
+        Opex,
+        Gross_profit,
+
+        Share_of_sales,
+        Gross_margin,
+        Revenue,
+        Currency,
+        Operating_income,
+        Net_income,
+        Net_income_growth,
+
+        Net_debt,
+
+        Net_debt_to_ebitda_ratio,
+        Pro,
+        Pro_growth,
+        Volume_reported_movement_pct,
+        Volume_organic_movement_pct,
+        Net_sales_reported_movement_pct,
+        Net_sales_organic_movement_pct,
+        Operating_profit_reported_movement_pct,
+        Operating_profit_organic_movement_pct,
+        EPS_reported_movement_pct,
+        EPS_before_exceptionals_movement_pct,
+
+        Dividend_per_share_increase_pct,
+
+        Price_mix_pct,
+        Volume_growth_pct,
+        Price_mix_change_pps,
+
+        Operating_profit_margin_reported_pct,
+        Operating_profit_margin_organic_pct,
+        Operating_margin_change_bps,
+
+        FX_impact_on_net_sales_amount,
+        FX_impact_on_net_sales_pct,
+        Acquisition_disposal_impact_on_net_sales_amount,
+        Acquisition_disposal_impact_on_net_sales_pct,
+        Hyperinflation_impact_on_net_sales_amount,
+    ],
+
+    "FreeCashFlow_Debt": [
+        Free_cash_flow_amount,
+        Net_debt_change_amount,
+        Net_debt_ending_amount,
+        Net_debt_to_ebitda_ratio,
+        Dividend_per_share_proposed,
+    ],
+
+    "Brands": [
+        Quantity_key_brands,
+        Key_brands,
+        Brand_companies,
+        Quantity_brand_companies,
+        Strategic_local_brands,
+        Non_alcoholic_brands,
+        Ready_to_drink_brands,
+    ],
+
+    "Sales_Drinks": [
+        Fy_group_net_sales_current,
+        Fy_group_net_sales_prior,
+        Fy_group_net_sales_reported_change_pct,
+        Fy_group_net_sales_organic_change_pct,
+        Fy_group_net_sales_perimeter_contrib_pct,
+        Fy_group_net_sales_fx_contrib_pct,
+
+        Fy_region_net_sales_current,
+        Fy_region_net_sales_prior,
+        Fy_region_net_sales_reported_change_pct,
+        Fy_region_net_sales_organic_change_pct,
+        Fy_region_net_sales_perimeter_contrib_pct,
+        Fy_region_net_sales_fx_contrib_pct,
+        Fy_region_net_sales_share_of_group_pct,
+
+        H2_group_net_sales_current,
+        H2_group_net_sales_prior,
+        H2_group_net_sales_reported_change_pct,
+        H2_group_net_sales_organic_change_pct,
+
+        Q4_region_net_sales_current,
+        Q4_region_net_sales_prior,
+        Q4_region_net_sales_reported_change_pct,
+        Q4_region_net_sales_organic_change_pct,
+
+        Fx_impact,
+        Perimeter_impact,
+        Americas_growth,
+        Usa_growth,
+        Asia_row_growth,
+        China_growth,
+        India_growth,
+        Category_share_largest_pct,
+        Scotch_share_pct,
+        Beer_share_pct,
+        Tequila_share_pct,
+        Vodka_share_pct,
+
+        Price_tier_share_Value_pct,
+        Price_tier_share_Standard_pct,
+        Price_tier_share_Premium_pct,
+        Price_tier_share_Super_premium_pct,
+        Price_tier_share_Ultra_premium_pct,
+        Price_tier_share_Luxury_pct,
+    ],
+
+    "Results_Drinks": [
+        Pro_amount,
+        Pro_organic_growth_pct,
+        Gross_margin_expansion_bps,
+        Ap_amount,
+        Ap_pct_of_net_sales,
+        Operating_margin_org_bps,
+        Operating_margin_org_pct,
+        Operating_margin_reported_pct,
+        Fx_impact_amount,
+        Perimeter_effect_amount,
+        Group_share_net_pro_amount,
+        Group_share_net_pro_change_pct,
+        Avg_cost_of_debt_pct,
+        Group_share_net_profit_amount,
+        Group_share_net_profit_change_pct,
+    ],
+
+    "Corporate_information": [
+        Headquarters,
+        Executive_committee_examples,
+        Executive_committee_quantity,
+        Board_of_directors_examples,
+        Board_of_directors_quantity,
+        Affiliate_name,
+        Affiliates,
+        Affiliate_quantity,
+        Avg_age,
+        Qty_nationalities,
+    ],
+
+    "Social_DEI": [
+        Total_employees_social,
+        Women_in_workforce_pct,
+        Women_in_management_pct,
+        Ethnically_diverse_leaders_pct,
+        Employees_with_disabilities_pct_social,
+        Lgbtq_inclusion_programs,
+        Community_investment_amount,
+    ],
+
+    "Environmental": [
+        Carbon_emissions_total,
+        Carbon_emissions_scope3,
+        Emission_intensity,
+        Renewable_energy_pct,
+        Energy_consumption_total,
+        Water_withdrawal_total,
+        Waste_recycled_pct,
+        Biodiversity_initiatives,
+        Water_efficiency_change_vs_baseline_pct,
+        GHG_emissions_change_vs_baseline_pct,
+        Region_water_efficiency_change_vs_baseline_pct,
+        Region_GHG_change_vs_baseline_pct,
+    ],
+
+    "Governance": [
+        Water_efficiency,
+        Energy_consumption,
+        Distillery_water,
+        Responsible_consumption,
+        Total_shareholder_return_pct,
+        ROIC_pct,
+        ROIC_change_bps,
+    ],
 }
+
 
 
 
