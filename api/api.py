@@ -2030,7 +2030,6 @@ group_fields = {
         Price_tier_share_Value_pct,
         Price_tier_share_Standard_pct,
         Price_tier_share_Premium_pct,
-        Price_tier_share_Super_premium_pct,
         Price_tier_share_Ultra_premium_pct,
         Price_tier_share_Luxury_pct,
     ],
@@ -2432,7 +2431,6 @@ async def return_excel(collection_names: List[str]=Body(...)):
         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
 
         all_frames[sheet_name] = df.copy()
-        
 
     buf = io.BytesIO()
     with pd.ExcelWriter(buf, engine="openpyxl") as w:

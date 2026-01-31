@@ -11,13 +11,13 @@ from ast import Load
 
 #API_URL = "http://api:8003"
 
-LOGIN_HTML = """
-<div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
-  <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
-</div>
-<div style="opacity:0.8;margin-bottom:8px;">
-  Use your account to access the app.
-</div>"""
+# LOGIN_HTML = """
+# <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
+#   <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
+# </div>
+# <div style="opacity:0.8;margin-bottom:8px;">
+#   Use your account to access the app.
+# </div>"""
 
 API_URL = "https://generate-reports.api.elsth.com"
 
@@ -33,36 +33,6 @@ API_URL = "https://generate-reports.api.elsth.com"
 #        return True
 #     else:
 #          return False
-
-
-#### Loading all tables from BigQuery datasets ####
-
-
-def fetch_bq_collections_client():
-    resp = requests.get(f"{API_URL}/big_query_collections", timeout=20)
-    data = resp.json()
-    names = []
-    for item in data:
-        if "id" in item:
-            names.append(item["id"])
-        elif "dataset_id" in item:
-            names.append(item["dataset_id"])
-
-    return gr.update(choices=names, value=names[0]), "✅ BigQuery datasets loaded"
-
-
-
-def download_bq_dataset_client(dataset_id: str):
-    resp = requests.get(f"{API_URL}/download_tables/{dataset_id}", timeout=2000)
-    file_name = f"{dataset_id}.xlsx"
-    output_path = file_name
-
-    with open(output_path, "wb") as f:
-        f.write(resp.content)
-
-    return output_path, f"✅ Downloaded {file_name}"
-
-
 
 
 
@@ -128,16 +98,16 @@ def generate_excel_client(selected_collections, pdf_files):
 
     collection_names = selected_collections
 
-    files_to_hash = []
+    #files_to_hash = []
     
-    for file in pdf_files:
-        file_path = file if isinstance(file, str) else file.name
-        files_to_hash.append(
-            (
-                "files",
-                (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
-            )
-        )
+    # for file in pdf_files:
+    #     file_path = file if isinstance(file, str) else file.name
+    #     files_to_hash.append(
+    #         (
+    #             "files",
+    #             (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
+    #         )
+    #     )
     
     resp = requests.post(
         f"{API_URL}/return_excel",
@@ -163,6 +133,36 @@ def generate_excel_client(selected_collections, pdf_files):
         f.write(resp.content)
 
     return output_path, {file_name}
+
+
+#### Loading all tables from BigQuery datasets ####
+
+
+def fetch_bq_collections_client():
+    resp = requests.get(f"{API_URL}/big_query_collections", timeout=20)
+    data = resp.json()
+    names = []
+    for item in data:
+        if "id" in item:
+            names.append(item["id"])
+        elif "dataset_id" in item:
+            names.append(item["dataset_id"])
+
+    return gr.update(choices=names, value=names[0]), "✅ BigQuery datasets loaded"
+
+
+
+def download_bq_dataset_client(dataset_id: str):
+    resp = requests.get(f"{API_URL}/download_tables/{dataset_id}", timeout=2000)
+    file_name = f"{dataset_id}.xlsx"
+    output_path = file_name
+
+    with open(output_path, "wb") as f:
+        f.write(resp.content)
+
+    return output_path, f"✅ Downloaded {file_name}"
+
+
 
 custom_css = """
 /* ===== ROOT / BACKGROUND ===== */
@@ -458,4 +458,4 @@ with gr.Blocks(title="SR-KES") as app:
 if __name__ == "__main__":
     app.launch(server_name="0.0.0.0", server_port=8001)
 
-#, auth=check_login, auth_message=LOGIN_HTML
+#, auth=check_login, auth_message=LOGIN_HTMLdocker logs -f gradio-1
