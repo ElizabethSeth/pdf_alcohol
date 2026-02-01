@@ -27,14 +27,14 @@ def check_login(login, password):
         f"{API_URL}/login", 
         json={"email": login, "password": password}
     )
+    print("STATUS:", response.status_code)
+    response.raise_for_status()
     return response.json()
 
     # if login == "admin" and password == "1234":
-       
     #    return True
     # else:
     #      return False
-
 
 
 ### standart version
