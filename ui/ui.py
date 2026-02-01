@@ -9,30 +9,31 @@ from typing import List
 from ast import Load
 
 
-#API_URL = "http://api:8003"
+API_URL = "http://api:8003"
 
-# LOGIN_HTML = """
-# <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
-#   <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
-# </div>
-# <div style="opacity:0.8;margin-bottom:8px;">
-#   Use your account to access the app.
-# </div>"""
+LOGIN_HTML = """
+<div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
+  <div style="font-size:22px;font-weight:700;">🔐 Sign in</div>
+</div>
+<div style="opacity:0.8;margin-bottom:8px;">
+  Use your account to access the app.
+</div>"""
 
-API_URL = "https://generate-reports.api.elsth.com"
+#API_URL = "https://generate-reports.api.elsth.com"
 
-# def check_login(login, password):
-#     response = requests.post(
-#         f"{API_URL}/login", 
-#         json={"email": login, "password": password}
-#     )
-#     #return response.json()
+def check_login(login, password):
+    print("Checking login for:", login)
+    response = requests.post(
+        f"{API_URL}/login", 
+        json={"email": login, "password": password}
+    )
+    return response.json()
 
-#     if login == "admin" and password == "1234":
+    # if login == "admin" and password == "1234":
        
-#        return True
-#     else:
-#          return False
+    #    return True
+    # else:
+    #      return False
 
 
 
@@ -456,6 +457,6 @@ with gr.Blocks(title="SR-KES") as app:
     )
 
 if __name__ == "__main__":
-    app.launch(server_name="0.0.0.0", server_port=8001)
+    app.launch(server_name="0.0.0.0", server_port=8001, auth=check_login, auth_message=LOGIN_HTML)
 
-#, auth=check_login, auth_message=LOGIN_HTMLdocker logs -f gradio-1
+# docker logs -f gradio-1

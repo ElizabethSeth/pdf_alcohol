@@ -7,6 +7,7 @@ services:
   #     - "8501:8501"
 
   api:
+    container_name: api_service
     build:
       context: api
       dockerfile: Dockerfile
@@ -17,6 +18,7 @@ services:
 
 
   gradio:
+    container_name: gradio_ui
     build:
       context: ui
       dockerfile: Dockerfile

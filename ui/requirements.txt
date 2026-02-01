@@ -10,5 +10,5 @@ langchain_qdrant
 fitz
 docx
 langchain_community
-gradio
+gradio==6.3.0
 urllib3

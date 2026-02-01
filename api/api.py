@@ -2157,6 +2157,7 @@ def get_user_by_email(db: Session, email: str, password_unique: str):
 
 @app.post("/login")
 def login(payload: LoginRequest, db: Session = Depends(get_db)):
+    print("login attempt:", payload.email)
     return get_user_by_email(db=db, email=payload.email, password_unique=payload.password)
 
 
