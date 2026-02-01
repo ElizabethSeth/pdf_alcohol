@@ -9,7 +9,7 @@ from typing import List
 from ast import Load
 
 
-API_URL = "http://api:8003"
+#API_URL = "http://api:8003"
 
 LOGIN_HTML = """
 <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
@@ -19,7 +19,7 @@ LOGIN_HTML = """
   Use your account to access the app.
 </div>"""
 
-#API_URL = "https://generate-reports.api.elsth.com"
+API_URL = "https://generate-reports.api.elsth.com"
 
 def check_login(login, password):
     print("Checking login for:", login)
