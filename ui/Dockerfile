@@ -8,5 +8,5 @@ COPY ui.py .
 
 EXPOSE 8001
 
-#ENTRYPOINT ["sh", "-c", "sleep 10 && python ui.py"]
+ENTRYPOINT ["sh", "-c", "sleep 10 && python ui.py"]
 CMD ["python", "ui.py"]

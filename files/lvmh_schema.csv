@@ -1,0 +1,68 @@
+Class,Type,Description,Company
+WS_FiscalYearEnd,str,Fiscal year end date of this report (applies to Wines & Spirits segment too). Return DD/MM/YYYY else 'Unknown'.,LVMH
+WS_PeriodStart,str,Period start date covered by the financial statements. Return DD/MM/YYYY else 'Unknown'.,LVMH
+WS_PeriodEnd,str,Period end date covered by the financial statements. Return DD/MM/YYYY else 'Unknown'.,LVMH
+WS_Currency,str,"Reporting currency used in this report (e.g., EUR). Return currency code if explicit, else 'Unknown'.",LVMH
+WS_NetSales_Latest,int,"Wines & Spirits net sales for the LATEST fiscal year. Convert millions to full number. If not found, -1.",LVMH
+WS_NetSales_Prior,int,"Wines & Spirits net sales for the PRIOR fiscal year. Convert millions to full number. If not found, -1.",LVMH
+WS_NetSales_TwoYearsAgo,int,"Wines & Spirits net sales for TWO YEARS AGO. Convert millions to full number. If not found, -1.",LVMH
+WS_NetSales_ReportedChangePct_LatestVsPrior,float,"Wines & Spirits reported net sales change %. Numeric only. If not found, -1.",LVMH
+WS_NetSales_OrganicChangePct_LatestVsPrior,float,"Wines & Spirits organic net sales change %. Numeric only. If not found, -1.",LVMH
+WS_Sales_ChampagneAndWines_Latest,int,"Champagne & Wines sales latest year. Convert millions. If not found, -1.",LVMH
+WS_Sales_CognacAndSpirits_Latest,int,"Cognac & Spirits sales latest year. Convert millions. If not found, -1.",LVMH
+WS_Volume_Champagne_mBottles_Latest,float,"Champagne volume (million bottles). If not found, -1.",LVMH
+WS_Volume_Cognac_mBottles_Latest,float,"Cognac volume (million bottles). If not found, -1.",LVMH
+WS_Volume_OtherSpirits_mBottles_Latest,float,"Other spirits volume (million bottles). If not found, -1.",LVMH
+WS_Volume_StillAndSparklingWines_mBottles_Latest,float,"Still & sparkling wines volume (million bottles). If not found, -1.",LVMH
+WS_GeoShare_USA_pct_Latest,float,"USA destination share (%). If not found, -1.",LVMH
+WS_GeoShare_AsiaExJapan_pct_Latest,float,"Asia ex-Japan destination share (%). If not found, -1.",LVMH
+WS_GeoShare_EuropeExFrance_pct_Latest,float,"Europe ex-France destination share (%). If not found, -1.",LVMH
+WS_GeoShare_France_pct_Latest,float,"France destination share (%). If not found, -1.",LVMH
+WS_GeoShare_Japan_pct_Latest,float,"Japan destination share (%). If not found, -1.",LVMH
+WS_GeoShare_OtherMarkets_pct_Latest,float,"Other markets share (%). If not found, -1.",LVMH
+WS_Largest_GeoShare_pct_Latest,float,"Largest geographic share (%). If not found, -1.",LVMH
+WS_OperatingProfit_Latest,int,"Operating profit latest year. Convert millions. If not found, -1.",LVMH
+WS_OperatingProfit_Prior,int,"Operating profit prior year. Convert millions. If not found, -1.",LVMH
+WS_OperatingMargin_pct_Latest,float,"Operating margin %. Numeric only. If not found, -1.",LVMH
+WS_OperatingProfit_ChangePct_LatestVsPrior,float,"Operating profit % change. If not found, -1.",LVMH
+WS_OperatingProfitSplit_ChampagneWines_Latest,int,"Profit split Champagne & Wines. Convert millions. If not found, -1.",LVMH
+WS_OperatingProfitSplit_CognacSpirits_Latest,int,"Profit split Cognac & Spirits. Convert millions. If not found, -1.",LVMH
+WS_TotalAssets_Latest,int,"Total assets. Convert millions. If not found, -1.",LVMH
+WS_IntangiblesAndGoodwill_Latest,int,"Intangibles & goodwill. Convert millions. If not found, -1.",LVMH
+WS_PPE_Latest,int,"Property plant equipment. Convert millions. If not found, -1.",LVMH
+WS_Inventory_Latest,int,"Inventory. Convert millions. If not found, -1.",LVMH
+WS_OperatingCapex_Latest,int,"Operating capex. Convert millions. If not found, -1.",LVMH
+WS_SalesOutsideGroup_Latest,int,"Sales outside group. Convert millions. If not found, -1.",LVMH
+WS_IntraGroupSales_Latest,int,"Intragroup sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q1_LatestFY,int,"Q1 sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q2_LatestFY,int,"Q2 sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q3_LatestFY,int,"Q3 sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q4_LatestFY,int,"Q4 sales. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_Latest,int,"Total purchase commitments. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_lt1y_Latest,int,"Commitments <1y. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_1to5y_Latest,int,"Commitments 1-5y. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_gt5y_Latest,int,"Commitments >5y. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_Methodology,str,"Purchase commitments valuation methodology. If not found, 'Unknown'.",LVMH
+WS_ESG_Biodiversity_Initiatives,str,"Biodiversity initiatives summary. If not found, 'Unknown'.",LVMH
+WS_ESG_WaterManagement_Initiatives,str,"Water management initiatives summary. If not found, 'Unknown'.",LVMH
+WS_ESG_CarbonCommitments,str,"Carbon reduction commitments summary. If not found, 'Unknown'.",LVMH
+WS_KeyHeadwinds_LatestFY,str,"Key headwinds summary. If not found, 'Unknown'.",LVMH
+WS_New_products_partnerships,str,"New products / partnerships. If not found, 'Unknown'.",LVMH
+WS_Net_sales,int,"Segment net sales. Convert millions. If not found, -1.",LVMH
+WS_ROC,int,"Segment ROC. Convert millions. If not found, -1.",LVMH
+WS_Operating_margin_pct,float,"Segment operating margin %. If not found, -1.",LVMH
+WS_Champagne_wines_sales,int,"Champagne & wines sales. Convert millions. If not found, -1.",LVMH
+WS_Cognac_spirits_sales,int,"Cognac & spirits sales. Convert millions. If not found, -1.",LVMH
+WS_Volume_champagne_million_bottles,float,"Champagne volume. If not found, -1.",LVMH
+WS_Volume_cognac_million_bottles,float,"Cognac volume. If not found, -1.",LVMH
+WS_Volume_other_spirits_million_bottles,float,"Other spirits volume. If not found, -1.",LVMH
+WS_Volume_still_sparkling_wines_million_bottles,float,"Still & sparkling wines volume. If not found, -1.",LVMH
+WS_Sales_share_US_pct,float,"US sales share %. If not found, -1.",LVMH
+WS_Sales_share_Asia_ex_Japan_pct,float,"Asia ex-Japan sales share %. If not found, -1.",LVMH
+WS_Sales_share_Europe_ex_France_pct,float,"Europe ex-France sales share %. If not found, -1.",LVMH
+WS_Sales_share_France_pct,float,"France sales share %. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_total,int,"Total purchase commitments. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_lt1y,int,"Commitments <1y. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y,int,"Commitments 1-5y. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y,int,"Commitments >5y. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_methodology,str,"Commitments valuation methodology. If not found, 'Unknown'.",LVMH

@@ -1,0 +1,354 @@
+Class,Type,Description,Company
+WS_FiscalYearEnd,str,Fiscal year end date of this report (applies to Wines & Spirits segment too). Return DD/MM/YYYY else 'Unknown'.,LVMH
+WS_PeriodStart,str,Period start date covered by the financial statements. Return DD/MM/YYYY else 'Unknown'.,LVMH
+WS_PeriodEnd,str,Period end date covered by the financial statements. Return DD/MM/YYYY else 'Unknown'.,LVMH
+WS_Currency,str,"Reporting currency used in this report (e.g., EUR). Return currency code if explicit, else 'Unknown'.",LVMH
+WS_NetSales_Latest,int,"Wines & Spirits net sales for the LATEST fiscal year. Convert millions to full number. If not found, -1.",LVMH
+WS_NetSales_Prior,int,"Wines & Spirits net sales for the PRIOR fiscal year. Convert millions to full number. If not found, -1.",LVMH
+WS_NetSales_TwoYearsAgo,int,"Wines & Spirits net sales for TWO YEARS AGO. Convert millions to full number. If not found, -1.",LVMH
+WS_NetSales_ReportedChangePct_LatestVsPrior,float,"Wines & Spirits reported net sales change %. Numeric only. If not found, -1.",LVMH
+WS_NetSales_OrganicChangePct_LatestVsPrior,float,"Wines & Spirits organic net sales change %. Numeric only. If not found, -1.",LVMH
+WS_Sales_ChampagneAndWines_Latest,int,"Champagne & Wines sales latest year. Convert millions. If not found, -1.",LVMH
+WS_Sales_CognacAndSpirits_Latest,int,"Cognac & Spirits sales latest year. Convert millions. If not found, -1.",LVMH
+WS_Volume_Champagne_mBottles_Latest,float,"Champagne volume (million bottles). If not found, -1.",LVMH
+WS_Volume_Cognac_mBottles_Latest,float,"Cognac volume (million bottles). If not found, -1.",LVMH
+WS_Volume_OtherSpirits_mBottles_Latest,float,"Other spirits volume (million bottles). If not found, -1.",LVMH
+WS_Volume_StillAndSparklingWines_mBottles_Latest,float,"Still & sparkling wines volume (million bottles). If not found, -1.",LVMH
+WS_GeoShare_USA_pct_Latest,float,"USA destination share (%). If not found, -1.",LVMH
+WS_GeoShare_AsiaExJapan_pct_Latest,float,"Asia ex-Japan destination share (%). If not found, -1.",LVMH
+WS_GeoShare_EuropeExFrance_pct_Latest,float,"Europe ex-France destination share (%). If not found, -1.",LVMH
+WS_GeoShare_France_pct_Latest,float,"France destination share (%). If not found, -1.",LVMH
+WS_GeoShare_Japan_pct_Latest,float,"Japan destination share (%). If not found, -1.",LVMH
+WS_GeoShare_OtherMarkets_pct_Latest,float,"Other markets share (%). If not found, -1.",LVMH
+WS_Largest_GeoShare_pct_Latest,float,"Largest geographic share (%). If not found, -1.",LVMH
+WS_OperatingProfit_Latest,int,"Operating profit latest year. Convert millions. If not found, -1.",LVMH
+WS_OperatingProfit_Prior,int,"Operating profit prior year. Convert millions. If not found, -1.",LVMH
+WS_OperatingMargin_pct_Latest,float,"Operating margin %. Numeric only. If not found, -1.",LVMH
+WS_OperatingProfit_ChangePct_LatestVsPrior,float,"Operating profit % change. If not found, -1.",LVMH
+WS_OperatingProfitSplit_ChampagneWines_Latest,int,"Profit split Champagne & Wines. Convert millions. If not found, -1.",LVMH
+WS_OperatingProfitSplit_CognacSpirits_Latest,int,"Profit split Cognac & Spirits. Convert millions. If not found, -1.",LVMH
+WS_TotalAssets_Latest,int,"Total assets. Convert millions. If not found, -1.",LVMH
+WS_IntangiblesAndGoodwill_Latest,int,"Intangibles & goodwill. Convert millions. If not found, -1.",LVMH
+WS_PPE_Latest,int,"Property plant equipment. Convert millions. If not found, -1.",LVMH
+WS_Inventory_Latest,int,"Inventory. Convert millions. If not found, -1.",LVMH
+WS_OperatingCapex_Latest,int,"Operating capex. Convert millions. If not found, -1.",LVMH
+WS_SalesOutsideGroup_Latest,int,"Sales outside group. Convert millions. If not found, -1.",LVMH
+WS_IntraGroupSales_Latest,int,"Intragroup sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q1_LatestFY,int,"Q1 sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q2_LatestFY,int,"Q2 sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q3_LatestFY,int,"Q3 sales. Convert millions. If not found, -1.",LVMH
+WS_Sales_Q4_LatestFY,int,"Q4 sales. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_Latest,int,"Total purchase commitments. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_lt1y_Latest,int,"Commitments <1y. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_1to5y_Latest,int,"Commitments 1-5y. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_GrapesWinesEauxdevie_gt5y_Latest,int,"Commitments >5y. Convert millions. If not found, -1.",LVMH
+WS_PurchaseCommitments_Methodology,str,"Purchase commitments valuation methodology. If not found, 'Unknown'.",LVMH
+WS_ESG_Biodiversity_Initiatives,str,"Biodiversity initiatives summary. If not found, 'Unknown'.",LVMH
+WS_ESG_WaterManagement_Initiatives,str,"Water management initiatives summary. If not found, 'Unknown'.",LVMH
+WS_ESG_CarbonCommitments,str,"Carbon reduction commitments summary. If not found, 'Unknown'.",LVMH
+WS_KeyHeadwinds_LatestFY,str,"Key headwinds summary. If not found, 'Unknown'.",LVMH
+WS_New_products_partnerships,str,"New products / partnerships. If not found, 'Unknown'.",LVMH
+WS_Net_sales,int,"Segment net sales. Convert millions. If not found, -1.",LVMH
+WS_ROC,int,"Segment ROC. Convert millions. If not found, -1.",LVMH
+WS_Operating_margin_pct,float,"Segment operating margin %. If not found, -1.",LVMH
+WS_Champagne_wines_sales,int,"Champagne & wines sales. Convert millions. If not found, -1.",LVMH
+WS_Cognac_spirits_sales,int,"Cognac & spirits sales. Convert millions. If not found, -1.",LVMH
+WS_Volume_champagne_million_bottles,float,"Champagne volume. If not found, -1.",LVMH
+WS_Volume_cognac_million_bottles,float,"Cognac volume. If not found, -1.",LVMH
+WS_Volume_other_spirits_million_bottles,float,"Other spirits volume. If not found, -1.",LVMH
+WS_Volume_still_sparkling_wines_million_bottles,float,"Still & sparkling wines volume. If not found, -1.",LVMH
+WS_Sales_share_US_pct,float,"US sales share %. If not found, -1.",LVMH
+WS_Sales_share_Asia_ex_Japan_pct,float,"Asia ex-Japan sales share %. If not found, -1.",LVMH
+WS_Sales_share_Europe_ex_France_pct,float,"Europe ex-France sales share %. If not found, -1.",LVMH
+WS_Sales_share_France_pct,float,"France sales share %. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_total,int,"Total purchase commitments. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_lt1y,int,"Commitments <1y. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_1to5y,int,"Commitments 1-5y. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_grapes_wines_eauxdevie_gt5y,int,"Commitments >5y. Convert millions. If not found, -1.",LVMH
+WS_Purchase_commitments_methodology,str,"Commitments valuation methodology. If not found, 'Unknown'.",LVMH
+Year,str,Fiscal year please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown',Pernod Ricard
+Period_start,str,Period start date please retun me date in format DD/MM/YYYY ortherwise retun me 'Unknown',Pernod Ricard
+Period_end,str,Period end date please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown',Pernod Ricard
+Net_sales_absolute,float,"Net sales (absolute) for the period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If multiple periods are shown, use the latest full-year figure. If not found, output -1.",Pernod Ricard
+Revenue_growth,float,"Give me Revenue growth percentage for the period. Extract ONLY the numeric percentage value, without the % sign. Example: 'Revenue grew by 7.5%' → 7.5. If not found, output -1.",Pernod Ricard
+Operating_profit,int,"Give meOperating profit (from the consolidated income statement). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Operating_margin,float,"Operating margin percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Pernod Ricard
+Net_income_margin_pct,float,"Net income margin percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Pernod Ricard
+Net_profit,int,"Net profit (net income). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Eps,float,"Earnings per share (EPS, basic or diluted – choose the figure explicitly labeled or the main EPS if multiple). Extract ONLY the numeric value, ignore currency symbols. If EPS is given in cents, convert to full currency units (e.g., 120 cents → 1.2). If not found, output -1.",Pernod Ricard
+Cash_flow,int,"Free cash flow OR net cash from operating activities (choose free cash flow if both are available). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Capex,int,"Capital expenditures (Capex). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Opex,int,"Operating expenses (Opex), including selling, general and administrative and other operating costs as reported. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Gross_profit,int,"Gross profit. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Share_of_sales,float,"Share of sales by region (percentage). If multiple regions are given, take the largest regional share. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Pernod Ricard
+Gross_margin,float,"Gross margin percentage for the most recent full fiscal year, for the entire group/company. Treat 'gross margin' as any of these phrases: 'gross margin', 'gross profit margin', 'gross profit as a percentage of revenue/sales/net sales'. Use the consolidated company figure in %, not basis-points and not a segment-specific value. If multiple gross margins are given, pick the one clearly labeled for the whole group. Return ONLY the numeric value, without the % sign (e.g. 60.4 for 60.4%). If you cannot find a gross margin percentage, output -1.",Pernod Ricard
+Revenue,int,"Total revenue (net sales) for the period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. Do NOT include unit or currency text here (those are captured separately). If not found, output -1.",Pernod Ricard
+Currency,str,"Currency in which the financial statements are presented (e.g., EUR, USD, GBP). Return ONLY the standard currency code if explicitly stated (e.g., 'EUR'). If not clearly stated, output 'Unknown'.",Pernod Ricard
+Operating_income,int,"Operating income (sometimes called 'recurring operating income' or 'ROC'). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_income,int,"Net income, group share (attributable to equity holders of the parent). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_income_growth,float,"Year-over-year growth rate (percentage change) of NET INCOME for the most recent full fiscal year, for the entire group/company. Treat 'net income' as any of these equivalent phrases: 'profit attributable to equity shareholders', 'profit attributable to owners of the parent', 'profit for the year', or 'net profit'. Look for wording such as 'increased by X%', 'decreased by X%', 'change of X%', 'growth of X%'. Use the OVERALL company figure, not per share, not per segment. If both reported and organic/underlying/constant-currency growth are given, PREFER the reported (IFRS/GAAP) total growth. If only one type exists, use it. Return ONLY the numeric value (including sign), without the % sign (e.g. 12.3 for +12.3%, -5.4 for -5.4%). If you cannot find any clear year-over-year growth percentage for net income, output -1.",Pernod Ricard
+Net_debt,float,"Net debt. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_to_ebitda,float,"Net debt / EBITDA ratio. Extract ONLY the numeric ratio value (e.g., '2.5x' → 2.5). If not found, output -1.",Pernod Ricard
+Dividend,float,"Proposed dividend per share for the period. Extract ONLY the numeric amount, ignore currency symbols. If dividend is given in cents, convert to full currency units (e.g., 470 cents → 4.7). If not found, output -1.",Pernod Ricard
+Pro,float,"PRO (Profit from Recurring Operations). Extract ONLY the numeric amount in the original currency, ignore currency symbols Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Pro_growth,float,"Organic PRO (Profit from Recurring Operations) growth percentage. Extract ONLY the numeric percentage value, without the % sign. If multiple growth metrics are given, choose the organic growth of PRO. If not found, output -1.",Pernod Ricard
+Free_cash_flow_amount,float,"Free cash flow amount. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_change_amount,float,"Change in Net Debt versus the previous year. Extract ONLY the signed numeric amount in the original currency (negative if net debt decreased), ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_ending_amount,float,"Net Debt at year-end for the current period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_to_ebitda_ratio,float,"Net Debt / EBITDA ratio at average rate. Extract ONLY the numeric ratio value (e.g., '2.5x' → 2.5). If not found, output -1.",Pernod Ricard
+Dividend_per_share_proposed,float,"Proposed dividend per share for the period. Extract ONLY the numeric amount, ignore currency symbols (€, $, £, etc.). If the dividend is given in cents, convert to full currency units (e.g., 470 cents → 4.7). If not found, output -1.",Pernod Ricard
+EMEA_Net_sales,int,"Net sales for the EMEA region (Europe, Middle East and Africa). Match: 'EMEA', 'Europe, Middle East and Africa', 'Europe & Africa', 'Europe Middle East Africa'. Use geographic segmentation only. Latest full fiscal year. Convert scaled units. If not disclosed, -1.",Pernod Ricard
+EMEA_Revenue_growth_pct,float,"Revenue or net sales growth percentage for the EMEA region. Prefer organic growth first, otherwise reported. Return signed numeric without % sign. If not explicit, -1.",Pernod Ricard
+APAC_Net_sales,int,"Net sales for the APAC region. Accept labels: 'APAC', 'Asia Pacific', 'Asia-Pacific', 'Greater China & Asia', 'Asia ex-Japan', 'APJ'. Geographic segmentation only. Latest fiscal year. If not disclosed, -1.",Pernod Ricard
+Europe_Net_sales,int,"Net sales for Europe only (excluding Middle East and Africa). Do NOT use EMEA. Latest fiscal year. If not reported separately, -1.",Pernod Ricard
+Global_Net_sales,int,"Total global/group net sales. Match: 'Group', 'Global', 'Worldwide'. Consolidated total only. If not found, -1.",Pernod Ricard
+Rest_of_World_Net_sales,int,"Net sales for 'Rest of World' region. Match: 'Rest of World', 'ROW', 'International'. Do NOT use Global totals. If not disclosed, -1.",Pernod Ricard
+Quantity_key_brands,int,"Total number of Key brands for this company. Count each distinct brand listed as a Key brand. If not found, -1.",Pernod Ricard
+Key_brands,str,"List of all Key brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Brand_companies,str,"List of all Brand Companies mentioned for this group. Return ONLY names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Quantity_brand_companies,int,"Total number of Brand Companies for this group. Count each distinct Brand Company. If not found, -1.",Pernod Ricard
+Strategic_local_brands,str,"List of all Strategic Local Brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Non_alcoholic_brands,str,"List of all Non-Alcoholic brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Ready_to_drink_brands,str,"List of all Ready-To-Drink (RTD) brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Fy_group_net_sales_current,int,"Group net sales CURRENT fiscal year in 'FYXX vs FYXX Net Sales by region'. Extract FIRST amount before 'vs'. Digits only, no separators/currency. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_prior,int,"Group net sales PRIOR fiscal year in 'FYXX vs FYXX Net Sales by region'. Extract SECOND amount after 'vs'. Digits only. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_reported_change_pct,float,"Group net sales REPORTED change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_organic_change_pct,float,"Group net sales ORGANIC change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_perimeter_contrib_pct,float,"Perimeter contribution % to Group net sales change in FY comparison. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_group_net_sales_fx_contrib_pct,float,"FX contribution % to Group net sales change in FY comparison. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_region_net_sales_current,int,"Region <REGION_NAME> net sales CURRENT FY in FY comparison sentence. FIRST amount before 'vs'. Digits only. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_prior,int,"Region <REGION_NAME> net sales PRIOR FY in FY comparison sentence. SECOND amount after 'vs'. Digits only. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_reported_change_pct,float,"Region <REGION_NAME> REPORTED net sales change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_organic_change_pct,float,"Region <REGION_NAME> ORGANIC net sales change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_perimeter_contrib_pct,float,"Perimeter contribution % to region <REGION_NAME> net sales change. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_region_net_sales_fx_contrib_pct,float,"FX contribution % to region <REGION_NAME> net sales change. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_region_net_sales_share_of_group_pct,float,"Region <REGION_NAME> share of Group net sales (%). Numeric only, no % sign. If not stated, -1.",Pernod Ricard
+H2_group_net_sales_current,int,"Group net sales CURRENT half-year in 'H2 FYXX vs H2 FYXX'. FIRST amount. Digits only. If not found, -1.",Pernod Ricard
+H2_group_net_sales_prior,int,"Group net sales PRIOR half-year in 'H2 FYXX vs H2 FYXX'. SECOND amount. Digits only. If not found, -1.",Pernod Ricard
+H2_group_net_sales_reported_change_pct,float,"Group net sales REPORTED change % for half-year comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+H2_group_net_sales_organic_change_pct,float,"Group net sales ORGANIC change % for half-year comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_current,int,"Region <REGION_NAME> net sales CURRENT Q4 in 'Q4 FYXX vs Q4 FYXX'. FIRST amount. Digits only. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_prior,int,"Region <REGION_NAME> net sales PRIOR Q4 in 'Q4 FYXX vs Q4 FYXX'. SECOND amount. Digits only. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_reported_change_pct,float,"Region <REGION_NAME> REPORTED net sales change % in Q4 comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_organic_change_pct,float,"Region <REGION_NAME> ORGANIC net sales change % in Q4 comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fx_impact,float,"FX impact on Net Sales (absolute amount). Numeric only, signed if given. Convert scaled units. If not found, -1.",Pernod Ricard
+Perimeter_impact,float,"Perimeter impact on Net Sales (absolute amount). Numeric only, signed if given. Convert scaled units. If not found, -1.",Pernod Ricard
+Americas_growth,float,"Americas overall sales growth % (Net Sales). Numeric only. If not found, -1.",Pernod Ricard
+Usa_growth,float,"USA sales growth % (Net Sales). Numeric only. If not found, -1.",Pernod Ricard
+Asia_row_growth,float,"Asia and Rest of World overall sales growth %. Numeric only. If not found, -1.",Pernod Ricard
+China_growth,float,"China sales growth %. Numeric only. If not found, -1.",Pernod Ricard
+India_growth,float,"India sales growth %. Numeric only. If not found, -1.",Pernod Ricard
+Pro_amount,float,"Profit from Recurring Operations (PRO) for the full year. Numeric amount only; convert scaled units. If not found, -1.",Pernod Ricard
+Pro_organic_growth_pct,float,"Organic growth percentage of PRO. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Gross_margin_expansion_bps,int,"Organic gross margin expansion in bps. Integer only (e.g., '+60 bps' → 60). If not found, -1.",Pernod Ricard
+Ap_amount,float,"Advertising & Promotion (A&P) spend amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Ap_pct_of_net_sales,float,"A&P spend as % of Net Sales. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Operating_margin_org_bps,int,"Organic operating margin expansion/contraction in bps. Integer with sign. If not found, -1.",Pernod Ricard
+Operating_margin_org_pct,float,"Organic operating margin (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Operating_margin_reported_pct,float,"Reported operating margin (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Fx_impact_amount,float,"Adverse FX impact on reported operating margin, as an absolute amount if given. If only %/bps or not found, -1.",Pernod Ricard
+Perimeter_effect_amount,float,"Favourable perimeter effects amount on results. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Group_share_net_pro_amount,float,"Group share of Net PRO amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Group_share_net_pro_change_pct,float,"YoY % change of Group share of Net PRO. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Avg_cost_of_debt_pct,float,"Average cost of debt (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Group_share_net_profit_amount,float,"Group share of net profit amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Group_share_net_profit_change_pct,float,"YoY % change of Group share of net profit. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Eps_amount,float,"EPS amount (basic or diluted). Numeric only; if in cents convert to units. If not found, -1.",Pernod Ricard
+Headquarters,str,"Headquarters location (city and country if available). Return text exactly as written. If not found, 'Unknown'.",Pernod Ricard
+Executive_committee_examples,str,"Names of ALL members of Executive Committee / equivalent. Return ONLY names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Executive_committee_quantity,int,"Total number of individuals on Executive Committee / equivalent. If not found, -1.",Pernod Ricard
+Board_of_directors_examples,str,"All Board of Directors members' names. Return ONLY names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Board_of_directors_quantity,int,"Total number of Board of Directors members. If not found, -1.",Pernod Ricard
+Affiliate_name,str,"Names of affiliate/subsidiary companies if the report focuses on a specific affiliate list. Return names comma-separated. If not mentioned, 'Unknown'.",Pernod Ricard
+Affiliates,str,"All affiliate/subsidiary names. Return names comma-separated in report order. If not found, 'Unknown'.",Pernod Ricard
+Affiliate_quantity,int,"Total number of affiliates/subsidiaries listed. If not found, -1.",Pernod Ricard
+Avg_age,int,"Average age of employees. Numeric only; if decimal, round. If not found, -1.",Pernod Ricard
+Qty_nationalities,int,"Total number of nationalities represented. Numeric only. If not found, -1.",Pernod Ricard
+Total_employees_social,int,"Total number of employees (social/CSR figure). Numeric only. If not found, -1.",Pernod Ricard
+Women_in_workforce_pct,float,"Women in workforce (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Women_in_management_pct,float,"Women in management (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Ethnically_diverse_leaders_pct,float,"Ethnically diverse leaders (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Employees_with_disabilities_pct_social,float,"Employees with disabilities (%), social section. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Lgbtq_inclusion_programs,str,"LGBTQ+ inclusion initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Community_investment_amount,float,"Community investments/donations amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Carbon_emissions_total,float,"Total carbon emissions (Scope 1+2) in metric tons CO2e. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Carbon_emissions_scope3,float,"Scope 3 GHG emissions in metric tons CO2e. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Emission_intensity,float,"Emission intensity as stated. Numeric only (no unit text). If not found, -1.",Pernod Ricard
+Renewable_energy_pct,float,"Renewable energy used (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Energy_consumption_total,float,"Total energy consumption (MWh/GWh). Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Water_withdrawal_total,float,"Total water withdrawal (m3). Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Waste_recycled_pct,float,"Waste recycled (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Biodiversity_initiatives,str,"Biodiversity initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Water_efficiency,str,"Water efficiency information summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Energy_consumption,str,"Energy consumption/efficiency initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Distillery_water,str,"Distillery water use/management summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Responsible_consumption,str,"Responsible consumption initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Year,str,Fiscal year please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown',Diageo
+Period_start,str,Period start date please retun me date in format DD/MM/YYYY ortherwise retun me 'Unknown',Diageo
+Period_end,str,Period end date please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown',Diageo
+Revenue_growth,float,"Give me Revenue growth percentage for the period. Extract ONLY the numeric percentage value, without the % sign. Example: 'Revenue grew by 7.5%' → 7.5. If not found, output -1.",Diageo
+Operating_profit,int,"Give meOperating profit (from the consolidated income statement). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Operating_margin,float,"Operating margin percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+Net_income_margin_pct,float,"Net income margin percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+Net_profit,int,"Net profit (net income). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Eps,float,"Earnings per share (EPS, basic or diluted – choose the figure explicitly labeled or the main EPS if multiple). Extract ONLY the numeric value, ignore currency symbols. If EPS is given in cents, convert to full currency units (e.g., 120 cents → 1.2). If not found, output -1.",Diageo
+Cash_flow,int,"Free cash flow OR net cash from operating activities (choose free cash flow if both are available). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Capex,int,"Capital expenditures (Capex). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Opex,int,"Operating expenses (Opex), including selling, general and administrative and other operating costs as reported. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Gross_profit,int,"Gross profit. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Share_of_sales,float,"Share of sales by region (percentage). If multiple regions are given, take the largest regional share. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+Gross_margin,float,"Gross margin percentage for the most recent full fiscal year, for the entire group/company. Treat 'gross margin' as any of these phrases: 'gross margin', 'gross profit margin', 'gross profit as a percentage of revenue/sales/net sales'. Use the consolidated company figure in %, not basis-points and not a segment-specific value. If multiple gross margins are given, pick the one clearly labeled for the whole group. Return ONLY the numeric value, without the % sign (e.g. 60.4 for 60.4%). If you cannot find a gross margin percentage, output -1.",Diageo
+Revenue,int,"Total revenue (net sales) for the period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. Do NOT include unit or currency text here (those are captured separately). If not found, output -1.",Diageo
+Currency,str,"Currency in which the financial statements are presented (e.g., EUR, USD, GBP). Return ONLY the standard currency code if explicitly stated (e.g., 'EUR'). If not clearly stated, output 'Unknown'.",Diageo
+Operating_income,int,"Operating income (sometimes called 'recurring operating income' or 'ROC'). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Net_income,int,"Net income, group share (attributable to equity holders of the parent). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Net_income_growth,float,"Year-over-year growth rate (percentage change) of NET INCOME for the most recent full fiscal year, for the entire group/company. Treat 'net income' as any of these equivalent phrases: 'profit attributable to equity shareholders', 'profit attributable to owners of the parent', 'profit for the year', or 'net profit'. Look for wording such as 'increased by X%', 'decreased by X%', 'change of X%', 'growth of X%'. Use the OVERALL company figure, not per share, not per segment. If both reported and organic/underlying/constant-currency growth are given, PREFER the reported (IFRS/GAAP) total growth. If only one type exists, use it. Return ONLY the numeric value (including sign), without the % sign (e.g. 12.3 for +12.3%, -5.4 for -5.4%). If you cannot find any clear year-over-year growth percentage for net income, output -1.",Diageo
+Net_debt,float,"Net debt. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Net_debt_to_ebitda,float,"Net debt / EBITDA ratio. Extract ONLY the numeric ratio value (e.g., '2.5x' → 2.5). If not found, output -1.",Diageo
+Dividend,float,"Proposed dividend per share for the period. Extract ONLY the numeric amount, ignore currency symbols. If dividend is given in cents, convert to full currency units (e.g., 470 cents → 4.7). If not found, output -1.",Diageo
+Pro,float,"PRO (Profit from Recurring Operations). Extract ONLY the numeric amount in the original currency, ignore currency symbols Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Pro_growth,float,"Organic PRO (Profit from Recurring Operations) growth percentage. Extract ONLY the numeric percentage value, without the % sign. If multiple growth metrics are given, choose the organic growth of PRO. If not found, output -1.",Diageo
+Free_cash_flow_amount,float,"Free cash flow amount. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Net_sales_absolute,float,"Net sales (absolute) for the period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If multiple periods are shown, use the latest full-year figure. If not found, output -1.",Diageo
+Net_debt_change_amount,float,"Change in Net Debt versus the previous year. Extract ONLY the signed numeric amount in the original currency (negative if net debt decreased), ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Net_debt_ending_amount,float,"Net Debt at year-end for the current period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Net_debt_to_ebitda_ratio,float,"Net Debt / EBITDA ratio at average rate. Extract ONLY the numeric ratio value (e.g., '2.5x' → 2.5). If not found, output -1.",Diageo
+Dividend_per_share_proposed,float,"Proposed dividend per share for the period. Extract ONLY the numeric amount, ignore currency symbols (€, $, £, etc.). If the dividend is given in cents, convert to full currency units (e.g., 470 cents → 4.7). If not found, output -1.",Diageo
+EMEA_Net_sales,int,"Net sales for the EMEA region (Europe, Middle East and Africa). Match any of these labels: 'EMEA', 'Europe, Middle East and Africa', 'Europe & Africa', 'Europe Middle East Africa'. Use ONLY geographic segment tables, not brand/category tables. Use the most recent full fiscal year. Extract ONLY the numeric amount, ignore currency symbols. Convert thousands/millions/billions to a full number unless the scale is captured in a separate unit field. If EMEA is not explicitly disclosed, return -1.",Diageo
+EMEA_Revenue_growth_pct,float,"Revenue or net sales growth percentage for the EMEA region. Prefer, in this order: 1) Organic / like-for-like / constant currency growth for EMEA 2) Published / reported growth for EMEA Extract ONLY the numeric percentage (signed), without the % symbol. If EMEA growth is not explicitly reported, return -1.",Diageo
+APAC_Net_sales,int,"Net sales for the APAC region. Accept labels: 'APAC', 'Asia Pacific', 'Asia-Pacific', 'Greater China & Asia', 'Asia ex-Japan', 'APJ'. Use only geographic segmentation. Latest fiscal year only. Return numeric amount only. Convert scaled units unless stored elsewhere. If not disclosed, return -1.",Diageo
+Europe_Net_sales,int,"Net sales for the Europe region only (excluding Middle East and Africa). Match labels: 'Europe', 'Western Europe', 'Central & Eastern Europe'. Do NOT use EMEA values here. Latest fiscal year only. Return numeric amount only. If not reported separately, return -1.",Diageo
+Global_Net_sales,int,"Total global/group net sales. Match: 'Group', 'Global', 'Worldwide'. Consolidated total only. Return numeric amount only. If not found, return -1.",Diageo
+Rest_of_World_Net_sales,int,"Net sales for the 'Rest of World' region. Match: 'Rest of World', 'ROW', 'International'. Do NOT use Global totals. Return numeric amount only. If not disclosed, return -1.",Diageo
+Quantity_key_brands,int,"Total number of Key brands for this company. Count each distinct brand listed as a Key brand. If not found, output -1.",Diageo
+Key_brands,str,"List of all Key brands for this company. Return ONLY the brand names, separated by commas, in the same order as in the report. No additional text. If not found, output 'Unknown'.",Diageo
+Brand_companies,str,"List of all Brand Companies (brand-owning entities or brand companies) mentioned for this group. Return ONLY the names, separated by commas, in the same order as in the report. If not found, output 'Unknown'.",Diageo
+Quantity_brand_companies,int,"Total number of Brand Companies for this group. Count each distinct Brand Company. If not found, output -1.",Diageo
+Strategic_local_brands,str,"List of all Strategic Local Brands for this company. Return ONLY the brand names, separated by commas, in the same order as in the report. If not found, output 'Unknown'.",Diageo
+Non_alcoholic_brands,str,"List of all Non-Alcoholic brands for this company (e.g., non-alcoholic spirits, RTD, mixers). Return ONLY the brand names, separated by commas, in the same order as in the report. If not found, output 'Unknown'.",Diageo
+Ready_to_drink_brands,str,"List of all Ready-To-Drink (RTD) brands for this company. Return ONLY the brand names, separated by commas, in the same order as in the report. If not found, output 'Unknown'.",Diageo
+Fx_impact,float,"Foreign exchange (FX) impact on Net Sales (absolute amount). Extract ONLY the numeric amount in the original currency, including sign if given (negative for adverse impact). Ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Perimeter_impact,float,"Perimeter (scope of consolidation) impact on Net Sales as an absolute amount. Extract ONLY the numeric amount in the original currency, including sign if given, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Diageo
+Americas_growth,float,"Americas overall sales growth percentage (Net Sales). Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+Usa_growth,float,"USA sales growth percentage (Net Sales). Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+Asia_row_growth,float,"Asia and Rest of World (Asia-ROW) overall sales growth percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+China_growth,float,"China sales growth percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+India_growth,float,"India sales growth percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Diageo
+Fy_group_net_sales_current,int,"Total Group net sales for the CURRENT fiscal year in the comparison described as 'FYXX vs FYXX Net Sales by region'. Extract ONLY the current year amount (the FIRST number before 'vs'), in the original currency and scale. If not found, return -1.",Diageo
+Fy_group_net_sales_prior,int,"Total Group net sales for the PRIOR fiscal year in the comparison described as 'FYXX vs FYXX Net Sales by region'. Extract the SECOND amount (after 'vs'). If not found, return -1.",Diageo
+Fy_group_net_sales_reported_change_pct,float,"Group net sales REPORTED change percentage for the full fiscal year comparison. Return ONLY numeric including sign, without % sign. If not found, return -1.",Diageo
+Fy_group_net_sales_organic_change_pct,float,"Group net sales ORGANIC change percentage for the full fiscal year comparison. Return ONLY numeric including sign, without % sign. If not found, return -1.",Diageo
+Fy_group_net_sales_perimeter_contrib_pct,float,"Contribution of perimeter (scope/M&A) to Group net sales change for the full fiscal year. Return ONLY numeric including sign, without % sign. If not mentioned, return -1.",Diageo
+Fy_group_net_sales_fx_contrib_pct,float,"Contribution of foreign exchange (FX) to Group net sales change for the full fiscal year. Return ONLY numeric including sign, without % sign. If not mentioned, return -1.",Diageo
+Fy_region_net_sales_current,int,"Net sales for region <REGION_NAME> for the CURRENT fiscal year in the 'FYXX vs FYXX Net Sales by region' sentence. Use the FIRST numeric amount before 'vs'. If not found, return -1.",Diageo
+Fy_region_net_sales_prior,int,"Net sales for region <REGION_NAME> for the PRIOR fiscal year in the 'FYXX vs FYXX Net Sales by region' sentence. Use the SECOND numeric amount after 'vs'. If not found, return -1.",Diageo
+Fy_region_net_sales_reported_change_pct,float,"REPORTED net sales change percentage for region <REGION_NAME>. Return ONLY numeric including sign, without % sign. If not found, return -1.",Diageo
+Fy_region_net_sales_organic_change_pct,float,"ORGANIC net sales change percentage for region <REGION_NAME>. Return ONLY numeric including sign, without % sign. If not found, return -1.",Diageo
+Fy_region_net_sales_perimeter_contrib_pct,float,"Contribution of perimeter (scope/M&A) to net sales change for <REGION_NAME>. Return ONLY numeric including sign, without % sign. If not mentioned, return -1.",Diageo
+Fy_region_net_sales_fx_contrib_pct,float,"Contribution of FX to net sales change for <REGION_NAME>. Return ONLY numeric including sign, without % sign. If not mentioned, return -1.",Diageo
+Fy_region_net_sales_share_of_group_pct,float,"Region <REGION_NAME>'s share of total Group net sales for the full fiscal year. Return ONLY numeric, without % sign. If not stated, return -1.",Diageo
+H2_group_net_sales_current,int,"Group net sales for the CURRENT half-year in 'H2 FYXX vs H2 FYXX'. Return numeric only in same scale. If not found, return -1.",Diageo
+H2_group_net_sales_prior,int,"Group net sales for the PRIOR half-year in 'H2 FYXX vs H2 FYXX'. Return numeric only. If not found, return -1.",Diageo
+H2_group_net_sales_reported_change_pct,float,"Group net sales REPORTED change percentage for half-year comparison. Return numeric only including sign, without % sign. If not found, return -1.",Diageo
+H2_group_net_sales_organic_change_pct,float,"Group net sales ORGANIC change percentage for half-year comparison. Return numeric only including sign, without % sign. If not found, return -1.",Diageo
+Q4_region_net_sales_current,int,"Net sales for region <REGION_NAME> for the CURRENT quarter in 'Q4 FYXX vs Q4 FYXX'. Return numeric only. If not found, return -1.",Diageo
+Q4_region_net_sales_prior,int,"Net sales for region <REGION_NAME> for the PRIOR quarter in 'Q4 FYXX vs Q4 FYXX'. Return numeric only. If not found, return -1.",Diageo
+Q4_region_net_sales_reported_change_pct,float,"REPORTED net sales change percentage for region <REGION_NAME> in Q4 comparison. Return numeric only including sign, without % sign. If not found, return -1.",Diageo
+Q4_region_net_sales_organic_change_pct,float,"ORGANIC net sales change percentage for region <REGION_NAME> in Q4 comparison. Return numeric only including sign, without % sign. If not found, return -1.",Diageo
+Pro_amount,float,"Profit from Recurring Operations (PRO) for the full year. Extract ONLY numeric amount in original currency; convert scaled units. If not found, -1.",Diageo
+Pro_organic_growth_pct,float,"Organic growth percentage of PRO. Return ONLY numeric without % sign. If not found, -1.",Diageo
+Gross_margin_expansion_bps,int,"Organic gross margin expansion in basis points (bps). Return ONLY numeric bps (e.g., '+60 bps' → 60). If not found, -1.",Diageo
+Ap_amount,float,"Advertising & Promotion (A&P) spend amount. Extract ONLY numeric amount in original currency; convert scaled units. If not found, -1.",Diageo
+Ap_pct_of_net_sales,float,"A&P spend as a percentage of Net Sales. Return ONLY numeric without % sign. If not found, -1.",Diageo
+Operating_margin_org_bps,int,"Operating margin expansion (or contraction) on an organic basis, in bps. Return ONLY numeric bps with sign. If not found, -1.",Diageo
+Operating_margin_org_pct,float,"Operating margin on an organic basis, as a percentage. Return ONLY numeric without % sign. If not found, -1.",Diageo
+Operating_margin_reported_pct,float,"Operating margin on a reported basis, as a percentage. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Operating_profit_margin_reported_pct,float,"Reported operating profit margin percentage. Return ONLY numeric, without % sign. If not found, -1.",Diageo
+Operating_profit_margin_organic_pct,float,"Organic operating profit margin percentage. Return ONLY numeric, without % sign. If not found, -1.",Diageo
+Operating_margin_change_bps,int,"Change in operating margin in basis points (bps) (e.g., '+35bps' -> 35, '-40bps' -> -40). Return ONLY integer bps. If not found, -1.",Diageo
+Fx_impact_amount,float,"Adverse FX impact on reported operating margin, expressed as an absolute amount in the reporting currency if given. Return ONLY numeric amount; if only %/bps or not found, -1.",Diageo
+Perimeter_effect_amount,float,"Favourable perimeter (scope) effects amount on results. Return ONLY numeric amount (signed if stated); convert scaled units. If not found, -1.",Diageo
+Group_share_net_pro_amount,float,"Group share of Net Profit from Recurring Operations (Net PRO). Return ONLY numeric amount; convert scaled units. If not found, -1.",Diageo
+Group_share_net_pro_change_pct,float,"Year-over-year change percentage of Group share of Net PRO. Return ONLY numeric without % sign. If not found, -1.",Diageo
+Avg_cost_of_debt_pct,float,"Average cost of debt percentage for recurring financial expenses. Return ONLY numeric without % sign. If not found, -1.",Diageo
+Group_share_net_profit_amount,float,"Group Share of Net Profit (attributable to equity holders of the parent). Return ONLY numeric amount; convert scaled units. If not found, -1.",Diageo
+Group_share_net_profit_change_pct,float,"Year-over-year percentage change of GROUP SHARE OF NET PROFIT for the most recent full fiscal year. Return ONLY numeric with sign, without % sign. If not found, -1.",Diageo
+Eps_amount,float,"Earnings per share (EPS), basic or diluted. Extract ONLY numeric; if in cents convert to units. If not found, -1.",Diageo
+Headquarters,str,"Headquarters location of this company (city and country if available). Return exactly as written. If not found, 'Unknown'.",Diageo
+Executive_committee_examples,str,"Names of ALL members of the company's Executive Committee or equivalent top management body. Return ONLY personal names separated by commas in report order. If not found, 'Unknown'.",Diageo
+Executive_committee_quantity,int,"Total number of individuals on the company's Executive Committee or equivalent top management body. If not found, -1.",Diageo
+Board_of_directors_examples,str,"All Board of Directors members' names. Return ONLY names separated by commas in report order. If not found, 'Unknown'.",Diageo
+Board_of_directors_quantity,int,"Total number of Board of Directors members. If not found, -1.",Diageo
+Affiliate_name,str,"Names of the affiliate or subsidiary companies, if the report is focused on a specific affiliate list. Return ONLY names separated by commas. If not mentioned, 'Unknown'.",Diageo
+Affiliates,str,"All names of affiliates or subsidiary companies of this group. Return ONLY names separated by commas in report order. If not found, 'Unknown'.",Diageo
+Affiliate_quantity,int,"Total number of affiliates or subsidiary companies of this group. If not found, -1.",Diageo
+Total_employees,int,"Total number of employees in the group (headcount). Extract ONLY numeric value. If not found, -1.",Diageo
+Avg_age,int,"Average age of employees. Extract ONLY numeric value; if decimal, round to nearest whole number. If not found, -1.",Diageo
+Qty_nationalities,int,"Total number of nationalities represented in the workforce. Extract ONLY numeric value. If not found, -1.",Diageo
+Pct_women,float,"Percentage of women in the company’s workforce (overall). Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Leadership_pro,float,"Percentage of employees participating in leadership programs. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Senior_appointments_bw,float,"Percentage of Senior appointments made that were women. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Female_leaders,float,"Percentage of female leaders. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Ethn_diverse_lead,float,"Percentage of ethnically diverse leaders. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Employees_with_disabilities_pct,float,"Percentage of employees with disabilities. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Global_mobility_pct,float,"Percentage of employees on global mobility or international assignments. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Nationalities,int,"Number of nationalities represented in the company. Extract ONLY numeric value. If not found, -1.",Diageo
+Total_employees_social,int,"Total number of employees (social/CSR section figure). Extract ONLY numeric value. If not found, -1.",Diageo
+Women_in_workforce_pct,float,"Percentage of women in the total workforce (social/CSR section). Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Women_in_management_pct,float,"Percentage of women in management roles. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Ethnically_diverse_leaders_pct,float,"Percentage of ethnically diverse leaders. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Employees_with_disabilities_pct_social,float,"Percentage of employees with disabilities (social/CSR section). Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Lgbtq_inclusion_programs,str,"Information about LGBTQ+ inclusion or diversity initiatives (e.g., programs, policies, networks). Provide a concise summary. If not mentioned, 'Unknown'.",Diageo
+Community_investment_amount,float,"Community investments or donations amount for the period. Extract ONLY numeric amount; convert scaled units. If not found, -1.",Diageo
+Carbon_emissions_total,float,"Total carbon emissions (Scope 1 + Scope 2) in metric tons of CO2e. Extract ONLY numeric; convert scaled units. If not found, -1.",Diageo
+Carbon_emissions_scope3,float,"Scope 3 greenhouse gas emissions in metric tons of CO2e. Extract ONLY numeric; convert scaled units. If not found, -1.",Diageo
+Emission_intensity,float,"Emission intensity as stated in the report. Extract ONLY numeric value, ignore unit text. If not found, -1.",Diageo
+Renewable_energy_pct,float,"Percentage of renewable energy used. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Energy_consumption_total,float,"Total energy consumption, typically in MWh or GWh. Extract ONLY numeric; convert scaled units. If not found, -1.",Diageo
+Water_withdrawal_total,float,"Total water withdrawal, typically in cubic meters. Extract ONLY numeric; convert scaled units. If not found, -1.",Diageo
+Waste_recycled_pct,float,"Percentage of total waste that is recycled. Extract ONLY numeric without % sign. If not found, -1.",Diageo
+Biodiversity_initiatives,str,"Summary of biodiversity protection or environmental initiatives. Provide a concise summary. If not mentioned, 'Unknown'.",Diageo
+Water_efficiency,str,"Information related to water efficiency. Provide a concise summary. If not mentioned, 'Unknown'.",Diageo
+Energy_consumption,str,"Information describing energy consumption and efficiency initiatives. Provide a concise summary. If not mentioned, 'Unknown'.",Diageo
+Distillery_water,str,"Information about distillery water use or management. Provide a concise summary. If not mentioned, 'Unknown'.",Diageo
+Responsible_consumption,str,"Information about responsible consumption initiatives. Provide a concise summary. If not mentioned, 'Unknown'.",Diageo
+Volume_reported_movement_pct,float,"Reported volume movement percentage for the period. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Volume_organic_movement_pct,float,"Organic volume movement percentage for the period. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Net_sales_reported_movement_pct,float,"Reported net sales movement percentage for the period. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Net_sales_organic_movement_pct,float,"Organic net sales movement percentage for the period. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Operating_profit_reported_movement_pct,float,"Reported operating profit movement percentage for the period. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Operating_profit_organic_movement_pct,float,"Organic operating profit movement percentage for the period. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+EPS_reported_movement_pct,float,"Reported EPS movement percentage for the period. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+EPS_before_exceptionals_movement_pct,float,"EPS before exceptional items movement percentage (if explicitly stated). Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Dividend_per_share_increase_pct,float,"Percentage increase/decrease for total recommended dividend per share. Return ONLY numeric value with sign if shown, without the % sign. If not found, -1.",Diageo
+Price_mix_pct,float,"Price/mix percentage contribution. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Volume_growth_pct,float,"Volume growth percentage. Return ONLY numeric value with sign, without the % sign. If not found, -1.",Diageo
+Price_mix_change_pps,float,"Price/mix change in percentage points (pps). Return ONLY numeric value with sign, without 'pps'. If not found, -1.",Diageo
+Net_sales_share_North_America_pct,float,Share of reported net sales in North America (%). Numeric only; else -1.,Diageo
+Net_sales_share_Europe_pct,float,Share of reported net sales in Europe (%). Numeric only; else -1.,Diageo
+Net_sales_share_Asia_Pacific_pct,float,Share of reported net sales in Asia Pacific (%). Numeric only; else -1.,Diageo
+Net_sales_share_Latin_America_Caribbean_pct,float,Share of reported net sales in Latin America & Caribbean (%). Numeric only; else -1.,Diageo
+Net_sales_share_Africa_pct,float,Share of reported net sales in Africa (%). Numeric only; else -1.,Diageo
+Category_share_largest_pct,float,Largest category share of reported net sales (%). Numeric only; else -1.,Diageo
+Scotch_share_pct,float,Scotch share of reported net sales (%). Numeric only; else -1.,Diageo
+Beer_share_pct,float,Beer share of reported net sales (%). Numeric only; else -1.,Diageo
+Tequila_share_pct,float,Tequila share of reported net sales (%). Numeric only; else -1.,Diageo
+Vodka_share_pct,float,Vodka share of reported net sales (%). Numeric only; else -1.,Diageo
+Price_tier_share_Value_pct,float,Value tier share of reported net sales (%). Numeric only; else -1.,Diageo
+Price_tier_share_Standard_pct,float,Standard tier share of reported net sales (%). Numeric only; else -1.,Diageo
+Price_tier_share_Premium_pct,float,Premium tier share of reported net sales (%). Numeric only; else -1.,Diageo
+Price_tier_share_Super_premium_pct,float,Super-premium tier share of reported net sales (%). Numeric only; else -1.,Diageo
+Price_tier_share_Ultra_premium_pct,float,Ultra-premium tier share of reported net sales (%). Numeric only; else -1.,Diageo
+Price_tier_share_Luxury_pct,float,Luxury tier share of reported net sales (%). Numeric only; else -1.,Diageo
+FX_impact_on_net_sales_amount,int,"FX impact on net sales as an absolute amount (signed if stated). Return ONLY full number (convert m/bn). If not found, -1.",Diageo
+FX_impact_on_net_sales_pct,float,FX impact on net sales as a percentage (signed). Numeric only; else -1.,Diageo
+Acquisition_disposal_impact_on_net_sales_amount,int,Acquisition/disposal impact on net sales amount (signed). Full number only; else -1.,Diageo
+Acquisition_disposal_impact_on_net_sales_pct,float,Acquisition/disposal impact on net sales percentage (signed). Numeric only; else -1.,Diageo
+Hyperinflation_impact_on_net_sales_amount,int,Hyperinflation impact on net sales amount (signed). Full number only; else -1.,Diageo
+Total_shareholder_return_pct,float,Total shareholder return (TSR) percentage for the period. Numeric with sign; else -1.,Diageo
+ROIC_pct,float,Return on invested capital (ROIC) percentage. Numeric only; else -1.,Diageo
+ROIC_change_bps,int,"ROIC change in basis points (bps), if stated. Integer bps with sign; else -1.",Diageo
+Water_efficiency_change_vs_baseline_pct,float,Water efficiency % change vs stated baseline year. Numeric with sign; else -1.,Diageo
+GHG_emissions_change_vs_baseline_pct,float,Total (Scope 1+2) emissions % change vs stated baseline year. Numeric with sign; else -1.,Diageo
+Region_water_efficiency_change_vs_baseline_pct,float,Region-level water efficiency % change vs baseline. Numeric with sign; else -1.,Diageo
+Region_GHG_change_vs_baseline_pct,float,Region-level GHG emissions % change vs baseline. Numeric with sign; else -1.,Diageo

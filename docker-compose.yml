@@ -6,15 +6,15 @@ services:
   #   ports:
   #     - "8501:8501"
 
-  api:
-    container_name: api_service
+  main:
+    container_name: api
     build:
       context: api
       dockerfile: Dockerfile
     ports:
       - "8003:8003"
     env_file:
-      - .env
+      - api/.env
 
 
   gradio:
@@ -25,5 +25,16 @@ services:
     ports:
       - "8001:8001"
     depends_on:
-      - api
+      - main
+    
 
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./qdrant_collections:/qdrant/storage

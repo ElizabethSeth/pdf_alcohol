@@ -1,7 +1,7 @@
 fastapi
 langchain-ollama
 langchain-core
-qdrant_client
+#qdrant_client
 pypdf
 langchain>=1.0.0
 langchain_openai
@@ -18,3 +18,7 @@ email-validator>=2.0.0
 sqlalchemy
 psycopg[binary]
 db-dtypes
+
+grpcio>=1.60.0
+grpcio-tools>=1.60.0
+qdrant-client>=1.7.0

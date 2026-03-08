@@ -1,0 +1,118 @@
+Class,Type,Description,Company
+Year,str,Fiscal year please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown',Pernod Ricard
+Period_start,str,Period start date please retun me date in format DD/MM/YYYY ortherwise retun me 'Unknown',Pernod Ricard
+Period_end,str,Period end date please retun me date in format DD/MM/YYYY otherwise retun me 'Unknown',Pernod Ricard
+Net_sales_absolute,float,"Net sales (absolute) for the period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If multiple periods are shown, use the latest full-year figure. If not found, output -1.",Pernod Ricard
+Revenue_growth,float,"Give me Revenue growth percentage for the period. Extract ONLY the numeric percentage value, without the % sign. Example: 'Revenue grew by 7.5%' → 7.5. If not found, output -1.",Pernod Ricard
+Operating_profit,int,"Give meOperating profit (from the consolidated income statement). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Operating_margin,float,"Operating margin percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Pernod Ricard
+Net_income_margin_pct,float,"Net income margin percentage. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Pernod Ricard
+Net_profit,int,"Net profit (net income). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Eps,float,"Earnings per share (EPS, basic or diluted – choose the figure explicitly labeled or the main EPS if multiple). Extract ONLY the numeric value, ignore currency symbols. If EPS is given in cents, convert to full currency units (e.g., 120 cents → 1.2). If not found, output -1.",Pernod Ricard
+Cash_flow,int,"Free cash flow OR net cash from operating activities (choose free cash flow if both are available). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Capex,int,"Capital expenditures (Capex). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Opex,int,"Operating expenses (Opex), including selling, general and administrative and other operating costs as reported. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Gross_profit,int,"Gross profit. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Share_of_sales,float,"Share of sales by region (percentage). If multiple regions are given, take the largest regional share. Extract ONLY the numeric percentage value, without the % sign. If not found, output -1.",Pernod Ricard
+Gross_margin,float,"Gross margin percentage for the most recent full fiscal year, for the entire group/company. Treat 'gross margin' as any of these phrases: 'gross margin', 'gross profit margin', 'gross profit as a percentage of revenue/sales/net sales'. Use the consolidated company figure in %, not basis-points and not a segment-specific value. If multiple gross margins are given, pick the one clearly labeled for the whole group. Return ONLY the numeric value, without the % sign (e.g. 60.4 for 60.4%). If you cannot find a gross margin percentage, output -1.",Pernod Ricard
+Revenue,int,"Total revenue (net sales) for the period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. Do NOT include unit or currency text here (those are captured separately). If not found, output -1.",Pernod Ricard
+Currency,str,"Currency in which the financial statements are presented (e.g., EUR, USD, GBP). Return ONLY the standard currency code if explicitly stated (e.g., 'EUR'). If not clearly stated, output 'Unknown'.",Pernod Ricard
+Operating_income,int,"Operating income (sometimes called 'recurring operating income' or 'ROC'). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_income,int,"Net income, group share (attributable to equity holders of the parent). Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_income_growth,float,"Year-over-year growth rate (percentage change) of NET INCOME for the most recent full fiscal year, for the entire group/company. Treat 'net income' as any of these equivalent phrases: 'profit attributable to equity shareholders', 'profit attributable to owners of the parent', 'profit for the year', or 'net profit'. Look for wording such as 'increased by X%', 'decreased by X%', 'change of X%', 'growth of X%'. Use the OVERALL company figure, not per share, not per segment. If both reported and organic/underlying/constant-currency growth are given, PREFER the reported (IFRS/GAAP) total growth. If only one type exists, use it. Return ONLY the numeric value (including sign), without the % sign (e.g. 12.3 for +12.3%, -5.4 for -5.4%). If you cannot find any clear year-over-year growth percentage for net income, output -1.",Pernod Ricard
+Net_debt,float,"Net debt. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_to_ebitda,float,"Net debt / EBITDA ratio. Extract ONLY the numeric ratio value (e.g., '2.5x' → 2.5). If not found, output -1.",Pernod Ricard
+Dividend,float,"Proposed dividend per share for the period. Extract ONLY the numeric amount, ignore currency symbols. If dividend is given in cents, convert to full currency units (e.g., 470 cents → 4.7). If not found, output -1.",Pernod Ricard
+Pro,float,"PRO (Profit from Recurring Operations). Extract ONLY the numeric amount in the original currency, ignore currency symbols Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Pro_growth,float,"Organic PRO (Profit from Recurring Operations) growth percentage. Extract ONLY the numeric percentage value, without the % sign. If multiple growth metrics are given, choose the organic growth of PRO. If not found, output -1.",Pernod Ricard
+Free_cash_flow_amount,float,"Free cash flow amount. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_change_amount,float,"Change in Net Debt versus the previous year. Extract ONLY the signed numeric amount in the original currency (negative if net debt decreased), ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_ending_amount,float,"Net Debt at year-end for the current period. Extract ONLY the numeric amount in the original currency, ignore currency symbols. Convert thousands/millions/billions to the full number. If not found, output -1.",Pernod Ricard
+Net_debt_to_ebitda_ratio,float,"Net Debt / EBITDA ratio at average rate. Extract ONLY the numeric ratio value (e.g., '2.5x' → 2.5). If not found, output -1.",Pernod Ricard
+Dividend_per_share_proposed,float,"Proposed dividend per share for the period. Extract ONLY the numeric amount, ignore currency symbols (€, $, £, etc.). If the dividend is given in cents, convert to full currency units (e.g., 470 cents → 4.7). If not found, output -1.",Pernod Ricard
+EMEA_Net_sales,int,"Net sales for the EMEA region (Europe, Middle East and Africa). Match: 'EMEA', 'Europe, Middle East and Africa', 'Europe & Africa', 'Europe Middle East Africa'. Use geographic segmentation only. Latest full fiscal year. Convert scaled units. If not disclosed, -1.",Pernod Ricard
+EMEA_Revenue_growth_pct,float,"Revenue or net sales growth percentage for the EMEA region. Prefer organic growth first, otherwise reported. Return signed numeric without % sign. If not explicit, -1.",Pernod Ricard
+APAC_Net_sales,int,"Net sales for the APAC region. Accept labels: 'APAC', 'Asia Pacific', 'Asia-Pacific', 'Greater China & Asia', 'Asia ex-Japan', 'APJ'. Geographic segmentation only. Latest fiscal year. If not disclosed, -1.",Pernod Ricard
+Europe_Net_sales,int,"Net sales for Europe only (excluding Middle East and Africa). Do NOT use EMEA. Latest fiscal year. If not reported separately, -1.",Pernod Ricard
+Global_Net_sales,int,"Total global/group net sales. Match: 'Group', 'Global', 'Worldwide'. Consolidated total only. If not found, -1.",Pernod Ricard
+Rest_of_World_Net_sales,int,"Net sales for 'Rest of World' region. Match: 'Rest of World', 'ROW', 'International'. Do NOT use Global totals. If not disclosed, -1.",Pernod Ricard
+Quantity_key_brands,int,"Total number of Key brands for this company. Count each distinct brand listed as a Key brand. If not found, -1.",Pernod Ricard
+Key_brands,str,"List of all Key brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Brand_companies,str,"List of all Brand Companies mentioned for this group. Return ONLY names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Quantity_brand_companies,int,"Total number of Brand Companies for this group. Count each distinct Brand Company. If not found, -1.",Pernod Ricard
+Strategic_local_brands,str,"List of all Strategic Local Brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Non_alcoholic_brands,str,"List of all Non-Alcoholic brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Ready_to_drink_brands,str,"List of all Ready-To-Drink (RTD) brands for this company. Return ONLY brand names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Fy_group_net_sales_current,int,"Group net sales CURRENT fiscal year in 'FYXX vs FYXX Net Sales by region'. Extract FIRST amount before 'vs'. Digits only, no separators/currency. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_prior,int,"Group net sales PRIOR fiscal year in 'FYXX vs FYXX Net Sales by region'. Extract SECOND amount after 'vs'. Digits only. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_reported_change_pct,float,"Group net sales REPORTED change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_organic_change_pct,float,"Group net sales ORGANIC change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_group_net_sales_perimeter_contrib_pct,float,"Perimeter contribution % to Group net sales change in FY comparison. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_group_net_sales_fx_contrib_pct,float,"FX contribution % to Group net sales change in FY comparison. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_region_net_sales_current,int,"Region <REGION_NAME> net sales CURRENT FY in FY comparison sentence. FIRST amount before 'vs'. Digits only. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_prior,int,"Region <REGION_NAME> net sales PRIOR FY in FY comparison sentence. SECOND amount after 'vs'. Digits only. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_reported_change_pct,float,"Region <REGION_NAME> REPORTED net sales change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_organic_change_pct,float,"Region <REGION_NAME> ORGANIC net sales change % in FY comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fy_region_net_sales_perimeter_contrib_pct,float,"Perimeter contribution % to region <REGION_NAME> net sales change. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_region_net_sales_fx_contrib_pct,float,"FX contribution % to region <REGION_NAME> net sales change. Numeric with sign, no % sign. If not mentioned, -1.",Pernod Ricard
+Fy_region_net_sales_share_of_group_pct,float,"Region <REGION_NAME> share of Group net sales (%). Numeric only, no % sign. If not stated, -1.",Pernod Ricard
+H2_group_net_sales_current,int,"Group net sales CURRENT half-year in 'H2 FYXX vs H2 FYXX'. FIRST amount. Digits only. If not found, -1.",Pernod Ricard
+H2_group_net_sales_prior,int,"Group net sales PRIOR half-year in 'H2 FYXX vs H2 FYXX'. SECOND amount. Digits only. If not found, -1.",Pernod Ricard
+H2_group_net_sales_reported_change_pct,float,"Group net sales REPORTED change % for half-year comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+H2_group_net_sales_organic_change_pct,float,"Group net sales ORGANIC change % for half-year comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_current,int,"Region <REGION_NAME> net sales CURRENT Q4 in 'Q4 FYXX vs Q4 FYXX'. FIRST amount. Digits only. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_prior,int,"Region <REGION_NAME> net sales PRIOR Q4 in 'Q4 FYXX vs Q4 FYXX'. SECOND amount. Digits only. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_reported_change_pct,float,"Region <REGION_NAME> REPORTED net sales change % in Q4 comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Q4_region_net_sales_organic_change_pct,float,"Region <REGION_NAME> ORGANIC net sales change % in Q4 comparison. Numeric with sign, no % sign. If not found, -1.",Pernod Ricard
+Fx_impact,float,"FX impact on Net Sales (absolute amount). Numeric only, signed if given. Convert scaled units. If not found, -1.",Pernod Ricard
+Perimeter_impact,float,"Perimeter impact on Net Sales (absolute amount). Numeric only, signed if given. Convert scaled units. If not found, -1.",Pernod Ricard
+Americas_growth,float,"Americas overall sales growth % (Net Sales). Numeric only. If not found, -1.",Pernod Ricard
+Usa_growth,float,"USA sales growth % (Net Sales). Numeric only. If not found, -1.",Pernod Ricard
+Asia_row_growth,float,"Asia and Rest of World overall sales growth %. Numeric only. If not found, -1.",Pernod Ricard
+China_growth,float,"China sales growth %. Numeric only. If not found, -1.",Pernod Ricard
+India_growth,float,"India sales growth %. Numeric only. If not found, -1.",Pernod Ricard
+Pro_amount,float,"Profit from Recurring Operations (PRO) for the full year. Numeric amount only; convert scaled units. If not found, -1.",Pernod Ricard
+Pro_organic_growth_pct,float,"Organic growth percentage of PRO. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Gross_margin_expansion_bps,int,"Organic gross margin expansion in bps. Integer only (e.g., '+60 bps' → 60). If not found, -1.",Pernod Ricard
+Ap_amount,float,"Advertising & Promotion (A&P) spend amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Ap_pct_of_net_sales,float,"A&P spend as % of Net Sales. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Operating_margin_org_bps,int,"Organic operating margin expansion/contraction in bps. Integer with sign. If not found, -1.",Pernod Ricard
+Operating_margin_org_pct,float,"Organic operating margin (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Operating_margin_reported_pct,float,"Reported operating margin (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Fx_impact_amount,float,"Adverse FX impact on reported operating margin, as an absolute amount if given. If only %/bps or not found, -1.",Pernod Ricard
+Perimeter_effect_amount,float,"Favourable perimeter effects amount on results. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Group_share_net_pro_amount,float,"Group share of Net PRO amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Group_share_net_pro_change_pct,float,"YoY % change of Group share of Net PRO. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Avg_cost_of_debt_pct,float,"Average cost of debt (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Group_share_net_profit_amount,float,"Group share of net profit amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Group_share_net_profit_change_pct,float,"YoY % change of Group share of net profit. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Eps_amount,float,"EPS amount (basic or diluted). Numeric only; if in cents convert to units. If not found, -1.",Pernod Ricard
+Headquarters,str,"Headquarters location (city and country if available). Return text exactly as written. If not found, 'Unknown'.",Pernod Ricard
+Executive_committee_examples,str,"Names of ALL members of Executive Committee / equivalent. Return ONLY names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Executive_committee_quantity,int,"Total number of individuals on Executive Committee / equivalent. If not found, -1.",Pernod Ricard
+Board_of_directors_examples,str,"All Board of Directors members' names. Return ONLY names, comma-separated, in report order. If not found, 'Unknown'.",Pernod Ricard
+Board_of_directors_quantity,int,"Total number of Board of Directors members. If not found, -1.",Pernod Ricard
+Affiliate_name,str,"Names of affiliate/subsidiary companies if the report focuses on a specific affiliate list. Return names comma-separated. If not mentioned, 'Unknown'.",Pernod Ricard
+Affiliates,str,"All affiliate/subsidiary names. Return names comma-separated in report order. If not found, 'Unknown'.",Pernod Ricard
+Affiliate_quantity,int,"Total number of affiliates/subsidiaries listed. If not found, -1.",Pernod Ricard
+Avg_age,int,"Average age of employees. Numeric only; if decimal, round. If not found, -1.",Pernod Ricard
+Qty_nationalities,int,"Total number of nationalities represented. Numeric only. If not found, -1.",Pernod Ricard
+Total_employees_social,int,"Total number of employees (social/CSR figure). Numeric only. If not found, -1.",Pernod Ricard
+Women_in_workforce_pct,float,"Women in workforce (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Women_in_management_pct,float,"Women in management (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Ethnically_diverse_leaders_pct,float,"Ethnically diverse leaders (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Employees_with_disabilities_pct_social,float,"Employees with disabilities (%), social section. Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Lgbtq_inclusion_programs,str,"LGBTQ+ inclusion initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Community_investment_amount,float,"Community investments/donations amount. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Carbon_emissions_total,float,"Total carbon emissions (Scope 1+2) in metric tons CO2e. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Carbon_emissions_scope3,float,"Scope 3 GHG emissions in metric tons CO2e. Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Emission_intensity,float,"Emission intensity as stated. Numeric only (no unit text). If not found, -1.",Pernod Ricard
+Renewable_energy_pct,float,"Renewable energy used (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Energy_consumption_total,float,"Total energy consumption (MWh/GWh). Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Water_withdrawal_total,float,"Total water withdrawal (m3). Numeric only; convert scaled units. If not found, -1.",Pernod Ricard
+Waste_recycled_pct,float,"Waste recycled (%). Numeric only, no % sign. If not found, -1.",Pernod Ricard
+Biodiversity_initiatives,str,"Biodiversity initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Water_efficiency,str,"Water efficiency information summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Energy_consumption,str,"Energy consumption/efficiency initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Distillery_water,str,"Distillery water use/management summary. If not mentioned, 'Unknown'.",Pernod Ricard
+Responsible_consumption,str,"Responsible consumption initiatives summary. If not mentioned, 'Unknown'.",Pernod Ricard

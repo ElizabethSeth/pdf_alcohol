@@ -3,13 +3,17 @@ import os
 import requests
 import gradio as gr
 from requests_toolbelt.multipart import decoder
-import os, re , mimetypes, tempfile, urllib.parse
+import  re , mimetypes, tempfile, urllib.parse
 import io
 from typing import List
 from ast import Load
+import sys
+import os
 
+sys.path.append(os.path.abspath(".."))
+#import api.lib.generation_questions as gq
 
-#API_URL = "http://api:8003"
+API_URL = "http://main:8003"
 
 LOGIN_HTML = """
 <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
@@ -19,25 +23,25 @@ LOGIN_HTML = """
   Use your account to access the app.
 </div>"""
 
-API_URL = "https://generate-reports.api.elsth.com"
+#API_URL = "https://generate-reports.api.elsth.com"
 
-def check_login(login, password):
-    print("Checking login for:", login)
-    response = requests.post(
-        f"{API_URL}/login", 
-        json={"email": login, "password": password}
-    )
-    print("STATUS:", response.status_code)
-    response.raise_for_status()
-    return response.json()
+# def check_login(login, password):
+#     print("Checking login for:", login)
+#     response = requests.post(
+#         f"{API_URL}/login", 
+#         json={"email": login, "password": password}
+#     )
+#     print("STATUS:", response.status_code)
+#     response.raise_for_status()
+#     return response.json()
 
-    # if login == "admin" and password == "1234":
-    #    return True
-    # else:
-    #      return False
+#     # if login == "admin" and password == "1234":
+#     #    return True
+#     # else:
+#     #      return False
 
 
-### standart version
+# ### standart version
 
 
 def upload_pdfs_client(files, collection_name):
@@ -92,41 +96,35 @@ def fetch_collections_client():
         return gr.update(choices=[], value=None), f"❌ Error: {resp.text}"
 
 
-def generate_excel_client(selected_collections, pdf_files):
+def get_companies():
+    resp = requests.get(
+        f"{API_URL}/companies",
+        timeout=1000,
+    )
+    data = resp.json()
+    companies = data.get("companies", [])
+    return companies
+
+
+def generate_excel_client(selected_collections, selected_company):
    
     if not selected_collections:
         return None, "⚠️ Please select at least one collection"
 
-    collection_names = selected_collections
-
-    #files_to_hash = []
-    
-    # for file in pdf_files:
-    #     file_path = file if isinstance(file, str) else file.name
-    #     files_to_hash.append(
-    #         (
-    #             "files",
-    #             (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
-    #         )
-    #     )
+    payload = {
+        "collection_names": selected_collections,
+        "company" : selected_company
+    }
     
     resp = requests.post(
         f"{API_URL}/return_excel",
-        json=collection_names,
+        json=payload,
         timeout=2000,
     )
-    
-    # resp = requests.post(
-    #     f"{API_URL}/return_excel",
-    #     data={"collection_names": collection_names},  #instead of collection_names
-    #     files=files_to_hash,
-    #     timeout=2000,
-    # )
-
-    if len(collection_names) == 1:
-        file_name = f"{collection_names[0]}.xlsx"
+    if len(selected_collections) == 1:
+        file_name = f"{selected_collections[0]}.xlsx"
     else:
-        joined = "_".join(collection_names)
+        joined = "_".join(selected_collections)
         file_name = f"report_{joined}.xlsx"
 
     output_path = file_name
@@ -134,6 +132,52 @@ def generate_excel_client(selected_collections, pdf_files):
         f.write(resp.content)
 
     return output_path, {file_name}
+
+
+
+#old version 
+# def generate_excel_client(selected_collections,):
+   
+#     if not selected_collections:
+#         return None, "⚠️ Please select at least one collection"
+
+#     collection_names = selected_collections
+
+#     #files_to_hash = []
+    
+#     # for file in pdf_files:
+#     #     file_path = file if isinstance(file, str) else file.name
+#     #     files_to_hash.append(
+#     #         (
+#     #             "files",
+#     #             (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
+#     #         )
+#     #     )
+    
+#     resp = requests.post(
+#         f"{API_URL}/return_excel",
+#         json=collection_names,
+#         timeout=2000,
+#     )
+    
+#     # resp = requests.post(
+#     #     f"{API_URL}/return_excel",
+#     #     data={"collection_names": collection_names},  #instead of collection_names
+#     #     files=files_to_hash,
+#     #     timeout=2000,
+#     # )
+
+#     if len(collection_names) == 1:
+#         file_name = f"{collection_names[0]}.xlsx"
+#     else:
+#         joined = "_".join(collection_names)
+#         file_name = f"report_{joined}.xlsx"
+
+#     output_path = file_name
+#     with open(output_path, "wb") as f:
+#         f.write(resp.content)
+
+#     return output_path, {file_name}
 
 
 #### Loading all tables from BigQuery datasets ####
@@ -368,6 +412,12 @@ with gr.Blocks(title="SR-KES") as app:
                     info="Select one or more Qdrant collections to include in the report.",
                 )
 
+                company_dropdown = gr.Dropdown(
+                label="Company",
+                choices=get_companies(),
+                info="Select the company for which schema should be used."
+                )
+
                 with gr.Row():
                     refresh_btn = gr.Button(
                         "🔄 Refresh",
@@ -438,11 +488,18 @@ with gr.Blocks(title="SR-KES") as app:
         outputs=[collections_dropdown, report_status],
     )
 
+    # generate_btn.click(
+    #     fn=generate_excel_client,
+    #     inputs=[collections_dropdown, pdf_input],
+    #     outputs=[excel_output, report_status],
+    # )
+
     generate_btn.click(
-        fn=generate_excel_client,
-        inputs=[collections_dropdown, pdf_input],
-        outputs=[excel_output, report_status],
+    fn=generate_excel_client,
+    inputs=[collections_dropdown, company_dropdown],
+    outputs=[excel_output, report_status],
     )
+
 
     bq_refresh_btn.click(
         fn=fetch_bq_collections_client,
@@ -457,6 +514,6 @@ with gr.Blocks(title="SR-KES") as app:
     )
 
 if __name__ == "__main__":
-    app.launch(server_name="0.0.0.0", server_port=8001, auth=check_login, auth_message=LOGIN_HTML)
+    app.launch(server_name="0.0.0.0", server_port=8001)
 
-# docker logs -f gradio-1
+# docker logs -f gradio-1 auth=check_login, auth_message=LOGIN_HTML
