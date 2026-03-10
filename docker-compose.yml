@@ -12,7 +12,7 @@ services:
       context: api
       dockerfile: Dockerfile
     ports:
-      - "8003:8003"
+      - "8003:8080"
     env_file:
       - api/.env
 

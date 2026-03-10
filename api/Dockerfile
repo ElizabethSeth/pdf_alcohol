@@ -13,5 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py ./main.py
 COPY /lib ./lib
 COPY combined_alcohol_companies_schema.csv .
-EXPOSE 8003
-CMD ["uvicorn", "main:api", "--host", "0.0.0.0", "--port", "8003"]
+ENV PORT=8080
+#EXPOSE 8003
+EXPOSE 8080
+CMD ["uvicorn", "main:api", "--host", "0.0.0.0", "--port", "8080"]
