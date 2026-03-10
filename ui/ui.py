@@ -101,6 +101,8 @@ def get_companies():
     companies = data.get("companies", [])
     return companies
 
+companies = get_companies()
+
 
 def generate_excel_client(selected_collections, selected_company):
    
@@ -474,8 +476,8 @@ with gr.Blocks(
                 )
                 company_dropdown = gr.Dropdown(
                     label="Company",
-                    choices=get_companies(),
-                    value=None,
+                    choices=companies,
+                    value=companies[0] if companies else None,
                     info="Select the company schema to apply.",
                 )
                 with gr.Row():
