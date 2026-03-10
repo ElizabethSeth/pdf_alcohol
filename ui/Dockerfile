@@ -6,7 +6,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ui.py .
 
-EXPOSE 8001
-
+#EXPOSE 8001
+ENV PORT=8080
+EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "sleep 10 && python ui.py"]
 CMD ["python", "ui.py"]
