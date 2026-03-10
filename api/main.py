@@ -63,14 +63,12 @@ from google.cloud import bigquery
 import lib.config.config as c
 import lib.chunks_generation as cg
 import lib.generation_questions as gq
-
+import lib.export_bq as eb
 
 @api.get("/all_collections")
 async def all_collections():
     existing = [c.name for c in c.client_qd.get_collections().collections]
     return [{"collection_name": name} for name in existing]
-
-
 
 @api.post("/add_collection")
 async def add_collection(
@@ -96,7 +94,6 @@ async def add_collection(
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
-
 @api.post("/upload_pdfs")
 async def upload_pdfs(
     col_name: str = Form(...),
@@ -118,13 +115,10 @@ async def upload_pdfs(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
 @api.get("/companies")
 def get_companies():
     companies = sorted(gq.df_all["Company"].dropna().unique().tolist())
-    return {"companies":companies}
-
-
+    return {"companies": companies}
 
 @api.post("/return_excel")
 async def return_excel(request:gq.ExcelRequest):
@@ -201,15 +195,15 @@ async def return_excel(request:gq.ExcelRequest):
 
 @api.get("/big_query_collections")
 def big_query_collections() ->List[Dict[str, str]]:
-    client = c.bq_client()
-    datasets = client.list_datasets(c.BigQuery_id)
+    client = eb.bq_client()
+    datasets = client.list_datasets(eb.BigQuery_id)
     lst = [{"id": ds.dataset_id, "name": ds.dataset_id} for ds in datasets]
     return lst
 
 @api.get("/download_tables/{dataset_id}")
 def download_tables(dataset_id: str):
     client = c.bq_client()
-    ds_reference = bigquery.DatasetReference(c.BigQuery_id, dataset_id)
+    ds_reference = bigquery.DatasetReference(eb.BigQuery_id, dataset_id)
     tables = list(client.list_tables(ds_reference))
 
     buffer = io.BytesIO()

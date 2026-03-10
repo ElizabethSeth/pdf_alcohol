@@ -5,8 +5,8 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay2
-  PATH_ARTIFACTS_UI: us-central1-docker.pkg.dev/natural-choir-480612-m8/reports/ui
-  PATH_ARTIFACTS_API: us-central1-docker.pkg.dev/natural-choir-480612-m8/reports/api
+  PATH_ARTIFACTS_UI: us-central1-docker.pkg.dev/project-e8bfac80-29f9-47ec-b77/reports/ui
+  PATH_ARTIFACTS_API: us-central1-docker.pkg.dev/project-e8bfac80-29f9-47ec-b77/reports/api
   VERSION_API: 0.2
   VERSION_UI: 0.2
   SERVICE_NAME_UI: reports-service-ui
