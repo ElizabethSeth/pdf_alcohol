@@ -42,7 +42,8 @@ steps:
         "--region", "$_SERVICE_REGION",
         "--platform", "managed",
         "--allow-unauthenticated",
-        "--port", "8080"           
+        "--port", "8005",
+        "--timeout", "3600"         
       ]
 
   - name: "gcr.io/cloud-builders/gcloud"
