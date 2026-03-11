@@ -42,7 +42,7 @@ steps:
         "--region", "$_SERVICE_REGION",
         "--platform", "managed",
         "--allow-unauthenticated",
-        "--port", "8005",
+        "--port", "8080",
         "--timeout", "3600"         
       ]
 

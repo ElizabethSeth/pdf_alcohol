@@ -176,6 +176,7 @@ def generate_excel_client(selected_collections, selected_company):
 
 
 # #### Loading all tables from BigQuery datasets ####
+
 def fetch_bq_collections_client():
     resp = requests.get(f"{API_URL}/big_query_collections", timeout=20)
     data = resp.json()
@@ -565,9 +566,9 @@ with gr.Blocks(
         outputs=[bq_excel_output, bq_status],
     )
 
-# if __name__ == "__main__":
-#     port = int(os.environ.get("PORT", 8080))
-#     app.launch(server_name="0.0.0.0", server_port=port)
 if __name__ == "__main__":
-    app.launch(server_name="0.0.0.0", server_port=8005)
+    port = int(os.environ.get("PORT", 8080))
+    app.launch(server_name="0.0.0.0", server_port=port)
+# if __name__ == "__main__":
+#     app.launch(server_name="0.0.0.0", server_port=8005)
 # docker logs -f gradio-1 auth=check_login, auth_message=LOGIN_HTML
