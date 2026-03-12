@@ -12,9 +12,10 @@ import sys
 import os
 sys.path.append(os.path.abspath(".."))
 #API_URL = os.getenv("API_URL")
-#API_URL = "http://main:8003"
 
-API_URL = "https://generate-reports.api.elsth.com"
+API_URL = "http://main:8003"
+
+#API_URL = "https://generate-reports.api.elsth.com"
 
 # LOGIN_HTML = """
 # <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
@@ -590,21 +591,21 @@ with gr.Blocks(
 #     port = int(os.environ.get("PORT", 8080))
 #     app.launch(server_name="0.0.0.0", server_port=port)
 
-def wait_for_api(url, retries=10):
-    for i in range(retries):
-        try:
-            requests.get(url, timeout=2)
-            print("API ready")
-            return
-        except:
-            print(f"Wait for API {i+1}")
-            time.sleep(2)
+# def wait_for_api(url, retries=10):
+#     for i in range(retries):
+#         try:
+#             requests.get(url, timeout=2)
+#             print("API ready")
+#             return 
+#         except:
+#             print(f"Wait for API {i+1}")
+#             time.sleep(2)
 
-if __name__ == "__main__":
-    wait_for_api(f"{API_URL}//health")
-    
-    port = int(os.environ.get("PORT", 8080))
-    app.launch(server_name="0.0.0.0", server_port=port)
 # if __name__ == "__main__":
-#     app.launch(server_name="0.0.0.0", server_port=8005)
+#     wait_for_api(f"{API_URL}//health")
+    
+#     port = int(os.environ.get("PORT", 8080))
+#     app.launch(server_name="0.0.0.0", server_port=port)
+if __name__ == "__main__":
+    app.launch(server_name="0.0.0.0", server_port=8051)
 # docker logs -f gradio-1 auth=check_login, auth_message=LOGIN_HTML
