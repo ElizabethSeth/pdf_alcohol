@@ -142,7 +142,6 @@ def generate_excel_client(selected_collections, selected_company):
         f.write(resp.content)
 
     return output_path, {file_name}
-
 #old version 
 # def generate_excel_client(selected_collections,):
    
