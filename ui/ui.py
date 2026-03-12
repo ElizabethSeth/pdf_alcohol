@@ -79,7 +79,6 @@ def upload_pdfs_client(files, collection_name):
     except Exception as e:
         return f"❌ Error during upload: {str(e)}"
     
-
 def fetch_collections_client():
     
     resp = requests.get(f"{API_URL}/all_collections", timeout=10)
