@@ -9,5 +9,5 @@ COPY ui.py .
 EXPOSE 8080
 ENV PORT=8080
 #EXPOSE 8005
-ENTRYPOINT ["sh", "-c", "sleep 10 && python ui.py"]
+#ENTRYPOINT ["sh", "-c", "sleep 10 && python ui.py"]
 CMD ["python", "ui.py"]

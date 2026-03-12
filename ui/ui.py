@@ -1,5 +1,6 @@
 from ast import Load
 import os
+import time
 import requests
 import gradio as gr
 from requests_toolbelt.multipart import decoder
@@ -567,10 +568,25 @@ with gr.Blocks(
         outputs=[bq_excel_output, bq_status],
     )
 
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 8080))
+#     app.launch(server_name="0.0.0.0", server_port=port)
+
+def wait_for_api(url, retries=10):
+    for i in range(retries):
+        try:
+            requests.get(url, timeout=2)
+            print("API ready")
+            return
+        except:
+            print(f"Wait for API {i+1}")
+            time.sleep(2)
+
 if __name__ == "__main__":
+    wait_for_api(f"{API_URL}//health")
+    
     port = int(os.environ.get("PORT", 8080))
     app.launch(server_name="0.0.0.0", server_port=port)
-    
 # if __name__ == "__main__":
 #     app.launch(server_name="0.0.0.0", server_port=8005)
 # docker logs -f gradio-1 auth=check_login, auth_message=LOGIN_HTML
