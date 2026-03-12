@@ -127,7 +127,8 @@ def prompt_question(qvs, metric_name, metadata):
 
     try:
         result = agent.invoke({"messages": messages})
-        value = result.get("output", "").strip()
+        value = result["messages"][-1].content.strip()
+        #value = result.get("output", "").strip()
 
         if not value:
             return default_value
