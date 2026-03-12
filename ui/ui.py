@@ -93,17 +93,26 @@ def fetch_collections_client():
     else:
         return gr.update(choices=[], value=None), f"❌ Error: {resp.text}"
 
+def fetch_companies():
+    try:
+        resp = requests.get(f"{API_URL}/companies", timeout=5)
+        resp.raise_for_status()
+        data = resp.json()
+        return gr.update(choices=data.get("companies", []))
+    except Exception as e:
+        print("Error loading companies:", e)
+        return gr.update(choices=[])
+    
+# def get_companies():
+#     resp = requests.get(
+#         f"{API_URL}/companies",
+#         timeout=1000,
+#     )
+#     data = resp.json()
+#     companies = data.get("companies", [])
+#     return companies
 
-def get_companies():
-    resp = requests.get(
-        f"{API_URL}/companies",
-        timeout=1000,
-    )
-    data = resp.json()
-    companies = data.get("companies", [])
-    return companies
-
-companies = get_companies()
+# companies = get_companies()
 
 
 def generate_excel_client(selected_collections, selected_company):
@@ -478,11 +487,15 @@ with gr.Blocks(
                     info="Select one or more Qdrant collections to include.",
                 )
                 company_dropdown = gr.Dropdown(
-                    label="Company",
-                    choices=companies,
-                    value=companies[0] if companies else None,
-                    info="Select the company schema to apply.",
+                label="Company",
+                choices=[],
                 )
+                # company_dropdown = gr.Dropdown(
+                #     label="Company",
+                #     choices=companies,
+                #     value=companies[0] if companies else None,
+                #     info="Select the company schema to apply.",
+                # )
                 with gr.Row():
                     refresh_btn  = gr.Button("🔄  Refresh",          variant="secondary")
                     generate_btn = gr.Button("📊  Generate Report",   variant="primary")
@@ -551,6 +564,11 @@ with gr.Blocks(
         fn=fetch_collections_client,
         inputs=[],
         outputs=[collections_dropdown, report_status],
+    )
+    refresh_btn.click(
+    fn=fetch_companies,
+    inputs=[],
+    outputs=[company_dropdown],
     )
     generate_btn.click(
         fn=generate_excel_client,
