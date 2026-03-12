@@ -95,8 +95,6 @@ def fetch_collections_client():
     
         
 
-    
-
 def fetch_companies():
     try:
         resp = requests.get(f"{API_URL}/companies", timeout=5)

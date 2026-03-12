@@ -12,7 +12,7 @@ variables:
   SERVICE_NAME_UI: reports-service-ui
   SERVICE_NAME_API: reports-service-api
   SERVICE_REGION: us-central1
-
+  
 stages:
   - build_deploy
   # - build
@@ -22,8 +22,7 @@ build_deploy:
   stage: build_deploy
   script:
   - cp $GCP_SERVICE_ACC_KEY_REPORTS /tmp/keyfile.json
-  - cp $OPENAI_API_KEY /tmp/openaiapikey.txt
-  - cp $QDRANT_URL /tmp/qdranturl.txt
+  - cp $ENV /tmp/api/.env
   - gcloud auth activate-service-account --key-file=/tmp/keyfile.json
   - gcloud config set project $CI_PROJECT_ID
   - gcloud builds submit --config=cloudbuild.yaml --substitutions=_PATH_ARTIFACTS_UI=$PATH_ARTIFACTS_UI,_PATH_ARTIFACTS_API=$PATH_ARTIFACTS_API,_VERSION_API=$VERSION_API,_VERSION_UI=$VERSION_UI,_SERVICE_NAME_UI=$SERVICE_NAME_UI,_SERVICE_NAME_API=$SERVICE_NAME_API,_SERVICE_REGION=$SERVICE_REGION .
