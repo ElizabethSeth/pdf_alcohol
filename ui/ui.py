@@ -13,9 +13,9 @@ import os
 sys.path.append(os.path.abspath(".."))
 #API_URL = os.getenv("API_URL")
 
-API_URL = "http://main:8003"
+#API_URL = "http://main:8003"
 
-#API_URL = "https://generate-reports.api.elsth.com"
+API_URL = "https://generate-reports.api.elsth.com"
 
 # LOGIN_HTML = """
 # <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
