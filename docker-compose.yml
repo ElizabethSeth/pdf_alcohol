@@ -26,8 +26,7 @@ services:
       - "8051:8051"
     depends_on:
       - main
-    
-
+  
 
   qdrant:
     image: qdrant/qdrant:latest

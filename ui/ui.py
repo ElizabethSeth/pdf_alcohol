@@ -14,7 +14,6 @@ sys.path.append(os.path.abspath(".."))
 #API_URL = os.getenv("API_URL")
 
 #API_URL = "http://main:8003"
-
 API_URL = "https://generate-reports.api.elsth.com"
 
 # LOGIN_HTML = """
@@ -82,7 +81,7 @@ def upload_pdfs_client(files, collection_name):
     
 
 def fetch_collections_client():
-
+    
     resp = requests.get(f"{API_URL}/all_collections", timeout=10)
 
     if resp.status_code == 200:
@@ -92,7 +91,11 @@ def fetch_collections_client():
             return gr.update(choices=[], value=None), "📭 No collections found"
         return gr.update(choices=names, value=names[0]), "✅ Collections loaded"
     else:
-        return gr.update(choices=[], value=None), f"❌ Error: {resp.text}"
+        return gr.update(choices=[], value=None), f"❌ Error: {resp.text} --- {resp.status_code}"
+    
+        
+
+    
 
 def fetch_companies():
     try:
