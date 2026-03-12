@@ -12,6 +12,7 @@ import os
 sys.path.append(os.path.abspath(".."))
 API_URL = os.getenv("API_URL")
 #API_URL = "http://main:8003"
+
 API_URL = "https://generate-reports.api.elsth.com"
 
 # LOGIN_HTML = """
@@ -130,6 +131,7 @@ def generate_excel_client(selected_collections, selected_company):
         f.write(resp.content)
 
     return output_path, {file_name}
+
 #old version 
 # def generate_excel_client(selected_collections,):
    
@@ -173,7 +175,6 @@ def generate_excel_client(selected_collections, selected_company):
 #         f.write(resp.content)
 
 #     return output_path, {file_name}
-
 
 # #### Loading all tables from BigQuery datasets ####
 
@@ -569,6 +570,7 @@ with gr.Blocks(
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     app.launch(server_name="0.0.0.0", server_port=port)
+    
 # if __name__ == "__main__":
 #     app.launch(server_name="0.0.0.0", server_port=8005)
 # docker logs -f gradio-1 auth=check_login, auth_message=LOGIN_HTML
