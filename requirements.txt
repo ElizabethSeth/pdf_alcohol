@@ -14,3 +14,7 @@ gradio
 urllib3
 sqlalchemy
 psycopg[binary]
+requests
+google-cloud-bigquery
+pyarrow
+openpyxl
