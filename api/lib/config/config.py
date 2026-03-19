@@ -12,9 +12,9 @@ from google.cloud import bigquery
 #client_qd = QdrantClient(path="./qdrant_data")
 from qdrant_client import QdrantClient
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-# QDRANT_URL = os.getenv("QDRANT_URL") once u execute in local you can adress directly to .env 
+QDRANT_URL = os.getenv("QDRANT_URL") 
 #print(QDRANT_URL)
-QDRANT_URL = "https://qdrant.elsth.com:443"
+#QDRANT_URL = "https://qdrant.elsth.com:443"
 #client_qd = QdrantClient(url=QDRANT_URL)
 
 
