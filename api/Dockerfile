@@ -4,7 +4,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 ENV OPENAI_API_KEY=${OPENAI_API_KEY}
-
 WORKDIR /main
 #COPY qdrant_data qdrant_data
 #COPY .env .env
