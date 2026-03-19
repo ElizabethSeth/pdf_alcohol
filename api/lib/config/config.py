@@ -12,8 +12,9 @@ from google.cloud import bigquery
 #client_qd = QdrantClient(path="./qdrant_data")
 from qdrant_client import QdrantClient
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-QDRANT_URL = os.getenv("QDRANT_URL")
+# QDRANT_URL = os.getenv("QDRANT_URL")
 #print(QDRANT_URL)
+QDRANT_URL = "https://qdrant-service-162971193674.us-central1.run.app"
 client_qd = QdrantClient(url=QDRANT_URL)
 
 embeddings = OpenAIEmbeddings()

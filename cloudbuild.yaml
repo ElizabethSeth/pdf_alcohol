@@ -66,6 +66,7 @@ steps:
         "--region", "$_SERVICE_REGION",
         "--platform", "managed",
         "--allow-unauthenticated",
+        "--timeout", "3600",
         "--port", "6333",
         "--memory", "1Gi"
       ]
