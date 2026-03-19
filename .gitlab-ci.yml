@@ -22,7 +22,7 @@ build_deploy:
   stage: build_deploy
   script:
   - cp $GCP_SERVICE_ACC_KEY_REPORTS /tmp/keyfile.json
-  - cp $ENV /tmp/api/.env
+  #- cp $ENV /tmp/api/.env
   - cp $OPENAI_API_KEY /tmp/openaiapikey.txt
   - gcloud auth activate-service-account --key-file=/tmp/keyfile.json
   - gcloud config set project $CI_PROJECT_ID

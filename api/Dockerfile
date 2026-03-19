@@ -7,7 +7,7 @@ ENV OPENAI_API_KEY=${OPENAI_API_KEY}
 
 WORKDIR /main
 #COPY qdrant_data qdrant_data
-COPY .env .env
+#COPY .env .env
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py ./main.py
