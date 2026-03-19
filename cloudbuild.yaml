@@ -57,6 +57,18 @@ steps:
         "--port", "8003",
         "--timeout", "3600"
       ]
+      
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "run", "deploy", "qdrant-service",
+        "--image", "qdrant/qdrant:latest",
+        "--region", "$_SERVICE_REGION",
+        "--platform", "managed",
+        "--allow-unauthenticated",
+        "--port", "6333",
+        "--memory", "1Gi"
+      ]
 
 options:
   logging: CLOUD_LOGGING_ONLY 

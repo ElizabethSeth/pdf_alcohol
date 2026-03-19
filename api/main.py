@@ -202,7 +202,7 @@ def big_query_collections() ->List[Dict[str, str]]:
 
 @api.get("/download_tables/{dataset_id}")
 def download_tables(dataset_id: str):
-    client = c.bq_client()
+    client = eb.bq_client()
     ds_reference = bigquery.DatasetReference(eb.BigQuery_id, dataset_id)
     tables = list(client.list_tables(ds_reference))
 

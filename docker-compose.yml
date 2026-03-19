@@ -1,11 +1,4 @@
 services:
-  # ui:
-  #   build:
-  #     context: ui
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8501:8501"
-
   main:
     container_name: api
     build:
@@ -37,3 +30,15 @@ services:
       - "6334:6334"
     volumes:
       - ./qdrant_collections:/qdrant/storage
+
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - qdrant
+      - gradio
