@@ -14,7 +14,7 @@ from qdrant_client import QdrantClient
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # QDRANT_URL = os.getenv("QDRANT_URL") once u execute in local you can adress directly to .env 
 #print(QDRANT_URL)
-QDRANT_URL = "https://qdrant-reports.elsth.com"
+QDRANT_URL = "https://qdrant.elsth.com:443"
 #client_qd = QdrantClient(url=QDRANT_URL)
 
 
