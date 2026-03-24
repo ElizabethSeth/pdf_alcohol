@@ -12,9 +12,10 @@ from google.cloud import bigquery
 #client_qd = QdrantClient(path="./qdrant_data")
 from qdrant_client import QdrantClient
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-#DRANT_URL = os.getenv("QDRANT_URL") 
+QDRANT_URL = os.getenv("QDRANT_URL") 
 #print(QDRANT_URL)
-QDRANT_URL = "https://qdrant.elsth.com:443"
+
+#QDRANT_URL = "https://qdrant.elsth.com:443"
 #client_qd = QdrantClient(url=QDRANT_URL)
 
 
@@ -23,7 +24,6 @@ client_qd = QdrantClient(
     prefer_grpc=False, 
     timeout=30
 )
-
 embeddings = OpenAIEmbeddings()
 llm = init_chat_model("openai:gpt-5", temperature=1)
 #dim = len(embeddings.embed_query("dim?"))
