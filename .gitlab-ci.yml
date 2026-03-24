@@ -27,10 +27,10 @@ build_deploy:
   # - cp $ENV /tmp/.env
   # - cp /tmp/.env api/.env
   - cp $OPENAI_API_KEY /tmp/openaiapikey.txt
-  - cp $QDRANT_URL /tmp/qdrantkey.txt
+  - echo "$QDRANT_URL" > /tmp/qdrantkey.txt
   - gcloud auth activate-service-account --key-file=/tmp/keyfile.json
   - gcloud config set project $CI_PROJECT_ID
-  - gcloud builds submit --config=cloudbuild.yaml --substitutions=_PATH_ARTIFACTS_UI=$PATH_ARTIFACTS_UI,_PATH_ARTIFACTS_API=$PATH_ARTIFACTS_API,_VERSION_API=$VERSION_API,_VERSION_UI=$VERSION_UI,_SERVICE_NAME_UI=$SERVICE_NAME_UI,_SERVICE_NAME_API=$SERVICE_NAME_API,_SERVICE_REGION=$SERVICE_REGION .
+  - gcloud builds submit --async --config=cloudbuild.yaml --substitutions=_PATH_ARTIFACTS_UI=$PATH_ARTIFACTS_UI,_PATH_ARTIFACTS_API=$PATH_ARTIFACTS_API,_VERSION_API=$VERSION_API,_VERSION_UI=$VERSION_UI,_SERVICE_NAME_UI=$SERVICE_NAME_UI,_SERVICE_NAME_API=$SERVICE_NAME_API,_SERVICE_REGION=$SERVICE_REGION .
   only:
     - main
 
