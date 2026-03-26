@@ -25,6 +25,7 @@ build_deploy:
   - cp $GCP_SERVICE_ACC_KEY_REPORTS /tmp/keyfile.json
   # - cp $ENV /tmp/.env
   - cp "$ENV" api/.env
+  - cp "$UI_ENV" ui/.env
   - cp $OPENAI_API_KEY /tmp/openaiapikey.txt
   - echo "$QDRANT_URL" > /tmp/qdrantkey.txt
   - gcloud auth activate-service-account --key-file=/tmp/keyfile.json

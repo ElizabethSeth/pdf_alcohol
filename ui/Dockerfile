@@ -5,6 +5,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ui.py .
+COPY .env /ui/.env
 
 EXPOSE 8051
 ENV PORT=8051
