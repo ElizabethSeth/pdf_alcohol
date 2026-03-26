@@ -8,7 +8,7 @@ ENV QDRANT_URL=${QDRANT_URL}
 
 WORKDIR /main
 #COPY qdrant_data qdrant_data
-#COPY $ENV .env
+COPY .env /main/.env
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py ./main.py
