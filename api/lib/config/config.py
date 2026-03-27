@@ -4,15 +4,20 @@ from concurrent.futures import ThreadPoolExecutor
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv("../../.env")
 from sqlalchemy import create_engine, String, Integer, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, Session
 from google.cloud import bigquery
 #QDRANT_URL = os.getenv("QDRANT_URL")
 #client_qd = QdrantClient(path="./qdrant_data")
 from qdrant_client import QdrantClient
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-QDRANT_URL = os.getenv("QDRANT_URL") 
+
+QDRANT_URL = os.getenv("QDRANT_URL")
+#QDRANT_URL="http://qdrant:6333"
+
+#print(f"QDRANT_URL: {QDRANT_URL}")
 #print(QDRANT_URL)
 
 #QDRANT_URL = "https://qdrant.elsth.com:443"
