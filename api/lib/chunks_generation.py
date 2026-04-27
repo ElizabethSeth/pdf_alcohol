@@ -151,64 +151,6 @@ def prompt_question(qvs, metric_name, metadata):
         print(f"[ERROR] extraction for {metric_name}: {e}")
         return default_value
 
-
-#old version
-# def prompt_question(qvs, model_cls):
-#     model_fields = getattr(model_cls, "model_fields", None)
-#     if not model_fields:
-#         print("-----")
-#         field_name = "question"
-#         print(model_cls)
-#         print("-----")
-#         question_text = f"Extract value for {model_cls.__name__}"
-#         default_value = None
-#     else:
-#         field_name = next(iter(model_fields.keys()))
-#         field = model_fields[field_name]
-#         question_text = field.description or field_name
-#         default_value = field.default
-
-#     hits = qvs.similarity_search(question_text, k=10)
-#     context = "\n".join(doc.page_content for doc in hits)
-
-#     agent = create_agent(
-#         model=llm,
-#         tools=[],
-#         response_format=ProviderStrategy(model_cls),
-#     )
-
-#     messages = [
-#         {
-#             "role": "user",
-#             "content": (
-#                 "You extract ONE field from an  report.\n"
-#                 "Use ONLY the given context.\n"
-#                 "If the value is not present in the context, use the default "
-#                 "from the schema (-1 for numbers, 'Unknown' for strings).\n\n"
-#                 f"Field description: {question_text}\n\n"
-#                 f"Context:\n{context}"
-#             ),
-#         }
-#     ]
-
-#     try:
-#         result = agent.invoke({"messages": messages})
-
-#         structured = result.get("structured_response", None)
-#         if structured is None:
-#             return default_value
-
-#         value = getattr(structured, field_name, default_value)
-
-#         if value is None or (isinstance(value, str) and not value.strip()):
-#             value = default_value
-
-#         return value
-
-#     except Exception as e:
-#         print(f"[ERROR] structured_output for {model_cls.__name__}: {e}")
-#         return default_value
-
 async def async_prompt_question(qvs,  metric_name, metadata):
     loop = asyncio.get_event_loop()
     return await loop.run_in_executor(executor, prompt_question, qvs, metric_name,metadata)
@@ -232,14 +174,6 @@ async def process_collection_for_sheet(coll: str, metric_names: List[str], schem
     results = await asyncio.gather(*tasks)
     return results
 
-# async def process_collection_for_sheet(coll: str, class_list: List):
-#     qvs = QdrantVectorStore(client=c.client_qd, collection_name=coll, embedding=embeddings)
-    
-#     tasks = [async_prompt_question(qvs, model_cls) for model_cls in class_list]
-#     results = await asyncio.gather(*tasks)
-    
-#     return results
-
 def make_df_excel_safe(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     for col in df.columns:
@@ -261,46 +195,3 @@ def file_sha256(files: List[UploadFile] ) -> str:
     h = hashlib.sha256()
     h.update(text)
     return h.hexdigest()
-
-
-
-#     )
-
-# @app.post("/return_excel")
-# async def return_excel(collection_names: str=Form(...), files: List[UploadFile] = File(...)):
-#     all_frames: Dict[str, pd.DataFrame] = {}
-    
-#     file_hash = file_sha256(files)
-    
-#     if bq_hash(file_hash):
-#         pass
-#     else:
-#         for sheet_name, class_list in group_fields.items():
-#             cols = [cls.__name__ for cls in class_list]
-#             tasks = [process_collection_for_sheet(coll, class_list) for coll in collection_names]
-#             all_results = await asyncio.gather(*tasks)
-#             df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-
-#             all_frames[sheet_name] = df.copy()
-#             df["Hash"] = file_hash
-#             client.insert_rows_from_dataframe(table=f"{BigQuery_id}.{BigQuery_database}.{sheet_name}", dataframe=df)
-            
-
-#         buf = io.BytesIO()
-#         with pd.ExcelWriter(buf, engine="openpyxl") as w:
-#             for sheet, df in all_frames.items():
-#                 wsheet = sheet[:31]
-#                 df_safe = make_df_excel_safe(df)
-#                 df_safe.to_excel(w, sheet_name=wsheet)
-#         buf.seek(0)
-
-#         if len(collection_names) == 1:
-#             file_name = f"{collection_names[0]}.xlsx"
-#         else:
-#             joined = "_".join(collection_names)
-#             file_name = f"report_{joined}.xlsx"
-
-#         return StreamingResponse(
-#             io.BytesIO(buf.read()),
-#             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#             headers={"Content-Disposition": f'attachment; filename="{file_name}"'},

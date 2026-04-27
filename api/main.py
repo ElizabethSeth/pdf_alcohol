@@ -64,6 +64,19 @@ import lib.config.config as c
 import lib.chunks_generation as cg
 import lib.generation_questions as gq
 import lib.export_bq as eb
+import lib.login as l
+
+db = c.SessionLocal()
+
+
+@api.post("/login")
+def login(payload: l.LoginRequest, db: Session = Depends(l.get_db)):
+    user = l.get_user_by_mail(db, payload.email , payload.password)
+
+    if not user:
+        raise HTTPException(status_code=401)
+    return {"message": "Login successful"}
+
 
 @api.get("/all_collections")
 async def all_collections():
@@ -159,38 +172,6 @@ async def return_excel(request:gq.ExcelRequest):
         headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
     )
 
-
-
-# async def return_excel(collection_names: List[str]=Body(...)):
-#     all_frames: Dict[str, pd.DataFrame] = {}
-
-#     for sheet_name, class_list in gq.group_fields.items():
-#         cols = [cls.__name__ for cls in class_list]
-#         tasks = [cg.process_collection_for_sheet(coll, class_list) for coll in collection_names]
-#         all_results = await asyncio.gather(*tasks)
-#         df = pd.DataFrame(all_results, columns=cols, index=collection_names)
-
-#         all_frames[sheet_name] = df.copy()
-
-#     buf = io.BytesIO()
-#     with pd.ExcelWriter(buf, engine="openpyxl") as w:
-#         for sheet, df in all_frames.items():
-#             wsheet = sheet[:31]
-#             df_safe = cg.make_df_excel_safe(df)
-#             df_safe.to_excel(w, sheet_name=wsheet)
-#     buf.seek(0)
-
-#     if len(collection_names) == 1:
-#         file_name = f"{collection_names[0]}.xlsx"
-#     else:
-#         joined = "_".join(collection_names)
-#         file_name = f"report_{joined}.xlsx"
-
-#     return StreamingResponse(
-#         io.BytesIO(buf.read()),
-#         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#         headers={"Content-Disposition": f'attachment; filename="{file_name}"'},
-#     )
 
 
 @api.get("/big_query_collections")

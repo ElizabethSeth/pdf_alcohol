@@ -46,8 +46,6 @@ executor = ThreadPoolExecutor(max_workers=10)
 #           embedding=embeddings
 #     )
 
-
-
 BigQuery_id = os.getenv('PROJECT_ID')
 BigQuery_database = os.getenv('DATASET_ID') 
 
@@ -55,13 +53,11 @@ BigQuery_database = os.getenv('DATASET_ID')
 client = bigquery.Client(project=BigQuery_id)
 dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
 
-DATABASE_URL = "postgresql+psycopg://user_ps:1234@35.202.127.228:5432/postgress_db"
-
+DATABASE_URL = "postgresql+psycopg://myuser:mysecretpassword@qdrant.elsth.com:5432/mydb"
 engine = create_engine(
     DATABASE_URL,
     echo=False,      
     pool_pre_ping=True,
 )
-
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 

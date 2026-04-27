@@ -19,13 +19,7 @@ group_fields = {
     "Drinks_Results": ["Year", "Fy_group_net_sales_current", "Fy_group_net_sales_prior", "Fy_group_net_sales_reported_change_pct", "Fy_group_net_sales_organic_change_pct", "Fy_group_net_sales_perimeter_contrib_pct", "Fy_group_net_sales_fx_contrib_pct", "Fy_region_net_sales_prior", "Fy_region_net_sales_organic_change_pct", "Fy_region_net_sales_perimeter_contrib_pct", "Fy_region_net_sales_fx_contrib_pct", "Fy_region_net_sales_share_of_group_pct", "H2_group_net_sales_current", "H2_group_net_sales_prior", "H2_group_net_sales_reported_change_pct", "H2_group_net_sales_organic_change_pct", "Q4_region_net_sales_current", "Q4_region_net_sales_prior", "Q4_region_net_sales_reported_change_pct", "Q4_region_net_sales_organic_change_pct", "Fx_impact", "Perimeter_impact"],
     "Corporate_information": ["Headquarters", "Executive_committee_quantity", "Board_of_directors", "Board_of_directors_quantity", "Affiliate", "Affiliates", "Affiliate_qty", "Qty_nationalities", "Total_employees", "Women_in_workforce", "Women_in_management", "Ethnically_diverse_leaders_pct", "Lgbtq_inclusion_programs", "Community_investment_amount", "Year"]
 }
-# group_fields = {
-#     "FiscalYear": ["Year" , "Period_start" , "Period_end"],
-#     "Region": ["Usa_growth","China_growth","India_growth","APAC_Net_sales","Europe_Net_sales","Global_Net_sales","Net_sales_share_North_America_pct","Net_sales_share_Europe_pct","Net_sales_share_Asia_Pacific_pct","Net sales share Latin American Caribbean pct","Net sales share Africa_pct"],
-#     "Financials": ["Revenue",	"Revenue growth",	"Operating Profit",	"Operating_margin",	"Net profit",	"EPS",	"Cash_flow",	"Capex",	"Opex","	Gross Profit",	"Share of sales",	"Gross margin",	"Operating income","Net income",	"Net_income growth",	"Net debt",	"Net debt to ebitda ratio","Pro	", "Pro growth"	, "Free cash flow amount"],
-#     "Brands": ["Category share largest pct","Scotch share pct",	"Beer share pct","Tequila share pct","Vodka share pct", "Key_brands", "Strategic_local_brands", "Non_alcoholic_brands", "Ready to drink brands"],
-#     "Corporate_information": ["Headquarters","Executive_committee_examples","Executive_committee_quantity","Board_of_directors_examples","Board_of_directors_quantity","Affiliate_name","Affiliates","Affiliate_quantity","Avg_age","Qty_nationalities"],
-# }
+
 
 
 def get_all_group_metrics(group_fields):

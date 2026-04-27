@@ -6,6 +6,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ui.py .
 COPY .env /ui/.env
+COPY lib lib
+COPY f_card.py /ui/f_card.py
+COPY s_card.py /ui/s_card.py
+COPY t_card.py /ui/t_card.py
+
 
 EXPOSE 8051
 ENV PORT=8051
