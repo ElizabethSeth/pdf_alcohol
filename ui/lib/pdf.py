@@ -17,9 +17,8 @@ load_dotenv()
 import lib.css as cs
 import lib.gr as g
 
-#API_URL = os.getenv("API_URL")
+API_URL = os.getenv("API_URL")
 
-API_URL = "http://main:8003"
 
 # ### standart version
 def upload_pdfs_client(files, collection_name):
@@ -60,7 +59,7 @@ def upload_pdfs_client(files, collection_name):
         return f"❌ Error during upload: {str(e)}"
     
 def fetch_collections_client():
-    
+
     resp = requests.get(f"{API_URL}/all_collections", timeout=10)
 
     if resp.status_code == 200:
