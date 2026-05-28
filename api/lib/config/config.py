@@ -52,8 +52,8 @@ BigQuery_database = os.getenv('DATASET_ID')
 
 client = bigquery.Client(project=BigQuery_id)
 dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
-
-DATABASE_URL = "postgresql+psycopg://myuser:mysecretpassword@qdrant.elsth.com:5432/mydb"
+#DATABASE_URL = "postgresql+psycopg://myuser:mysecretpassword@qdrant.elsth.com:5432/mydb"
+DATABASE_URL = "postgresql+psycopg://myuser:mysecretpassword@qdrant-kub.elsth.com:5432/postgres"
 engine = create_engine(
     DATABASE_URL,
     echo=False,      

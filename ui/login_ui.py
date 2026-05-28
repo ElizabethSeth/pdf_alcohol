@@ -10,8 +10,7 @@ from typing import List
 from ast import Load
 
 
-API_URL = "http://api:8003"
-
+API_URL = os.getenv("API_URL")
 
 def login(email:str, password:str):
     response = requests.post(

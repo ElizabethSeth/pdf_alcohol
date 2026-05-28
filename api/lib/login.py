@@ -23,6 +23,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_unique: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     login_time: Mapped[Optional[datetime]] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    
 class LoginRequest(BaseModel):
     email: str
     password: str
