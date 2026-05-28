@@ -112,21 +112,20 @@ async def upload_pdfs(
     col_name: str = Form(...),
     files: List[UploadFile] = File(...)
 ):
-    try:
-        cg.ensure_collection(name=col_name)
+    cg.ensure_collection(name=col_name)
 
-        for file in files:
-            pdf_bytes = await file.read()
-            text = cg.extract_text_from_pdf(pdf_bytes)
-            cg.text_into_qdrant(collection_name=col_name, text=text)
-        
-        return {
-            "status": "success",
-            "collection_name": col_name,
-            "message": "PDF files uploaded and indexed into Qdrant."
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    for file in files:
+        pdf_bytes = await file.read()
+        text = cg.extract_text_from_pdf(pdf_bytes)
+        cg.text_into_qdrant(collection_name=col_name, text=text)
+    
+    return {
+        "status": "success",
+        "collection_name": col_name,
+        "message": "PDF files uploaded and indexed into Qdrant."
+    }
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=str(e))
 
 @api.get("/companies")
 def get_companies():
