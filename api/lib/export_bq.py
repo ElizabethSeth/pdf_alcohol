@@ -11,9 +11,14 @@ import pandas as pd
 BigQuery_id = os.getenv('PROJECT_ID')
 BigQuery_database = os.getenv('DATASET_ID') 
 
-
-client = bigquery.Client(project=BigQuery_id)
-dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
+try:
+    client = bigquery.Client(project=BigQuery_id)
+    dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
+except Exception as e:
+    import logging
+    logging.getLogger(__name__).warning("BigQuery unavailable, continuing without it: %s", e)
+    client = None
+    dataset_ref = None
 
 app = FastAPI()
 

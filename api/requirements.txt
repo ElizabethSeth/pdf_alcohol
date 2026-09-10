@@ -8,7 +8,7 @@ langchain_openai
 dotenv
 docx2txt
 langchain_qdrant
-fitz
+pymupdf
 docx
 langchain_community
 gradio

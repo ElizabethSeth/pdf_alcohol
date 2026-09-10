@@ -28,7 +28,7 @@ def folder_sha256(folder: str | Path, pattern: str = "*.pdf", chunk_size: int = 
 hash_value = folder_sha256("pdf")
 print(hash_value)
 
-PROJECT_ID = "natural-choir-480612-m8"
+PROJECT_ID = "project-862185c1-3167-4a88-839"
 DATASET_ID = "Brown_forman"
 
 EXCEL_PATH = Path("excels/bf24.xlsx")

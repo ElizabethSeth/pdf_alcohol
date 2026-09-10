@@ -28,14 +28,25 @@ def upload_pdfs_client(files, collection_name):
         return "⚠️ Please provide a collection name"
 
     try:
+        if not isinstance(files, list):
+            files = [files]
+
         files_to_send = []
-        for file in files:
-            file_path = file if isinstance(file, str) else file.name
+        for i, file in enumerate(files):
+            if isinstance(file, (bytes, bytearray)):
+                content = bytes(file)
+                fname = f"upload_{i}.pdf"
+            elif isinstance(file, str):
+                with open(file, "rb") as fh:
+                    content = fh.read()
+                fname = os.path.basename(file)
+            else:
+                fpath = getattr(file, "path", None) or getattr(file, "name", None)
+                with open(fpath, "rb") as fh:
+                    content = fh.read()
+                fname = os.path.basename(fpath)
             files_to_send.append(
-                (
-                    "files",
-                    (os.path.basename(file_path), open(file_path, "rb"), "application/pdf"),
-                )
+                ("files", (fname, content, "application/pdf"))
             )
 
         data = {"col_name": collection_name}
@@ -46,9 +57,6 @@ def upload_pdfs_client(files, collection_name):
             files=files_to_send,
             timeout=1800,
         )
-
-        for _, file_tuple in files_to_send:
-            file_tuple[1].close()
 
         if resp.status_code == 200:
             return f"✅ Uploaded and indexed into collection '{collection_name}'"

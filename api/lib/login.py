@@ -16,7 +16,7 @@ app = FastAPI()
 class Base(DeclarativeBase):
     pass
 class User(Base):
-    __tablename__ = "private_data"
+    __tablename__ = "login"
     __table_args__ = {'schema': 'data'}
 
     id_key: Mapped[int] = mapped_column(Integer, primary_key=True)

@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 from dotenv import load_dotenv
-load_dotenv("../../.env")
+load_dotenv()
 from sqlalchemy import create_engine, String, Integer, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, Session
 from google.cloud import bigquery
@@ -49,11 +49,16 @@ executor = ThreadPoolExecutor(max_workers=10)
 BigQuery_id = os.getenv('PROJECT_ID')
 BigQuery_database = os.getenv('DATASET_ID') 
 
-
-client = bigquery.Client(project=BigQuery_id)
-dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
+try:
+    client = bigquery.Client(project=BigQuery_id)
+    dataset_ref = bigquery.Dataset(f"{BigQuery_id}.{BigQuery_database}")
+except Exception as e:
+    import logging
+    logging.getLogger(__name__).warning("BigQuery unavailable, continuing without it: %s", e)
+    client = None
+    dataset_ref = None
 #DATABASE_URL = "postgresql+psycopg://myuser:mysecretpassword@qdrant.elsth.com:5432/mydb"
-DATABASE_URL = "postgresql+psycopg://myuser:mysecretpassword@qdrant-kub.elsth.com:5432/postgres"
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg://myuser:mysecretpassword@qdrant-kub.elsth.com:5432/postgres")
 engine = create_engine(
     DATABASE_URL,
     echo=False,      

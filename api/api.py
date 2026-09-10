@@ -92,7 +92,7 @@ def get_vectorstore() -> QdrantVectorStore:
           embedding=embeddings
     )
 
-DATABASE_URL = "postgresql+psycopg://user_ps:1234@35.202.127.228:5432/postgress_db"
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg://user_ps:1234@35.202.127.228:5432/postgress_db")
 
 engine = create_engine(
     DATABASE_URL,
@@ -107,7 +107,7 @@ class Base(DeclarativeBase):
     pass
 
 class User(Base):
-    __tablename__ = "private_data"
+    __tablename__ = "login"
     __table_args__ = {'schema': 'data'}
 
     id_key: Mapped[int] = mapped_column(Integer, primary_key=True)

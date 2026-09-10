@@ -14,7 +14,7 @@ def first_bloc(gr):
             label="PDF Files",
             file_count="multiple",
             file_types=[".pdf"],
-            type="filepath",
+            type="binary",
         )
         upload_btn = gr.Button(
             "⬆  Upload & Index PDFs",

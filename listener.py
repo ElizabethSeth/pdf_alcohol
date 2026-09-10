@@ -2,7 +2,7 @@ from google.cloud import pubsub_v1
 import subprocess
 import os
 
-project_id = "natural-choir-480612-m8"
+project_id = "project-862185c1-3167-4a88-839"
 subscription_id = "run-pipeline-sub"
 
 subscriber = pubsub_v1.SubscriberClient()
